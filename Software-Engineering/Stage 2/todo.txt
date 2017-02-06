@@ -1,0 +1,8 @@
+UML Class Diagram
+UML Sequence Diagram
+Group Plan document 
+	Gantt Chart 
+	Schedule
+	Gitlab uses
+	Quality and consistency ensurance
+

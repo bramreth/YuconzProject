@@ -7,9 +7,3 @@ Group Plan document
 	Quality and consistency ensurance
 
 
-Work for this stage should be based on the material describing the user’s
-requirements to be found only in the following sources:
-- The presentation by the client, Miles Roman, in the lecture in week 7.
-- The description of the Yuconz Employment Record System made available by the client, Miles Roman.
-- Any clarifications and additions provided by the client or module convener.
-- The use cases provided at the start of Stage 2.

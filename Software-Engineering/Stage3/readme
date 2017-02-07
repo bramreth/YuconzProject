@@ -1,4 +1,5 @@
 Stage	3	requirements	
+
 For Stage 3 the focus is on baseline implementation of a subset of the elements of
 the final system. During this stage you may develop as much of the UML model and
 implementation of the final system as you wish. However, you are required to deliver
@@ -10,8 +11,10 @@ as it progresses, you should continually review and update your planning and
 processes that you started at Stage 2. Continual review through experience and
 changing circumstances is a theme that runs through all stages of this group work.
 Authentication	and	authorisation	
+
 This section provides details to everyone of some of the clarifications Miles provided
 in response to group questions during Stage 2.
+
 At some point, your system will obviously need to integrate with the existing
 computer system at Yuconz but the Director of Services Delivery will not allow
 integration until after the final acceptance testing. This will mean that you will need to
@@ -39,6 +42,7 @@ session. They must first log out and then re-authenticate.
 removed, but documents relating to them should not.
 • Everyone in the company has a unique 6 digit ID. IDs are not reused when a
 member of staff leaves.
+
 Deliverables	
 We expect you to use Papyrus to develop the model. All other written documents
 must be submitted as PDF documents for assessment. All source code must be in

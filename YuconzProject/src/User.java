@@ -3,11 +3,15 @@
  */
 public class User
 {
-    private enum Department
-    {
-        Human_Resources, Services_Delivery, Sales_and_Marketing, Administration
-    }
-
+    /**
+     * Constructor
+     * Initializes the User object
+     * @param userID - ID of the currecnt user
+     * @param name
+     * @param surname
+     * @param pos - position
+     * @param dept - department
+     */
     public User(int userID, String name, String surname, Position pos, Department dept)
     {
 

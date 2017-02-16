@@ -8,6 +8,10 @@ import java.util.Scanner;
 public class Yuconz_project_app
 {
 
+    /**
+     * Main method
+     * @param args
+     */
     public static void main(String args[])
     {
         Yuconz_project_app App = new Yuconz_project_app();
@@ -15,6 +19,10 @@ public class Yuconz_project_app
         System.out.println("Login Successful");
     }
 
+    /**
+     * Constructor
+     * Initializes the App object and prompts the user for login
+     */
     public Yuconz_project_app()
     {
         boolean notLoggedIn = true;
@@ -35,6 +43,13 @@ public class Yuconz_project_app
         }
     }
 
+    /**
+     * login
+     * Checks if the given credentials are valid
+     * @param username
+     * @param password
+     * @return true if the login details match a record in the database else false
+     */
     public boolean login(String username, String password)
     {
         if (username.equals("user") && password.equals("pass")) {
@@ -44,7 +59,13 @@ public class Yuconz_project_app
         }
     }
 
-    public boolean logout()
+    /**
+     * logout
+     * Logs out the current user
+     * @param currentUser
+     * @return true is successful and false if a error occured
+     */
+    public boolean logout(User currentUser)
     {
         return true;
     }

@@ -7,5 +7,6 @@ public abstract class Position
 
     public Position(String positionName)
     {
+
     }
 }

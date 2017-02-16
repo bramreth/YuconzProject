@@ -3,13 +3,49 @@
  *
  * idea, login and logut can be static~
  */
-public class Yuconz_project_app {
-    public Yuconz_project_app(){
+
+import java.util.Scanner;
+public class Yuconz_project_app
+{
+
+    public static void main(String args[])
+    {
+        Yuconz_project_app App = new Yuconz_project_app();
+
+        System.out.println("Login Successful");
     }
-    public boolean login(String username, String password){
-        return true;
+
+    public Yuconz_project_app()
+    {
+        boolean notLoggedIn = true;
+        while (notLoggedIn) {
+            Scanner input = new Scanner(System.in);
+
+            System.out.println("Username:");
+            String username = input.next();
+            System.out.println("Password:");
+            String password = input.next();
+
+            if (login(username, password)) {
+                notLoggedIn = false;
+
+            } else {
+                System.out.print("Failure");
+            }
+        }
     }
-    public boolean logout(){
+
+    public boolean login(String username, String password)
+    {
+        if (username.equals("user") && password.equals("pass")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean logout()
+    {
         return true;
     }
 }

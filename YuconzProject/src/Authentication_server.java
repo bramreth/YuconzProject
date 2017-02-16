@@ -1,27 +1,23 @@
+import java.sql.*;
 /**
- * Created by bramreth on 2/13/17.
+ * Created by Sam Le-Cornu on 16/2/17.
  */
-public class Authentication_server
-{
-    /**
-     * Constructor
-     * Initializes Authentication_server and establishes connection to the database
-     */
-    public Authentication_server()
-    {
-        //implement database connection
-}
+public class Authentication_server {
 
-    /**
-     * validateLogin
-     * Checks the database if the login details are correct
-     * @param username
-     * @param password
-     * @return true if the login details match a record in the database else false
-     */
-    public boolean validateLogin(String username, String password)
-    {
-        //implement database check here
-        return true;
+    public Authentication_server() {
+        try {
+            String host = "jdbc:mysql://dragon.kent.ac.uk/sjl66";
+            String username = "sjl66";
+            String password = "lef/u";
+            Connection con = DriverManager.getConnection(host,username,password);
+
+        }
+        catch ( SQLException err ) {
+            System.out.println( err.getMessage( ) );
+        }
     }
+
+   /* public boolean verifyLogin(String username,  String password){
+
+    }*/
 }

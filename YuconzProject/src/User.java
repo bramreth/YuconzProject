@@ -12,7 +12,7 @@ public class User
      * @param pos - position
      * @param dept - department
      */
-    public User(int userID, String name, String surname, Position pos, String dept)
+    public User(String userID, String name, String surname, Position pos, String dept)
     {
 
     }

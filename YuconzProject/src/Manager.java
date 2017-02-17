@@ -11,7 +11,7 @@ public class Manager extends Position
      * @param directorID - manager of the employee
      * @param subordinatesID - list of subordinates
      */
-    public Manager(int directorID, List<Integer> subordinatesID)
+    public Manager(String directorID, List<String> subordinatesID)
     {
         positionName = "Manager";
         this.directorID = directorID;
@@ -33,7 +33,7 @@ public class Manager extends Position
      * Returns the manager ID
      * @return managerID
      */
-    public int getDirector()
+    public String getDirector()
     {
         return directorID;
     }
@@ -43,7 +43,7 @@ public class Manager extends Position
      * Returns the list of subordinates IDs
      * @return subordinatesID
      */
-    public List<Integer> getSubordinates()
+    public List<String> getSubordinates()
     {
         return subordinatesID;
     }

@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class Yuconz_project_app
 {
     private Authentication_server auth;
+    private Database db;
 
     /**
      * Main method
@@ -24,25 +25,11 @@ public class Yuconz_project_app
      */
     public Yuconz_project_app()
     {
-        auth = new Authentication_server("jdbc:mysql://dragon.kent.ac.uk/sjl66","sjl66","lef/u");
+        db = new Database("jdbc:mysql://dragon.kent.ac.uk/sjl66","sjl66","lef/u");
+        auth = new Authentication_server(db.getConnection());
 
-        if (auth.isReady()) {
-            boolean notLoggedIn = true;
-            while (notLoggedIn) {
-                Scanner input = new Scanner(System.in);
-
-                System.out.println("Username:");
-                String username = input.next();
-                System.out.println("Password:");
-                String password = input.next();
-
-                if (login(username, password)) {
-                    notLoggedIn = false;
-                    System.out.println("Logged in");
-                } else {
-                    System.out.println("Failure");
-                }
-            }
+        if (db.isReady()) {
+            login();
         } else {
             System.out.print("Connection to database failed");
         }
@@ -50,14 +37,26 @@ public class Yuconz_project_app
 
     /**
      * login
-     * Checks if the given credentials are valid
-     * @param username
-     * @param password
-     * @return true if the login details match a record in the database else false
+     * Prompts the user for login details
      */
-    public boolean login(String username, String password)
+    public void login()
     {
-        return(auth.verifyLogin(username, password));
+        boolean notLoggedIn = true;
+        while (notLoggedIn) {
+            Scanner input = new Scanner(System.in);
+
+            System.out.println("Username:");
+            String username = input.next();
+            System.out.println("Password:");
+            String password = input.next();
+
+            if (auth.verifyLogin(username, password)) {
+                notLoggedIn = false;
+                System.out.println("Logged in");
+            } else {
+                System.out.println("Failure");
+            }
+        }
     }
 
     /**

@@ -7,7 +7,7 @@ import java.util.List;
 public abstract class Position
 {
     protected String positionName;
-    protected int managerID;
-    protected int directorID;
-    protected List<Integer> subordinatesID;
+    protected String managerID;
+    protected String directorID;
+    protected List<String> subordinatesID;
 }

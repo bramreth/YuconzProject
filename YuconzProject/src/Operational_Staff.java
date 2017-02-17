@@ -8,7 +8,7 @@ public class Operational_Staff extends Position
      * Initializes the Operational_Staff object
      * @param managerID - manager of the employee
      */
-    public Operational_Staff(int managerID)
+    public Operational_Staff(String managerID)
     {
         positionName = "Operational_Staff";
         this.managerID = managerID;
@@ -29,7 +29,7 @@ public class Operational_Staff extends Position
      * Returns the manager
      * @return manager ID
      */
-    public int getManager()
+    public String getManager()
     {
         return managerID;
     }

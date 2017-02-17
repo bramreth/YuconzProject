@@ -3,6 +3,7 @@
  */
 public class User
 {
+    private String username, userID, name, surname, dept, pos;
     /**
      * Constructor
      * Initializes the User object
@@ -12,10 +13,38 @@ public class User
      * @param pos - position
      * @param dept - department
      */
-    public User(String userID, String name, String surname, Position pos, String dept)
+    public User(String username, String userID, String name, String surname, String dept, String pos)
     {
-
+        this.username = username;
+        this.userID = userID;
+        this.name = name;
+        this.surname = surname;
+        this.dept = dept;
+        this.pos = pos;
     }
 
+    public String getUsername()
+    {
+        return username;
+    }
 
+    public String getUserID()
+    {
+        return userID;
+    }
+
+    public String getName()
+    {
+        return surname + ", " + name;
+    }
+
+    public String getDepartment()
+    {
+        return dept;
+    }
+
+    public String getPosition()
+    {
+        return pos;
+    }
 }

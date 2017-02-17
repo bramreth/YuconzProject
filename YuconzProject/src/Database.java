@@ -22,9 +22,9 @@ public class Database {
             ready = true;
         }
         catch ( SQLException err ) {
-            System.out.println( err.getMessage( ) );
-        }
+        System.out.println( err.getMessage( ) );
     }
+}
 
     /**
      * getConnection

@@ -54,5 +54,4 @@ class Yuconz_project_appTest {
         boolean resultB = app.logout();
         assertTrue(resultB);
     }
-
 }

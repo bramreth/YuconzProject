@@ -9,6 +9,7 @@ public class Yuconz_project_app
 {
     private Authentication_server auth;
     private Database db;
+    private User currentUser;
 
     /**
      * Main method
@@ -52,6 +53,7 @@ public class Yuconz_project_app
 
             if (auth.verifyLogin(username, password)) {
                 notLoggedIn = false;
+                currentUser = db.getUser;
                 System.out.println("Logged in");
             } else {
                 System.out.println("Failure");

@@ -52,8 +52,12 @@ public class Yuconz_project_app
             String password = input.next();
 
             if (auth.verifyLogin(username, password)) {
-                notLoggedIn = false;
-                currentUser = db.getUser;
+                if(db.getUser(username)!=null){
+                    currentUser = db.getUser(username);
+                    notLoggedIn = false;
+                }else{
+                    System.out.println("Failure");
+                }
                 System.out.println("Logged in");
             } else {
                 System.out.println("Failure");
@@ -64,11 +68,14 @@ public class Yuconz_project_app
     /**
      * logout
      * Logs out the current user
-     * @param currentUser
      * @return true is successful and false if a error occured
      */
     public boolean logout()
     {
-        return true;
+        if(currentUser!=null){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

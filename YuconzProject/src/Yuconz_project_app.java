@@ -7,6 +7,7 @@
 import java.util.Scanner;
 public class Yuconz_project_app
 {
+    private Authentication_server auth;
 
     /**
      * Main method
@@ -23,7 +24,7 @@ public class Yuconz_project_app
      */
     public Yuconz_project_app()
     {
-        Authentication_server auth = new Authentication_server("jdbc:mysql://dragon.kent.ac.uk/sjl66","sjl66","lef/u");
+        auth = new Authentication_server("jdbc:mysql://dragon.kent.ac.uk/sjl66","sjl66","lef/u");
 
         if (auth.isReady()) {
             boolean notLoggedIn = true;
@@ -56,11 +57,7 @@ public class Yuconz_project_app
      */
     public boolean login(String username, String password)
     {
-        if (username.equals("user") && password.equals("pass")) {
-            return true;
-        } else {
-            return false;
-        }
+        return(auth.verifyLogin(username, password));
     }
 
     /**

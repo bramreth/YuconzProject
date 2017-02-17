@@ -23,6 +23,19 @@ public class User
         this.pos = pos;
     }
 
+    public String getUserInfo()
+    {
+        return ("User ID:   " + getUserID() + "\n" +
+                "Username:  " + getUsername() + "\n" +
+                "Name:      " + getName() + "\n" +
+                "Position:  " + getPosition() + "\n" +
+                "Department " + getDepartment()
+                );
+    }
+
+    /*
+     * Accessors for the private variables
+     */
     public String getUsername()
     {
         return username;

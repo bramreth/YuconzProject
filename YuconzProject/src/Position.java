@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -6,7 +7,7 @@ import java.util.List;
 public abstract class Position
 {
     protected String positionName;
-    protected User manager;
-    protected User director;
-    protected List<User> subordinates;
+    protected int managerID;
+    protected int directorID;
+    protected List<Integer> subordinatesID;
 }

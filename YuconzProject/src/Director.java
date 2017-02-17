@@ -8,12 +8,12 @@ public class Director extends Position
     /**
      * Constructor
      * Initializes the Operational_Staff object
-     * @param subs - list of subordinates
+     * @param subordinatesID - list of subordinates
      */
-    public Director(List<User> subs)
+    public Director(List<Integer> subordinatesID)
     {
         positionName = "Director";
-        subordinates = subs;
+        this.subordinatesID = subordinatesID;
     }
 
     /**
@@ -31,8 +31,8 @@ public class Director extends Position
      * Returns the list of subordinates
      * @return subordinates
      */
-    public List<User> getSubordinates()
+    public List<Integer> getSubordinates()
     {
-        return subordinates;
+        return subordinatesID;
     }
 }

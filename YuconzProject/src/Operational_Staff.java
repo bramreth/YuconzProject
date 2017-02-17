@@ -6,12 +6,12 @@ public class Operational_Staff extends Position
     /**
      * Constructor
      * Initializes the Operational_Staff object
-     * @param man - manager of the employee
+     * @param managerID - manager of the employee
      */
-    public Operational_Staff(User man)
+    public Operational_Staff(int managerID)
     {
         positionName = "Operational_Staff";
-        manager = man;
+        this.managerID = managerID;
     }
 
     /**
@@ -27,10 +27,10 @@ public class Operational_Staff extends Position
     /**
      * getManager
      * Returns the manager
-     * @return manager
+     * @return manager ID
      */
-    public User getManager()
+    public int getManager()
     {
-        return manager;
+        return managerID;
     }
 }

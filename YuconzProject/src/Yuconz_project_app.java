@@ -15,8 +15,6 @@ public class Yuconz_project_app
     public static void main(String args[])
     {
         Yuconz_project_app App = new Yuconz_project_app();
-
-        System.out.println("Login Successful");
     }
 
     /**
@@ -25,21 +23,27 @@ public class Yuconz_project_app
      */
     public Yuconz_project_app()
     {
-        boolean notLoggedIn = true;
-        while (notLoggedIn) {
-            Scanner input = new Scanner(System.in);
+        Authentication_server auth = new Authentication_server("jdbc:mysql://dragon.kent.ac.uk/sjl66","sjl66","lef/u");
 
-            System.out.println("Username:");
-            String username = input.next();
-            System.out.println("Password:");
-            String password = input.next();
+        if (auth.isReady()) {
+            boolean notLoggedIn = true;
+            while (notLoggedIn) {
+                Scanner input = new Scanner(System.in);
 
-            if (login(username, password)) {
-                notLoggedIn = false;
+                System.out.println("Username:");
+                String username = input.next();
+                System.out.println("Password:");
+                String password = input.next();
 
-            } else {
-                System.out.print("Failure");
+                if (login(username, password)) {
+                    notLoggedIn = false;
+                    System.out.println("Logged in");
+                } else {
+                    System.out.println("Failure");
+                }
             }
+        } else {
+            System.out.print("Connection to database failed");
         }
     }
 
@@ -65,7 +69,7 @@ public class Yuconz_project_app
      * @param currentUser
      * @return true is successful and false if a error occured
      */
-    public boolean logout(User currentUser)
+    public boolean logout()
     {
         return true;
     }

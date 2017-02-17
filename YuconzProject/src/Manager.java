@@ -8,14 +8,14 @@ public class Manager extends Position
     /**
      * Constructor
      * Initializes the Operational_Staff object
-     * @param dir - manager of the employee
-     * @param subs - list of subordinates
+     * @param directorID - manager of the employee
+     * @param subordinatesID - list of subordinates
      */
-    public Manager(User dir, List<User> subs)
+    public Manager(int directorID, List<Integer> subordinatesID)
     {
         positionName = "Manager";
-        director = dir;
-        subordinates = subs;
+        this.directorID = directorID;
+        this.subordinatesID = subordinatesID;
     }
 
     /**
@@ -30,21 +30,21 @@ public class Manager extends Position
 
     /**
      * getManager
-     * Returns the manager
-     * @return manager
+     * Returns the manager ID
+     * @return managerID
      */
-    public User getDirector()
+    public int getDirector()
     {
-        return director;
+        return directorID;
     }
 
     /**
      * getSubordinates
-     * Returns the list of subordinates
-     * @return rubordinates
+     * Returns the list of subordinates IDs
+     * @return subordinatesID
      */
-    public List<User> getSubordinates()
+    public List<Integer> getSubordinates()
     {
-        return subordinates;
+        return subordinatesID;
     }
 }

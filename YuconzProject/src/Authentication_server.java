@@ -47,10 +47,10 @@ public class Authentication_server {
     public boolean verifyLogin(String username,  String password) {
         try {
             Statement s = con.createStatement();
-            String sql = "SELECT * FROM Yuconz_Users";
+            String sql = "SELECT Username FROM Yuconz_Users WHERE Password=sha1('" + password + "')";
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
-                if (rs.getString("username").equals(username) && rs.getString("password").equals(password)) {
+                if (rs.getString("username").equals(username)) {
                     return true;
                 }
             }

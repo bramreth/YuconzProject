@@ -31,7 +31,7 @@ public class Yuconz_project_app {
 
         if (db.isReady()) {
             notLoggedIn = true;
-            login();
+            displayLoginMenu();
         } else {
             System.out.print("Connection to database failed");
         }
@@ -61,28 +61,36 @@ public class Yuconz_project_app {
     }
 
     /**
-     * login
+     * display login menu
      * Prompts the user for login details
      */
-    public void login()
+    public void displayLoginMenu()
     {
         while (notLoggedIn) {
             System.out.println("Username:");
             String username = input.next();
             System.out.println("Password:");
             String password = input.next();
-
-            if (auth.verifyLogin(username, password)) {
-                currentUser = db.getUser(username);
-                notLoggedIn = false;
+            if(!login(username, password)){
                 System.out.println("\n\n\n\n\n\n\n");
                 System.out.println(currentUser.getUserInfo());
                 menu();
-            } else {
+            }else{
                 System.out.println("Failure");
             }
         }
     }
+
+    public boolean login(String username, String password){
+        if (auth.verifyLogin(username, password)) {
+            currentUser = db.getUser(username);
+            notLoggedIn = false;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     /**
      * logout
@@ -94,11 +102,11 @@ public class Yuconz_project_app {
             System.out.println(currentUser.getName() + " has been logged out.");
             currentUser = null;
             notLoggedIn = true;
-            login();
+            displayLoginMenu();
         }else{
             System.out.println("No user found, returning to login");
             notLoggedIn = true;
-            login();
+            displayLoginMenu();
         }
     }
 }

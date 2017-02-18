@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Created by bramreth on 2/14/17.
  */
 class Yuconz_project_appTest {
-/*
+
     private Yuconz_project_app app;
 
     @org.junit.jupiter.api.BeforeEach
@@ -39,7 +39,7 @@ class Yuconz_project_appTest {
         boolean result = app.login("","");
         assertFalse(result);
     }
-
+/*
     @org.junit.jupiter.api.Test
     public void testInValidLogout(){
         System.out.println("inalid logout");

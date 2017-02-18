@@ -20,7 +20,7 @@ public class Yuconz_project_app {
      */
     public static void main(String args[]) {
         Yuconz_project_app App = new Yuconz_project_app();
-        if(App.getDBReady()){
+        if(App.db.isReady()){
             App.displayLoginMenu();
         }
     }
@@ -40,10 +40,6 @@ public class Yuconz_project_app {
         }
     }
 
-    public boolean getDBReady(){
-        return this.db.isReady();
-    }
-
     public boolean getLoggedIn(){
         return this.loggedIn;
     }
@@ -51,7 +47,7 @@ public class Yuconz_project_app {
      * menu
      * Displays the options the users have
      */
-    public void menu()
+    private void menu()
     {
         String selection;
         int selectionInt;
@@ -85,7 +81,7 @@ public class Yuconz_project_app {
      * display login menu
      * Prompts the user for login details
      */
-    public void displayLoginMenu()
+    private void displayLoginMenu()
     {
         while (!loggedIn) {
             System.out.println("Username:");

@@ -19,7 +19,7 @@ public class Operational_Staff extends Position
      * Returns the position name
      * @return positionName
      */
-    public String getPositionName()
+    private String getPositionName()
     {
         return positionName;
     }
@@ -29,7 +29,7 @@ public class Operational_Staff extends Position
      * Returns the manager
      * @return manager ID
      */
-    public String getManager()
+    private String getManager()
     {
         return managerID;
     }

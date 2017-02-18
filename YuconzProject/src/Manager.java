@@ -23,7 +23,7 @@ public class Manager extends Position
      * Returns the position name
      * @return positionName
      */
-    public String getPositionName()
+    private String getPositionName()
     {
         return positionName;
     }
@@ -33,7 +33,7 @@ public class Manager extends Position
      * Returns the manager ID
      * @return managerID
      */
-    public String getDirector()
+    private String getDirector()
     {
         return directorID;
     }
@@ -43,7 +43,7 @@ public class Manager extends Position
      * Returns the list of subordinates IDs
      * @return subordinatesID
      */
-    public List<String> getSubordinates()
+    private List<String> getSubordinates()
     {
         return subordinatesID;
     }

@@ -21,7 +21,7 @@ public class Director extends Position
      * Returns the position name
      * @return positionName
      */
-    public String getPositionName()
+    private String getPositionName()
     {
         return positionName;
     }
@@ -31,7 +31,7 @@ public class Director extends Position
      * Returns the list of subordinates
      * @return subordinates
      */
-    public List<String> getSubordinates()
+    private List<String> getSubordinates()
     {
         return subordinatesID;
     }

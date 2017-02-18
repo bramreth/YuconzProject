@@ -19,13 +19,13 @@ public class Yuconz_project_app {
      * @param args
      */
     public static void main(String args[]) {
-        Yuconz_project_app App = new Yuconz_project_app();
-        if(App.db.isReady()){
-            App.displayLoginMenu();
+        Yuconz_project_app app = new Yuconz_project_app();
+        if(app.db.isReady()){
+            app.displayLoginMenu();
         }
     }
 
-    /**
+    /**v3
      * Constructor
      * Initializes the App object and prompts the user for login
      */
@@ -40,6 +40,11 @@ public class Yuconz_project_app {
         }
     }
 
+    /**
+     * getLoggedIn
+     * gets whether or not a user is logged in
+     * @return true is logged in, otherwise false
+     */
     public boolean getLoggedIn(){
         return this.loggedIn;
     }

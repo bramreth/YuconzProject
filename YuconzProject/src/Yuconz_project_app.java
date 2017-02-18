@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 /**
  * Created by bramreth on 2/13/17.
@@ -43,17 +44,26 @@ public class Yuconz_project_app {
      */
     public void menu()
     {
+        String selection;
+        int selectionInt;
         do{
             System.out.println("\n");
             System.out.println("Please select an option from below");
             System.out.println("1. Show user information");
             System.out.println("2. Logout");
 
-            int selection = input.nextInt();
+            selection = input.next();
+
+            try{
+                 selectionInt = Integer.parseInt(selection);
+            } catch (NumberFormatException e) {
+                selectionInt = 0;
+            }
 
             System.out.println("\n\n\n\n\n\n\n");
 
-            switch(selection) {
+            switch(selectionInt) {
+                case 0: System.out.println("Please enter a number from below"); break;
                 case 1: System.out.println(currentUser.getUserInfo()); break;
                 case 2: logout(); break;
             }

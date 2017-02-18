@@ -35,7 +35,6 @@ public class Yuconz_project_app {
 
         if (db.isReady()) {
             loggedIn = false;
-            displayLoginMenu();
         } else {
             System.out.print("Connection to database failed");
         }
@@ -78,6 +77,8 @@ public class Yuconz_project_app {
                 case 2: logout(); break;
             }
         } while(loggedIn);
+
+        displayLoginMenu();
     }
 
     /**
@@ -120,11 +121,9 @@ public class Yuconz_project_app {
             System.out.println(currentUser.getName() + " has been logged out.");
             currentUser = null;
             loggedIn = false;
-            displayLoginMenu();
         }else{
             System.out.println("No user found, returning to login");
             loggedIn = false;
-            displayLoginMenu();
         }
     }
 }

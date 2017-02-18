@@ -52,7 +52,7 @@ class Yuconz_project_appTest {
         System.out.println("Valid logout");
         boolean resultA = app.login("andy","example");
         app.logout();
-        assertTrue(app.getLoggedIn());
+        assertFalse(app.getLoggedIn());
     }
 
 }

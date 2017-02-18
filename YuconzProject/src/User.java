@@ -1,9 +1,12 @@
+import javafx.geometry.Pos;
+
 /**
  * Created by bramreth on 2/13/17.
  */
 public class User
 {
     private String username, userID, name, surname, dept, pos;
+    //private Position pos;
     /**
      * Constructor
      * Initializes the User object
@@ -20,6 +23,11 @@ public class User
         this.name = name;
         this.surname = surname;
         this.dept = dept;
+
+        if(pos.equalsIgnoreCase("Operational Staff"))
+        {
+            //this.pos = new Operational_Staff();
+        }
         this.pos = pos;
     }
 

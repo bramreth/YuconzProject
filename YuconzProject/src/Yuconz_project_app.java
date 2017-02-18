@@ -1,4 +1,3 @@
-import java.util.InputMismatchException;
 import java.util.Scanner;
 /**
  * Created by bramreth on 2/13/17.
@@ -7,8 +6,9 @@ import java.util.Scanner;
  */
 
 public class Yuconz_project_app {
-    private Authentication_server auth;
-    private Database db;
+    private Authentication_server authentication_server;
+    private static Authorisation authorisation;
+    private Database database;
     private User currentUser;
     private Scanner input = new Scanner(System.in);
     private boolean loggedIn;
@@ -20,7 +20,8 @@ public class Yuconz_project_app {
      */
     public static void main(String args[]) {
         Yuconz_project_app app = new Yuconz_project_app();
-        if(app.db.isReady()){
+        authorisation = new Authorisation();
+        if(app.database.isReady()){
             app.displayLoginMenu();
         }
     }
@@ -30,10 +31,10 @@ public class Yuconz_project_app {
      * Initializes the App object and prompts the user for login
      */
     public Yuconz_project_app() {
-        db = new Database("jdbc:mysql://dragon.kent.ac.uk/sjl66", "sjl66", "lef/u");
-        auth = new Authentication_server(db.getConnection());
+        database = new Database("jdbc:mysql://dragon.kent.ac.uk/sjl66", "sjl66", "lef/u");
+        authentication_server = new Authentication_server(database.getConnection());
 
-        if (db.isReady()) {
+        if (database.isReady()) {
             loggedIn = false;
         } else {
             System.out.print("Connection to database failed");
@@ -104,8 +105,8 @@ public class Yuconz_project_app {
     }
 
     public boolean login(String username, String password){
-        if (auth.verifyLogin(username, password)) {
-            currentUser = db.getUser(username);
+        if (authentication_server.verifyLogin(username, password)) {
+            currentUser = database.getUser(username);
             loggedIn = true;
             return true;
         } else {

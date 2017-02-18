@@ -44,7 +44,7 @@ class Yuconz_project_appTest {
     public void testInValidLogout(){
         System.out.println("inalid logout");
         app.logout();
-        assertFalse(app.getLoogedIn());
+        assertFalse(app.getLoggedIn());
     }
 
     @org.junit.jupiter.api.Test
@@ -52,7 +52,7 @@ class Yuconz_project_appTest {
         System.out.println("Valid logout");
         boolean resultA = app.login("andy","example");
         app.logout();
-        assertTrue(app.getLoogedIn());
+        assertTrue(app.getLoggedIn());
     }
 
 }

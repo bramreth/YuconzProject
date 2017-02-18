@@ -20,6 +20,9 @@ public class Yuconz_project_app {
      */
     public static void main(String args[]) {
         Yuconz_project_app App = new Yuconz_project_app();
+        if(App.getDBReady()){
+            App.displayLoginMenu();
+        }
     }
 
     /**
@@ -38,7 +41,11 @@ public class Yuconz_project_app {
         }
     }
 
-    public boolean getLoogedIn(){
+    public boolean getDBReady(){
+        return this.db.isReady();
+    }
+
+    public boolean getLoggedIn(){
         return this.loggedIn;
     }
     /**

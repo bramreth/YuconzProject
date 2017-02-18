@@ -11,7 +11,7 @@ public class Yuconz_project_app {
     private Database db;
     private User currentUser;
     private Scanner input = new Scanner(System.in);
-    private boolean notLoggedIn;
+    private boolean loggedIn;
 
     /**
      * Main method
@@ -31,13 +31,16 @@ public class Yuconz_project_app {
         auth = new Authentication_server(db.getConnection());
 
         if (db.isReady()) {
-            notLoggedIn = true;
+            loggedIn = false;
             displayLoginMenu();
         } else {
             System.out.print("Connection to database failed");
         }
     }
 
+    public boolean getLoogedIn(){
+        return this.loggedIn;
+    }
     /**
      * menu
      * Displays the options the users have
@@ -67,7 +70,7 @@ public class Yuconz_project_app {
                 case 1: System.out.println(currentUser.getUserInfo()); break;
                 case 2: logout(); break;
             }
-        } while(!notLoggedIn);
+        } while(loggedIn);
     }
 
     /**
@@ -76,7 +79,7 @@ public class Yuconz_project_app {
      */
     public void displayLoginMenu()
     {
-        while (notLoggedIn) {
+        while (!loggedIn) {
             System.out.println("Username:");
             String username = input.next();
             System.out.println("Password:");
@@ -94,14 +97,12 @@ public class Yuconz_project_app {
     public boolean login(String username, String password){
         if (auth.verifyLogin(username, password)) {
             currentUser = db.getUser(username);
-            notLoggedIn = false;
+            loggedIn = true;
             return true;
         } else {
             return false;
         }
     }
-
-
     /**
      * logout
      * Logs out the current user
@@ -111,11 +112,11 @@ public class Yuconz_project_app {
         if(currentUser!=null){
             System.out.println(currentUser.getName() + " has been logged out.");
             currentUser = null;
-            notLoggedIn = true;
+            loggedIn = false;
             displayLoginMenu();
         }else{
             System.out.println("No user found, returning to login");
-            notLoggedIn = true;
+            loggedIn = false;
             displayLoginMenu();
         }
     }

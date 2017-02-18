@@ -39,20 +39,20 @@ class Yuconz_project_appTest {
         boolean result = app.login("","");
         assertFalse(result);
     }
-/*
+
     @org.junit.jupiter.api.Test
     public void testInValidLogout(){
         System.out.println("inalid logout");
-        boolean result = app.logout();
-        assertFalse(result);
+        app.logout();
+        assertFalse(app.getLoogedIn());
     }
 
     @org.junit.jupiter.api.Test
     public void testValidLogout(){
         System.out.println("Valid logout");
         boolean resultA = app.login("andy","example");
-        boolean resultB = app.logout();
-        assertTrue(resultB);
+        app.logout();
+        assertTrue(app.getLoogedIn());
     }
-*/
+
 }

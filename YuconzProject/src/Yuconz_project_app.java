@@ -63,7 +63,7 @@ public class Yuconz_project_app {
             System.out.println("\n\n\n\n\n\n\n");
 
             switch(selectionInt) {
-                case 0: System.out.println("Please enter a number from below"); break;
+                case 0: System.out.println("Please enter a number"); break;
                 case 1: System.out.println(currentUser.getUserInfo()); break;
                 case 2: logout(); break;
             }
@@ -81,7 +81,7 @@ public class Yuconz_project_app {
             String username = input.next();
             System.out.println("Password:");
             String password = input.next();
-            if(!login(username, password)){
+            if(login(username, password)){
                 System.out.println("\n\n\n\n\n\n\n");
                 System.out.println(currentUser.getUserInfo());
                 menu();

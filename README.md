@@ -2,6 +2,4 @@
 
 ### ongoing tasks
 
-* Junit testing
-* login method
-* logout method
+* upload for stage 3 deadline

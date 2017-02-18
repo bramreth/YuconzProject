@@ -34,6 +34,7 @@ public class Database {
     public Connection getConnection()
     {
         return con;
+
     }
 
     /**
@@ -51,7 +52,9 @@ public class Database {
             Statement s = con.createStatement();
             String sql = "SELECT * FROM Employee_Data WHERE username='" + username + "'";
             ResultSet rs = s.executeQuery(sql);
-            return new User(username, rs.getString("userID"), rs.getString("name"), rs.getString("surname"), rs.getString("department"), rs.getString("position"));
+            while (rs.next()) {
+                return new User(username, rs.getString("userID"), rs.getString("name"), rs.getString("surname"), rs.getString("department"), rs.getString("position"));
+            }
         } catch (SQLException err) {
             System.out.println(err.getMessage());
         }

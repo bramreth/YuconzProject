@@ -19,12 +19,16 @@ class Yuconz_project_appTest {
         app = null;
     }
 
+    //stage 3
+
     @org.junit.jupiter.api.Test
     public void testValidLogin(){
         System.out.println("Valid login");
         boolean result = app.login("user1","pass1");
         assertTrue(result);
     }
+
+    //add inlalid password valid login
 
     @org.junit.jupiter.api.Test
     public void testInValidLogin(){
@@ -53,6 +57,14 @@ class Yuconz_project_appTest {
         boolean resultA = app.login("andy","example");
         app.logout();
         assertFalse(app.getLoggedIn());
+    }
+
+    //stage 4
+    @org.junit.jupiter.api.Test
+    public void validAuthorisationCheck(){
+        System.out.println("valid authorisation check");
+        app.login("user3","pass3");
+
     }
 
 }

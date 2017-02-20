@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Yuconz_project_app {
     private Authentication_server authentication_server;
-    private static Authorisation authorisation;
+    private Authorisation authorisation;
     private Database database;
     private User currentUser;
     private Scanner input = new Scanner(System.in);
@@ -20,7 +20,7 @@ public class Yuconz_project_app {
      */
     public static void main(String args[]) {
         Yuconz_project_app app = new Yuconz_project_app();
-        authorisation = new Authorisation();
+        Authorisation authorisation = new Authorisation();
         if(app.database.isReady()){
             app.displayLoginMenu();
         }
@@ -48,6 +48,14 @@ public class Yuconz_project_app {
      */
     public boolean getLoggedIn(){
         return this.loggedIn;
+    }
+
+    public Authorisation getAuthorisation(){
+        return this.authorisation;
+    }
+
+    public User getCurrentUser(){
+        return this.currentUser;
     }
     /**
      * menu

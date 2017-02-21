@@ -136,4 +136,9 @@ public class Yuconz_project_app {
             loggedIn = false;
         }
     }
+
+    public Document readPersonalDetails(String userIn){
+        //run authorisation method with readPersonalDetails as an action
+        return new Document(userIn);
+    }
 }

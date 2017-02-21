@@ -1,11 +1,14 @@
 import javafx.geometry.Pos;
 
+import java.util.List;
+
 /**
  * Created by bramreth on 2/13/17.
  */
 public class User
 {
-    private String username, userID, name, surname, dept, pos;
+    private String username, userID, name, surname, dept;
+    private Position pos;
     //private Position pos;
     /**
      * Constructor
@@ -16,7 +19,7 @@ public class User
      * @param pos - position
      * @param dept - department
      */
-    public User(String username, String userID, String name, String surname, String dept, String pos)
+    public User(String username, String userID, String name, String surname, String dept, String pos, String supervisor)
     {
         this.username = username;
         this.userID = userID;
@@ -24,22 +27,27 @@ public class User
         this.surname = surname;
         this.dept = dept;
 
-        if(pos.equalsIgnoreCase("Operational Staff"))
-        {
-            //this.pos = new Operational_Staff();
+        if(pos.equalsIgnoreCase("Operational Staff")) {
+            this.pos = new Position(pos, supervisor);
+        } else if (pos.equalsIgnoreCase("manager")) {
+            this.pos = new Position(pos, supervisor);
+        } else {
+            this.pos = new Position(pos, null);
         }
-        this.pos = pos;
     }
 
     public String getUserInfo()
     {
-        return ("User ID:   " + getUserID() + "\n" +
-                "Username:  " + getUsername() + "\n" +
-                "Name:      " + getName() + "\n" +
-                "Position:  " + getPosition() + "\n" +
-                "Department " + getDepartment()
+        return ("User ID:     " + getUserID() + "\n" +
+                "Username:    " + getUsername() + "\n" +
+                "Name:        " + getName() + "\n" +
+                "Position:    " + getPosition().getPositionName() + "\n" +
+                "Supervisor:  " + getSupervisorID() + "\n" +
+                "Department   " + getDepartment()
                 );
     }
+
+
 
     /*
      * Accessors for the private variables
@@ -64,8 +72,11 @@ public class User
         return dept;
     }
 
-    public String getPosition()
-    {
+    public Position getPosition() {
         return pos;
+    }
+
+    public String getSupervisorID() {
+        return pos.getSupervisor();
     }
 }

@@ -52,7 +52,7 @@ public class Database {
             String sql = "SELECT * FROM Employee_Data WHERE username='" + username + "'";
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
-                return new User(username, rs.getString("userID"), rs.getString("name"), rs.getString("surname"), rs.getString("department"), rs.getString("position"));
+                return new User(username, rs.getString("userID"), rs.getString("name"), rs.getString("surname"), rs.getString("department"), rs.getString("position"), rs.getString("supervisor"));
             }
         } catch (SQLException err) {
             System.out.println(err.getMessage());

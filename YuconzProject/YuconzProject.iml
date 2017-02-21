@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <varelement var="jar://$USER_HOME$/Downloads/mysql-connector-java-5.1.40-bin-Copy.jar!/" value="USER_HOME/Downloads/mysql-connector-java-5.1.40-bin-Copy.jar" />
+    <varelement var="jar://$APPLICATION_HOME_DIR$/plugins/junit/lib/junit-jupiter-api-5.0.0-M3.jar!/" value="APPLICATION_HOME_DIR/plugins/junit/lib/junit-jupiter-api-5.0.0-M3.jar" />
+    <varelement var="jar://$APPLICATION_HOME_DIR$/plugins/junit/lib/opentest4j-1.0.0-M1.jar!/" value="APPLICATION_HOME_DIR/plugins/junit/lib/opentest4j-1.0.0-M1.jar" />
+    <src_description expected_position="1">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="1" />
+    </src_description>
+  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
-    <output url="file:///production/YuconzProject" />
+    <output url="file://$MODULE_DIR$/bin" />
     <output-test url="file:///test/YuconzProject" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -10,18 +18,26 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library>
+      <library name="mysql-connector-java-5.1.40-bin-Copy.jar">
         <CLASSES>
-          <root url="jar://D:/Java_Libraries/mysql-connector-java-5.1.40-bin-Copy.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/mysql-connector-java-5.1.40-bin-Copy.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="JUnit5">
+      <library name="junit-jupiter-api-5.0.0-M3.jar">
         <CLASSES>
           <root url="jar://$APPLICATION_HOME_DIR$/plugins/junit/lib/junit-jupiter-api-5.0.0-M3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="opentest4j-1.0.0-M1.jar">
+        <CLASSES>
           <root url="jar://$APPLICATION_HOME_DIR$/plugins/junit/lib/opentest4j-1.0.0-M1.jar!/" />
         </CLASSES>
         <JAVADOC />

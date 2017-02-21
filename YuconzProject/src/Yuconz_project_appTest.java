@@ -60,11 +60,48 @@ class Yuconz_project_appTest {
     }
 
     //stage 4
+
     @org.junit.jupiter.api.Test
     public void validAuthorisationCheck(){
         System.out.println("valid authorisation check");
-        app.login("user3","pass3");
+        app.login("user3","pass3");//has permission
+        assertTrue(app.getAuthorisation().authorisationCheck(app.getCurrentUser(),"readPersonalDetails"));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void invalidAuthorisationCheck(){
+        System.out.println("invalid authorisation check");
+        app.login("user1","pass1");//doesnt have permission
+        assertTrue(app.getAuthorisation().authorisationCheck(app.getCurrentUser(),"ammendPersonalDetails"));
 
     }
+
+    @org.junit.jupiter.api.Test
+    public void validReadPersonalDetails(){
+        System.out.println("valid read personal details");
+        app.login("user3","pass3");//has permission
+        assertNotNull(app.readPersonalDetails("user 3"));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void inValidReadPersonalDetails(){
+        System.out.println("invalid read personal details");
+        app.login("user1","pass1");//doesn't have permission
+        assertNull(app.readPersonalDetails("user 3"));
+    }
+
+    //needs finishing
+    @org.junit.jupiter.api.Test
+    public void ValidCreatePersonalDetails(){
+        System.out.println("valid create personal details");
+        app.login("user3","pass3");//has permission
+        assertTrue(app.getAuthorisation().authorisationCheck(app.getCurrentUser(),"readPersonalDetails"));
+    }
+    //invalid case
+
+    //ammend valid details
+
+    //invalid ammend details
+
 
 }

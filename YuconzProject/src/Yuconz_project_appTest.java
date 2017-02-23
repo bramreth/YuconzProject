@@ -90,18 +90,30 @@ class Yuconz_project_appTest {
         assertNull(app.readPersonalDetails("user 3"));
     }
 
-    //needs finishing
     @org.junit.jupiter.api.Test
-    public void ValidCreatePersonalDetails(){
+    public void validCreatePersonalDetails(){
         System.out.println("valid create personal details");
-        app.login("user3","pass3");//has permission
-        assertTrue(app.getAuthorisation().authorisationCheck(app.getCurrentUser(),"readPersonalDetails"));
+        app.login("hruser1","password1");//is in hr
+        assertTrue(app.createPersonalDetails("hruser"));
     }
     //invalid case
-
+    @org.junit.jupiter.api.Test
+    public void invalidCreatePersonalDetails(){
+        System.out.println("invalid create personal details");
+        app.login("user3","pass3");//not in hr
+        assertFalse(app.createPersonalDetails("user3"));
+    }
     //ammend valid details
 
+    //-----------------------------implement!!!
+    /*
+    @org.junit.jupiter.api.Test
+    public void validAmmendPersonalDetails(){
+        System.out.println("valid ammend personal details");
+        app.login("hruser","password1");//is in hr
+        assertEquals(app.ammendPersonalDetails("hruser"));
+    }
     //invalid ammend details
-
+*/
 
 }

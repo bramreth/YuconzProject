@@ -139,6 +139,25 @@ public class Yuconz_project_app {
 
     public Document readPersonalDetails(String userIn){
         //run authorisation method with readPersonalDetails as an action
+        if(authorisation.authorisationCheck(currentUser,"readPersonalDetails")){
+
+        }
         return new Document(userIn);
+    }
+
+    public boolean createPersonalDetails(String userIn){
+        //run authorisation method with readPersonalDetails as an action
+        if(authorisation.authorisationCheck(currentUser,"createPersonalDetails")){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean ammendPersonalDetails(String userIn){
+        //run authorisation method with readPersonalDetails as an action
+        if(authorisation.authorisationCheck(currentUser,"ammendPersonalDetails")){
+            return true;
+        }
+        return false;
     }
 }

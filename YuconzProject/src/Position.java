@@ -1,4 +1,4 @@
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Maximilian on 16/02/2017.
@@ -8,7 +8,7 @@ public class Position
     private String positionName;
     private String managerID = null;
     private String directorID = null;
-    private List<String> subordinatesID = null;
+    private ArrayList<String> subordinatesID = null;
 
     public Position (String positionName, String supervisor)
     {
@@ -47,11 +47,19 @@ public class Position
     }
 
     /**
+     * setSubordinates
+     * Sets the arraylist of subordinates to the list retrieved from the db
+     * @param subordinatesID
+     */
+    public void setSubordinates(ArrayList<String> subordinatesID){
+        this.subordinatesID = subordinatesID;
+    }
+    /**
      * getSubordinates
      * Returns the list of subordinates IDs
      * @return subordinatesID
      */
-    public List<String> getSubordinates()
+    public ArrayList<String> getSubordinates()
     {
         return subordinatesID;
     }

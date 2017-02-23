@@ -43,7 +43,7 @@ public class User
                 "Name:        " + getName() + "\n" +
                 "Position:    " + getPosition().getPositionName() + "\n" +
                 "Supervisor:  " + getSupervisorID() + "\n" +
-                "Department   " + getDepartment()
+                "Department:  " + getDepartment()
                 );
     }
 

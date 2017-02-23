@@ -15,7 +15,7 @@ public class Position
         this.positionName = positionName;
         if(this.positionName.equalsIgnoreCase("Operational Staff")){
             managerID = supervisor;
-        } else if (this.positionName.equalsIgnoreCase("Operational Staff")){
+        } else if (this.positionName.equalsIgnoreCase("Manager")){
             directorID = supervisor;
         }
     }
@@ -39,7 +39,7 @@ public class Position
     {
         if(positionName.equalsIgnoreCase("Operational Staff")){
             return managerID;
-        } else if (positionName.equalsIgnoreCase("Operational Staff")){
+        } else if (positionName.equalsIgnoreCase("Manager")){
             return directorID;
         } else {
             return "none";

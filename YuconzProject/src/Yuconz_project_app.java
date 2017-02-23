@@ -107,6 +107,7 @@ public class Yuconz_project_app {
             System.out.println("Password:");
             String password = input.next();
             if(login(username, password)){
+                currentUser.getPosition().setSubordinates(database.getSubordinates(username));
                 System.out.println("\n\n\n\n\n\n\n");
                 System.out.println(currentUser.getUserInfo());
                 menu();

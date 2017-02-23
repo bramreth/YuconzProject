@@ -1,5 +1,3 @@
-import javafx.geometry.Pos;
-
 import java.util.List;
 
 /**
@@ -38,12 +36,13 @@ public class User
 
     public String getUserInfo()
     {
-        return ("User ID:     " + getUserID() + "\n" +
-                "Username:    " + getUsername() + "\n" +
-                "Name:        " + getName() + "\n" +
-                "Position:    " + getPosition().getPositionName() + "\n" +
-                "Supervisor:  " + getSupervisorID() + "\n" +
-                "Department:  " + getDepartment()
+        return ("User ID:      " + getUserID() + "\n" +
+                "Username:     " + getUsername() + "\n" +
+                "Name:         " + getName() + "\n" +
+                "Position:     " + getPosition().getPositionName() + "\n" +
+                "Supervisor:   " + getSupervisorID() + "\n" +
+                "Subordinates: " + getSubordinatesString() + "\n" +
+                "Department:   " + getDepartment()
                 );
     }
 
@@ -72,11 +71,34 @@ public class User
         return dept;
     }
 
-    public Position getPosition() {
+    public Position getPosition()
+    {
         return pos;
     }
 
-    public String getSupervisorID() {
+    public String getSupervisorID()
+    {
         return pos.getSupervisor();
+    }
+
+    private String getSubordinatesString()
+    {
+        String subs = "";
+        boolean first = true;
+        for(String sub : getPosition().getSubordinates())
+        {
+            if(first) {
+                subs += sub;
+                first = false;
+            } else {
+                subs += ", " + sub;
+            }
+        }
+
+        if (subs.equalsIgnoreCase("")) {
+            return "none";
+        } else {
+            return subs;
+        }
     }
 }

@@ -1,3 +1,4 @@
+import javax.swing.event.DocumentEvent;
 import java.util.Scanner;
 /**
  * Created by bramreth on 2/13/17.
@@ -7,7 +8,7 @@ import java.util.Scanner;
 
 public class Yuconz_project_app {
     private Authentication_server authentication_server;
-    private Authorisation authorisation;
+    private static Authorisation authorisation;
     private Database database;
     private User currentUser;
     private Scanner input = new Scanner(System.in);
@@ -20,7 +21,7 @@ public class Yuconz_project_app {
      */
     public static void main(String args[]) {
         Yuconz_project_app app = new Yuconz_project_app();
-        Authorisation authorisation = new Authorisation();
+
         if(app.database.isReady()){
             app.displayLoginMenu();
         }
@@ -33,6 +34,7 @@ public class Yuconz_project_app {
     public Yuconz_project_app() {
         database = new Database("jdbc:mysql://dragon.kent.ac.uk/sjl66", "sjl66", "lef/u");
         authentication_server = new Authentication_server(database.getConnection());
+        authorisation = new Authorisation();
 
         if (database.isReady()) {
             loggedIn = false;
@@ -70,6 +72,7 @@ public class Yuconz_project_app {
             System.out.println("Please select an option from below");
             System.out.println("1. Show user information");
             System.out.println("2. Logout");
+            System.out.println("3. read details");
 
             selection = input.next();
 
@@ -85,6 +88,7 @@ public class Yuconz_project_app {
                 case 0: System.out.println("Please enter a number"); break;
                 case 1: System.out.println(currentUser.getUserInfo()); break;
                 case 2: logout(); break;
+                case 3: readPersonalDetails("hruser2"); break;
             }
         } while(loggedIn);
 
@@ -139,15 +143,18 @@ public class Yuconz_project_app {
 
     public Document readPersonalDetails(String userIn){
         //run authorisation method with readPersonalDetails as an action
-        if(authorisation.authorisationCheck(currentUser,"readPersonalDetails")){
-
-        }
-        return new Document(userIn);
+        if(authorisation.authorisationCheck(currentUser, userIn,"readPersonalDetails")){
+            Document doc = new Document(userIn);
+            doc = database.fetchPersonalDetails(userIn);
+            doc.print();
+            return doc;
+        }else{return null;}
     }
 
     public boolean createPersonalDetails(String userIn){
         //run authorisation method with readPersonalDetails as an action
-        if(authorisation.authorisationCheck(currentUser,"createPersonalDetails")){
+
+        if(authorisation.authorisationCheck(currentUser, userIn, "createPersonalDetails")){
             return true;
         }
         return false;
@@ -155,7 +162,7 @@ public class Yuconz_project_app {
 
     public boolean ammendPersonalDetails(String userIn){
         //run authorisation method with readPersonalDetails as an action
-        if(authorisation.authorisationCheck(currentUser,"ammendPersonalDetails")){
+        if(authorisation.authorisationCheck(currentUser, userIn, "ammendPersonalDetails")){
             return true;
         }
         return false;

@@ -83,4 +83,22 @@ public class Database {
         }
         return null;
     }
+
+    public Document fetchPersonalDetails(String username){
+
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT * FROM Personal_Details WHERE username='" + username + "'";
+            ResultSet rs = s.executeQuery(sql);
+            Document doc = new Document(username);
+            while(rs.next()){
+                //will overwrite doc each time it loops...
+                doc.populateDocument(rs.getInt("documentID"), rs.getString("name"), rs.getString("surname"), rs.getString("dateofbirth"), rs.getString("address"), rs.getString("town"), rs.getString("County"), rs.getString("postcode"), rs.getString("telephonenumber"), rs.getString("mobilenumber"), rs.getString("emergencycontact"), rs.getString("emergencycontactnumber"));
+            }
+            return doc;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return null;
+    }
 }

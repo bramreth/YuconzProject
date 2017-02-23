@@ -19,8 +19,14 @@ public class Authorisation {
      * @param action
      * @return true if the user can take the action, otherwise false
      */
-    public boolean authorisationCheck(User currentUser, String action)
-    {
-        return true;
+    public boolean authorisationCheck(User currentUser, String userIn, String action) {
+        switch (action) {
+            case "readPersonalDetails" :
+                if(currentUser.getDepartment().equals("Human Resources") || currentUser.getDepartment().equals("Director")){
+                    return true;
+                }else if(currentUser.getUsername().equals(userIn)){return true;};
+                break;
+        }
+        return false;
     }
 }

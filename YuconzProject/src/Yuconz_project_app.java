@@ -88,7 +88,10 @@ public class Yuconz_project_app {
                 case 0: System.out.println("Please enter a number"); break;
                 case 1: System.out.println(currentUser.getUserInfo()); break;
                 case 2: logout(); break;
-                case 3: readPersonalDetails("hruser2"); break;
+                case 3: if(!readPersonalDetails("hruser2")){
+                    System.out.println("invalid access");
+                }break;
+
             }
         } while(loggedIn);
 
@@ -142,14 +145,13 @@ public class Yuconz_project_app {
         }
     }
 
-    public Document readPersonalDetails(String userIn){
+    public boolean readPersonalDetails(String userIn){
         //run authorisation method with readPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn,"readPersonalDetails")){
-            Document doc = new Document(userIn);
-            doc = database.fetchPersonalDetails(userIn);
+            Document doc = database.fetchPersonalDetails(userIn);
             doc.print();
-            return doc;
-        }else{return null;}
+            return true;
+        }else{return false;}
     }
 
     public boolean createPersonalDetails(String userIn){

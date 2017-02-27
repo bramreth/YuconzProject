@@ -80,14 +80,14 @@ class Yuconz_project_appTest {
     public void validReadPersonalDetails(){
         System.out.println("valid read personal details");
         app.login("hruser2","password2");//has permission
-        assertNotNull(app.readPersonalDetails("hruser2"));
+        assertTrue(app.readPersonalDetails("hruser2"));
     }
 
     @org.junit.jupiter.api.Test
     public void inValidReadPersonalDetails(){
         System.out.println("invalid read personal details");
         app.login("user1","pass1");//doesn't have permission
-        assertNull(app.readPersonalDetails("hruser2"));
+        assertFalse(app.readPersonalDetails("hruser2"));
     }
 
     @org.junit.jupiter.api.Test

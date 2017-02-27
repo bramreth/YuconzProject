@@ -26,6 +26,16 @@ public class Authorisation {
                     return true;
                 }else if(currentUser.getUsername().equals(userIn)){return true;};
                 break;
+            case "createPersonalDetails" :
+                if(currentUser.getDepartment().equals("Human Resources")){
+                    return true;
+                }
+                break;
+            case "ammendPersonalDetails" :
+                if(currentUser.getDepartment().equals("Human Resources")){
+                    return true;
+                }
+                break;
         }
         return false;
     }

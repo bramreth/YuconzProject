@@ -88,9 +88,11 @@ public class Yuconz_project_app {
                 case 0: System.out.println("Please enter a number"); break;
                 case 1: System.out.println(currentUser.getUserInfo()); break;
                 case 2: logout(); break;
-                case 3: if(!readPersonalDetails("hruser2")){
-                    System.out.println("invalid access");
-                }break;
+                case 3: System.out.println("Please enter the username of employee: \n") ;
+                        String username = input.next();
+                        if(!readPersonalDetails(username)){
+                            System.out.println("unauthorised access");
+                        }break;
 
             }
         } while(loggedIn);
@@ -166,7 +168,10 @@ public class Yuconz_project_app {
     public boolean ammendPersonalDetails(String userIn){
         //run authorisation method with readPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn, "ammendPersonalDetails")){
-            return true;
+           if(database.checkExists(userIn)){
+               
+           }
+           return true;
         }
         return false;
     }

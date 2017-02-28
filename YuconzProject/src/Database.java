@@ -101,4 +101,26 @@ public class Database {
         }
         return null;
     }
+
+    /**
+     * check whether or not there is a personal details entry for the given user
+     * @param userIn
+     * @return
+     */
+    public boolean checkExists(String userIn){
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT * FROM Personal_Details";
+            ResultSet rs = s.executeQuery(sql);
+            while(rs.next()){
+                if(rs.getString("username").equals(userIn)){
+                    return true;
+                }
+            }
+            return false;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+            return false;
+        }
+    }
 }

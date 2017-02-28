@@ -156,8 +156,8 @@ public class Yuconz_project_app {
 
     public boolean createPersonalDetails(String userIn){
         //run authorisation method with readPersonalDetails as an action
-
         if(authorisation.authorisationCheck(currentUser, userIn, "createPersonalDetails")){
+
             return true;
         }
         return false;

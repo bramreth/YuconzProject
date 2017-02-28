@@ -71,8 +71,9 @@ public class Yuconz_project_app {
             System.out.println("\n");
             System.out.println("Please select an option from below");
             System.out.println("1. Show user information");
-            System.out.println("2. Logout");
-            System.out.println("3. read details");
+            System.out.println("2. read details");
+            System.out.println("3. create details");
+            System.out.println("4. Logout");
 
             selection = input.next();
 
@@ -87,14 +88,18 @@ public class Yuconz_project_app {
             switch(selectionInt) {
                 case 0: System.out.println("Please enter a number"); break;
                 case 1: System.out.println(currentUser.getUserInfo()); break;
-                case 2: logout(); break;
+                case 2: System.out.println("Please enter the username of employee: \n") ;
+                    String username = input.next();
+                    if(!readPersonalDetails(username)){
+                        System.out.println("unauthorised access");
+                    }break;
                 case 3: System.out.println("Please enter the username of employee: \n") ;
-                        String username = input.next();
-                        if(!readPersonalDetails(username)){
-                            System.out.println("unauthorised access");
-                        }break;
-
-
+                    String createUser = input.next();
+                    createDocument(createUser);
+                    if(!createPersonalDetails(createUser)){
+                        System.out.println("unauthorised access");
+                    }break;
+                case 4: logout(); break;
             }
         } while(loggedIn);
 
@@ -146,6 +151,44 @@ public class Yuconz_project_app {
             System.out.println("No user found, returning to login");
             loggedIn = false;
         }
+    }
+
+    public Document createDocument(String username){
+        Document newUser = new Document(username);
+        boolean confirmValid = false;
+        boolean validStaffNo = true;
+        int staffNo;
+        String name;
+        String surname;
+        String dob;
+        String address;
+        String townCity;
+        String county;
+        String postcode;
+        String telephoneNumber;
+        String mobileNumber;
+        String emergencyContact;
+        String emergencyContactNumber;
+        while(!confirmValid){
+            System.out.println("\n");
+            System.out.println("Please input the personal details as prompted:");
+            System.out.println("\n");
+            do{
+                System.out.println("staff number:");
+                String userInput = input.next();
+
+                try {
+                    staffNo = Integer.parseInt(userInput);
+                } catch (NumberFormatException e) {
+                    validStaffNo = false;
+                }
+            }while(!validStaffNo);
+            System.out.println("forename:");
+            name = input.next();
+            System.out.println("surname:");
+            surname = input.next();
+        }
+        return new Document("ble");
     }
 
     public boolean readPersonalDetails(String userIn){

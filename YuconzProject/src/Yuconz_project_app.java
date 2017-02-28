@@ -94,6 +94,7 @@ public class Yuconz_project_app {
                             System.out.println("unauthorised access");
                         }break;
 
+
             }
         } while(loggedIn);
 
@@ -169,7 +170,7 @@ public class Yuconz_project_app {
         //run authorisation method with readPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn, "ammendPersonalDetails")){
            if(database.checkExists(userIn)){
-               
+
            }
            return true;
         }

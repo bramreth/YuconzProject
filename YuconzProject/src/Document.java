@@ -21,7 +21,7 @@ public class Document {
         username = userIn;
     }
 
-    public void populateDocument(int staffNo, String name, String surname, String dob, String address,String townCity, String county, String postcode, String telephoneNumber, String mobileNumber, String emergencyContact, String EmergencyContactNumber){
+    public void populateDocument(int staffNo, String name, String surname, String dob, String address,String townCity, String county, String postcode, String telephoneNumber, String mobileNumber, String emergencyContact, String emergencyContactNumber){
         this.staffNo = staffNo;
         this.name = name;
         this.surname = surname;
@@ -37,6 +37,20 @@ public class Document {
     }
 
     public void print(){
-        System.out.println(staffNo + " "  + name + " "  + surname + " "  + dob + " "  + address + " "  + townCity + " "  + county + " " + postcode + " "  + telephoneNumber + " "  + mobileNumber + " "  + emergencyContact + " "  + emergencyContactNumber);
+
+        System.out.println(
+                        "Staff No: " + staffNo + "\n" +
+                        "Name: " + name + "\n" +
+                        "Surname: " + surname + "\n" +
+                        "Date Of Birth: " + dob + "\n" +
+                        "Address: " + address + "\n" +
+                        "Town/City: " + townCity + "\n" +
+                        "County: " + county + "\n" +
+                        "Postcode: " + postcode + "\n" +
+                        "telephone Number: " + telephoneNumber + "\n" +
+                        "Mobile Number: " + mobileNumber + "\n" +
+                        "Emergency Contact Name: " + emergencyContact + "\n" +
+                        "Emergency Contact Number: " + emergencyContactNumber + "\n"
+        );
     }
 }

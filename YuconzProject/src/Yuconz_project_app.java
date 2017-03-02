@@ -66,7 +66,10 @@ public class Yuconz_project_app {
     private void menu()
     {
         String selection;
+        String response;
         int selectionInt;
+        int responseInt;
+
         do{
             System.out.println("\n");
             System.out.println("Please select an option from below");
@@ -94,11 +97,41 @@ public class Yuconz_project_app {
                         System.out.println("unauthorised access");
                     }break;
                 case 3: System.out.println("Please enter the username of employee: \n") ;
+                Boolean confirmed = false;
+                while(!confirmed) {
                     String createUser = input.next();
-                    createDocument(createUser);
-                    if(!createPersonalDetails(createUser)){
+                    if (createPersonalDetails(createUser)) {
+                        createDocument(createUser);
+                        Document temp = createDocument(createUser);
+                        temp.print();
+                        System.out.println("Are these details correct? Type 1 for 'yes' or 2 for 'no':");
+                        response = input.next();
+                        try {
+                            responseInt = Integer.parseInt(response);
+                        } catch (NumberFormatException e) {
+                            responseInt = 0;
+                        }
+                        switch (responseInt) {
+
+                            case 1:
+                                database.createNewUser(temp);
+                                confirmed = true;
+                                System.out.println("Document has been created successfully.");
+                                break;
+                            case 2:
+                                System.out.println("Please re-enter details:");
+                                //call the method necessary to create details again
+                                //what if they want to quit?
+                                break;
+                            default:
+                                System.out.println("Please enter a number"); //need this part to loop
+                                break;
+                        }
+
+                    } else {
                         System.out.println("unauthorised access");
-                    }break;
+                    }
+                }break;
                 case 4: logout(); break;
             }
         } while(loggedIn);
@@ -157,7 +190,7 @@ public class Yuconz_project_app {
         Document newUser = new Document(username);
         boolean confirmValid = false;
         boolean validStaffNo = true;
-        int staffNo;
+        int staffNo = 0;
         String name;
         String surname;
         String dob;
@@ -169,26 +202,45 @@ public class Yuconz_project_app {
         String mobileNumber;
         String emergencyContact;
         String emergencyContactNumber;
-        while(!confirmValid){
-            System.out.println("\n");
-            System.out.println("Please input the personal details as prompted:");
-            System.out.println("\n");
-            do{
-                System.out.println("staff number:");
-                String userInput = input.next();
+        System.out.println("\n");
+        System.out.println("Please input the personal details as prompted:");
+        System.out.println("\n");
+        do{
+            System.out.println("staff number:");
+            String userInput = input.next();
 
-                try {
-                    staffNo = Integer.parseInt(userInput);
-                } catch (NumberFormatException e) {
-                    validStaffNo = false;
-                }
-            }while(!validStaffNo);
-            System.out.println("forename:");
-            name = input.next();
-            System.out.println("surname:");
-            surname = input.next();
-        }
-        return new Document("ble");
+            try {
+                staffNo = Integer.parseInt(userInput);
+            } catch (NumberFormatException e) {
+                validStaffNo = false;
+            }
+        }while(!validStaffNo);
+        System.out.println("forename:");
+        name = input.next();
+        System.out.println("surname:");
+        surname = input.next();
+        System.out.println("dob:");
+        dob = input.next();
+        System.out.println("address:");
+        address = input.next();
+        System.out.println("townCity:");
+        townCity = input.next();
+        System.out.println("county:");
+        county = input.next();
+        System.out.println("postcode:");
+        postcode = input.next();
+        System.out.println("telephoneNumber:");
+        telephoneNumber = input.next();
+        System.out.println("mobileNumber:");
+        mobileNumber = input.next();
+        System.out.println("emergencyContact:");
+        emergencyContact = input.next();
+        System.out.println("emergencyContactNumber:");
+        emergencyContactNumber = input.next();
+
+        newUser.populateDocument(staffNo, name, surname, dob, address, townCity, county, postcode, telephoneNumber, mobileNumber, emergencyContact, emergencyContactNumber);
+        return newUser;
+
     }
 
     public boolean readPersonalDetails(String userIn){
@@ -203,8 +255,9 @@ public class Yuconz_project_app {
     public boolean createPersonalDetails(String userIn){
         //run authorisation method with readPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn, "createPersonalDetails")){
-
-            return true;
+            if(!database.checkExists(userIn)) {
+               return true;
+            }
         }
         return false;
     }

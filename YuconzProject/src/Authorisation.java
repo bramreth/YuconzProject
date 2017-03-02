@@ -31,7 +31,7 @@ public class Authorisation {
                     return true;
                 }
                 break;
-            case "ammendPersonalDetails" :
+            case "amendPersonalDetails" :
                 if(currentUser.getDepartment().equals("Human Resources")){
                     return true;
                 }

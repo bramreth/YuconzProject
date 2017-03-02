@@ -123,4 +123,14 @@ public class Database {
             return false;
         }
     }
+
+    public void createNewUser(Document document){
+        try {
+            Statement s = con.createStatement();
+            //String sql = //insert all details from the document into the database;
+            //ResultSet rs = s.executeQuery(sql);
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+    }
 }

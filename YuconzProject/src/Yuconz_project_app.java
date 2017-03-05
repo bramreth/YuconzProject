@@ -253,7 +253,7 @@ public class Yuconz_project_app {
     }
 
     public boolean createPersonalDetails(String userIn){
-        //run authorisation method with readPersonalDetails as an action
+        //run authorisation method with createPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn, "createPersonalDetails")){
             if(!database.checkExists(userIn)) {
                return true;
@@ -262,10 +262,12 @@ public class Yuconz_project_app {
         return false;
     }
 
-    public boolean ammendPersonalDetails(String userIn){
-        //run authorisation method with readPersonalDetails as an action
-        if(authorisation.authorisationCheck(currentUser, userIn, "ammendPersonalDetails")){
+    public boolean amendPersonalDetails(String userIn){
+        //run authorisation method with amendPersonalDetails as an action
+        if(authorisation.authorisationCheck(currentUser, userIn, "amendPersonalDetails")){
            if(database.checkExists(userIn)){
+               Document doc = database.fetchPersonalDetails(userIn);
+               doc.print();
 
            }
            return true;

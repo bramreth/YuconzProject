@@ -375,7 +375,7 @@ public class Yuconz_project_app {
     public boolean createPersonalDetails(String userIn){
         //run authorisation method with createPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn, "createPersonalDetails")){
-            if(!database.checkExists(userIn)) {
+            if(!database.checkExists(userIn) && !database.checkExistsEmployee(userIn)) {
                return true;
             } else {
                 return false;

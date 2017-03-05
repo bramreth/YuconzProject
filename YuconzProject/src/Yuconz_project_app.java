@@ -124,7 +124,7 @@ public class Yuconz_project_app {
                                         System.out.println("Document has been created successfully.");
                                         break;
                                     case 2: //no
-                                        System.out.println("Please re-enter details:");
+                                        System.out.println("Please re-enter details:"); //THIS DOES NOT WORK YET
                                         break;
                                     case 3: //quit
                                         confirmed = true;
@@ -139,8 +139,15 @@ public class Yuconz_project_app {
                         } else {
                             System.out.println("unauthorised access");
                         }
-                }break;
-                case 4:
+                } break;
+                case 4: System.out.println("Please enter the username of employee: \n") ;
+                    confirmed = false;
+                    while(!confirmed) {
+                        String amendUser = input.next();
+                        if (amendPersonalDetails(amendUser)) {
+                            database.amendUserPersonalDetails(amendPersonalDetailsDocument(database.fetchPersonalDetails(amendUser)));
+                        }
+                    }
                 case 5: logout(); break;
             }
         } while(loggedIn);
@@ -183,7 +190,7 @@ public class Yuconz_project_app {
      * logout
      * Logs out the current user
      */
-    public void logout()
+    private void logout()
     {
         if(currentUser!=null){
             System.out.println(currentUser.getName() + " has been logged out.");
@@ -196,12 +203,105 @@ public class Yuconz_project_app {
     }
 
     /**
+     * amendPersonalDetailsDocument
+     * edits an existing personal details document
+     * @param userDetails
+     * @return the document
+     */
+    private Document amendPersonalDetailsDocument(Document userDetails)
+    {
+        String selection;
+        int selectionInt = 0;
+
+        userDetails.print();
+        String name;
+        String surname;
+        String dob;
+        String address;
+        String townCity;
+        String county;
+        String postcode;
+        String telephoneNumber;
+        String mobileNumber;
+        String emergencyContact;
+        String emergencyContactNumber;
+
+        do {
+            System.out.println("\n");
+            System.out.println("Which would you like to change?");
+            System.out.println("1: Name");
+            System.out.println("2: Surname");
+            System.out.println("3: Date of Birth");
+            System.out.println("4: Address");
+            System.out.println("5: Town/City");
+            System.out.println("6: County");
+            System.out.println("7: Post Code");
+            System.out.println("8: Telephone Number");
+            System.out.println("9: Mobile Number");
+            System.out.println("10: Emergency Contact");
+            System.out.println("11: Emergency Contact Number");
+            System.out.println("0: Quit");
+            System.out.println("\n");
+
+            selection = input.next();
+
+            try{
+                selectionInt = Integer.parseInt(selection);
+            } catch (NumberFormatException e) {
+                selectionInt = 0;
+            }
+
+            switch (selectionInt) {
+                case 1: System.out.print("Enter a new name");
+                    name = input.next();
+                    break;
+                case 2: System.out.print("Enter a new surname");
+                    surname = input.next();
+                    break;
+                case 3: System.out.print("Enter a new date of birth");
+                    dob = input.next();
+                    break;
+                case 4: System.out.print("Enter a new address");
+                    address = input.next();
+                    break;
+                case 5: System.out.print("Enter a new town or city");
+                    townCity = input.next();
+                    break;
+                case 6: System.out.print("Enter a new county");
+                    county = input.next();
+                    break;
+                case 7: System.out.print("Enter a new postcode");
+                    postcode = input.next();
+                    break;
+                case 8: System.out.print("Enter a new telephone number");
+                    telephoneNumber = input.next();
+                    break;
+                case 9: System.out.print("Enter a new mobile number");
+                    mobileNumber = input.next();
+                    break;
+                case 10: System.out.print("Enter a new emergency contact");
+                    emergencyContact = input.next();
+                    break;
+                case 11: System.out.print("Enter a new staff number");
+                    emergencyContactNumber = input.next();
+                    break;
+                case 0:
+                    break;
+            }
+
+        } while (selectionInt != 0);
+
+        return userDetails;
+    }
+
+    /**
      * createPersonalDetailsDocument
-     * Creates a document for a user
+     * Creates a personal details document for a user
      * @param username
      * @return the document
      */
-    public Document createPersonalDetailsDocument(String username){
+    private Document createPersonalDetailsDocument(String username)
+    {
         Document newUser = new Document(username);
         boolean confirmValid = false;
         boolean validStaffNo = true;
@@ -260,16 +360,16 @@ public class Yuconz_project_app {
 
     }
 
-    public boolean readPersonalDetails(String userIn){
+    private boolean readPersonalDetails(String userIn){
         //run authorisation method with readPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn,"readPersonalDetails")){
             Document doc = database.fetchPersonalDetails(userIn);
             doc.print();
             return true;
-        }else{return false;}
+        } else{return false;}
     }
 
-    public boolean createPersonalDetails(String userIn){
+    private boolean createPersonalDetails(String userIn){
         //run authorisation method with createPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn, "createPersonalDetails")){
             if(!database.checkExists(userIn)) {
@@ -279,7 +379,7 @@ public class Yuconz_project_app {
         return false;
     }
 
-    public boolean amendPersonalDetails(String userIn){
+    private  boolean amendPersonalDetails(String userIn){
         //run authorisation method with amendPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn, "amendPersonalDetails")){
            if(database.checkExists(userIn)){

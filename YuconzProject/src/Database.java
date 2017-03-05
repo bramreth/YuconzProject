@@ -14,7 +14,8 @@ public class Database {
      * Constructor
      * Initializes the database connection for logging in and out
      */
-    public Database(String host, String username, String password) {
+    public Database(String host, String username, String password)
+    {
         try {
             this.host = host;
             this.username = username;
@@ -53,7 +54,8 @@ public class Database {
      * @param username
      * @return user
      */
-    public User getUser(String username){
+    public User getUser(String username)
+    {
         try {
             Statement s = con.createStatement();
             String sql = "SELECT * FROM Employee_Data WHERE username='" + username + "'";
@@ -84,7 +86,8 @@ public class Database {
         return null;
     }
 
-    public Document fetchPersonalDetails(String username){
+    public Document fetchPersonalDetails(String username)
+    {
 
         try {
             Statement s = con.createStatement();
@@ -107,7 +110,8 @@ public class Database {
      * @param userIn
      * @return
      */
-    public boolean checkExists(String userIn){
+    public boolean checkExists(String userIn)
+    {
         try {
             Statement s = con.createStatement();
             String sql = "SELECT * FROM Personal_Details";
@@ -124,7 +128,8 @@ public class Database {
         }
     }
 
-    public void createNewUser(Document document){
+    public void createNewUser(Document document)
+    {
         try {
             Statement s = con.createStatement();
             String sql = "SELECT * FROM Personal_Details WHERE username='" + username + "'";
@@ -137,5 +142,17 @@ public class Database {
         } catch (SQLException err) {
             System.out.println(err.getMessage());
         }
+    }
+
+    public void amendUserPersonalDetails(Document document)
+    {
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT * FROM Personal_Details WHERE username='" + username + "'";
+            ResultSet rs = s.executeQuery(sql);
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+
     }
 }

@@ -147,8 +147,9 @@ public class Database {
     {
         try {
             Statement s = con.createStatement();
-            String sql = "INSERT INTO Personal_Details (name, surname, dateofbirth, address, town, county, postcode, telephonenumber, mobilenumber, emergencycontact,emergencycontactnumber,username,userID) values ('"+ document.getName() + "','" + document.getSurname() + "','" + document.getDob() + "','" + document.getAddress() + "','" + document.getTownCity() + "','" + document.getCounty() + "','" + document.getPostcode() + "','" + document.getTelephoneNumber() + "','" +document.getMobileNumber() + "','" + document.getEmergencyContact() + "','" + document.getEmergencyContactNumber() + "','" + document.getUsername() + "','" + getStaffID(document.getUsername()) + "')";
-            ResultSet rs = s.executeQuery(sql);
+            String sql = "INSERT INTO Personal_Details (name, surname, dateofbirth, address, town, County, postcode, telephonenumber, mobilenumber, emergencycontact, emergencycontactnumber, username, userID) values ('"+ document.getName() + "','" + document.getSurname() + "','" + document.getDob() + "','" + document.getAddress() + "','" + document.getTownCity() + "','" + document.getCounty() + "','" + document.getPostcode() + "','" + document.getTelephoneNumber() + "','" +document.getMobileNumber() + "','" + document.getEmergencyContact() + "','" + document.getEmergencyContactNumber() + "','" + document.getUsername() + "','" + getStaffID(document.getUsername()) + "')";
+            s.executeUpdate(sql);
+            System.out.println("Document has been created successfully");
         } catch (SQLException err) {
             System.out.println(err.getMessage());
         }
@@ -159,7 +160,7 @@ public class Database {
         try {
             Statement s = con.createStatement();
             String sql = "DELETE FROM Personal_Details WHERE username='" + document.getUsername() + "'";
-            ResultSet rs = s.executeQuery(sql);
+            s.executeUpdate(sql);
             createNewUser(document);
         } catch (SQLException err) {
             System.out.println(err.getMessage());

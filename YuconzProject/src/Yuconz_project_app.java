@@ -91,18 +91,18 @@ public class Yuconz_project_app {
             switch(selectionInt) {
                 case 0: System.out.println("Please enter a number"); break;
                 case 1: System.out.println(currentUser.getUserInfo()); break;
-                case 2: System.out.println("Please enter the username of employee: \n") ;
+                case 2: System.out.println("Please enter the username of employee:") ;
                     String username = input.next();
                     if(!readPersonalDetails(username)){
                         System.out.println("unauthorised access");
                     }break;
-                case 3: System.out.println("Please enter the username of employee: \n") ;
+                case 3: System.out.println("Please enter the username of employee:") ;
                     Boolean confirmed = false;
                     while(!confirmed) {
                         String createUser = input.next();
                         if (createPersonalDetails(createUser)) {
-                            createPersonalDetailsDocument(createUser);
                             Document temp = createPersonalDetailsDocument(createUser);
+                            System.out.println("\n");
                             temp.print();
 
                             /*
@@ -124,7 +124,10 @@ public class Yuconz_project_app {
                                         System.out.println("Document has been created successfully.");
                                         break;
                                     case 2: //no
-                                        System.out.println("Please re-enter details:"); //THIS DOES NOT WORK YET
+                                        System.out.println("Please re-enter details:");
+                                        temp = createPersonalDetailsDocument(createUser);
+                                        System.out.println("\n");
+                                        temp.print();
                                         break;
                                     case 3: //quit
                                         confirmed = true;
@@ -138,15 +141,18 @@ public class Yuconz_project_app {
 
                         } else {
                             System.out.println("unauthorised access");
+                            break;
                         }
                 } break;
-                case 4: System.out.println("Please enter the username of employee: \n") ;
-                    confirmed = false;
-                    while(!confirmed) {
-                        String amendUser = input.next();
-                        if (amendPersonalDetails(amendUser)) {
-                            database.amendUserPersonalDetails(amendPersonalDetailsDocument(database.fetchPersonalDetails(amendUser)));
-                        }
+                case 4:
+                    System.out.println("Please enter the username of employee:") ;
+                    String amendUser = input.next();
+                    if (amendPersonalDetails(amendUser)) {
+                        database.amendUserPersonalDetails(amendPersonalDetailsDocument(database.fetchPersonalDetails(amendUser)));
+                        break;
+                    } else {
+                        System.out.println("unauthorised access");
+                        break;
                     }
                 case 5: logout(); break;
             }
@@ -213,7 +219,6 @@ public class Yuconz_project_app {
         String selection;
         int selectionInt = 0;
 
-        userDetails.print();
         String name = userDetails.getName();
         String surname = userDetails.getSurname();
         String dob = userDetails.getDob();
@@ -229,17 +234,17 @@ public class Yuconz_project_app {
         do {
             System.out.println("\n");
             System.out.println("Which would you like to change?");
-            System.out.println("1: Name");
-            System.out.println("2: Surname");
-            System.out.println("3: Date of Birth");
-            System.out.println("4: Address");
-            System.out.println("5: Town/City");
-            System.out.println("6: County");
-            System.out.println("7: Post Code");
-            System.out.println("8: Telephone Number");
-            System.out.println("9: Mobile Number");
-            System.out.println("10: Emergency Contact");
-            System.out.println("11: Emergency Contact Number");
+            System.out.println("1: Name: " + name);
+            System.out.println("2: Surname: " + surname);
+            System.out.println("3: Date of Birth: " + dob);
+            System.out.println("4: Address: " + address);
+            System.out.println("5: Town/City: " + townCity);
+            System.out.println("6: County: " + county);
+            System.out.println("7: Post Code: " + postcode);
+            System.out.println("8: Telephone Number: " + telephoneNumber);
+            System.out.println("9: Mobile Number: " + mobileNumber);
+            System.out.println("10: Emergency Contact: " + emergencyContact);
+            System.out.println("11: Emergency Contact Number: " + emergencyContactNumber);
             System.out.println("0: Quit");
             System.out.println("\n");
 
@@ -248,41 +253,41 @@ public class Yuconz_project_app {
             try{
                 selectionInt = Integer.parseInt(selection);
             } catch (NumberFormatException e) {
-                selectionInt = 0;
+                selectionInt = -1;
             }
 
             switch (selectionInt) {
-                case 1: System.out.print("Enter a new name");
+                case 1: System.out.println("Enter a new name");
                     name = input.next();
                     break;
-                case 2: System.out.print("Enter a new surname");
+                case 2: System.out.println("Enter a new surname");
                     surname = input.next();
                     break;
-                case 3: System.out.print("Enter a new date of birth");
+                case 3: System.out.println("Enter a new date of birth");
                     dob = input.next();
                     break;
-                case 4: System.out.print("Enter a new address");
+                case 4: System.out.println("Enter a new address");
                     address = input.next();
                     break;
-                case 5: System.out.print("Enter a new town or city");
+                case 5: System.out.println("Enter a new town or city");
                     townCity = input.next();
                     break;
-                case 6: System.out.print("Enter a new county");
+                case 6: System.out.println("Enter a new county");
                     county = input.next();
                     break;
-                case 7: System.out.print("Enter a new postcode");
+                case 7: System.out.println("Enter a new postcode");
                     postcode = input.next();
                     break;
-                case 8: System.out.print("Enter a new telephone number");
+                case 8: System.out.println("Enter a new telephone number");
                     telephoneNumber = input.next();
                     break;
-                case 9: System.out.print("Enter a new mobile number");
+                case 9: System.out.println("Enter a new mobile number");
                     mobileNumber = input.next();
                     break;
-                case 10: System.out.print("Enter a new emergency contact");
+                case 10: System.out.println("Enter a new emergency contact");
                     emergencyContact = input.next();
                     break;
-                case 11: System.out.print("Enter a new emergency contact number");
+                case 11: System.out.println("Enter a new emergency contact number");
                     emergencyContactNumber = input.next();
                     break;
                 case 0:
@@ -307,8 +312,6 @@ public class Yuconz_project_app {
     private Document createPersonalDetailsDocument(String username)
     {
         Document newUser = new Document(username);
-        boolean confirmValid = false;
-        boolean validStaffNo = true;
         int staffNo = 0;
         String name;
         String surname;

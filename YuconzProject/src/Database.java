@@ -147,7 +147,7 @@ public class Database {
     {
         try {
             Statement s = con.createStatement();
-            String sql = "INSERT INTO Personal_Details (name, surname, dateofbirth, address, town, county, postcode, telephonenumber, mobilenumber, emergencycontact,emergencycontactnumber,username,userID) values ('"+ document.getName() + "','" + document.getSurname() + "','" + document.getDob() + "','" + document.getAddress() + "','" + document.getTownCity() + "','" + document.getPostcode() + "','" + document.getTelephoneNumber() + "','" +document.getMobileNumber() + "','" + document.getEmergencyContact() + "','" + document.getEmergencyContactNumber() + "','" + document.getUsername() + "','" + getStaffID(document.getUsername()) + "')";
+            String sql = "INSERT INTO Personal_Details (name, surname, dateofbirth, address, town, county, postcode, telephonenumber, mobilenumber, emergencycontact,emergencycontactnumber,username,userID) values ('"+ document.getName() + "','" + document.getSurname() + "','" + document.getDob() + "','" + document.getAddress() + "','" + document.getTownCity() + "','" + document.getCounty() + "','" + document.getPostcode() + "','" + document.getTelephoneNumber() + "','" +document.getMobileNumber() + "','" + document.getEmergencyContact() + "','" + document.getEmergencyContactNumber() + "','" + document.getUsername() + "','" + getStaffID(document.getUsername()) + "')";
             ResultSet rs = s.executeQuery(sql);
         } catch (SQLException err) {
             System.out.println(err.getMessage());

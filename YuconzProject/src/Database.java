@@ -143,6 +143,29 @@ public class Database {
         }
     }
 
+    /**
+     * check whether or not there is a employee data entry for the given user
+     * @param userIn
+     * @return
+     */
+    public boolean checkExistsEmployee(String userIn)
+    {
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT * FROM Employee_Data";
+            ResultSet rs = s.executeQuery(sql);
+            while(rs.next()){
+                if(rs.getString("username").equals(userIn)){
+                    return true;
+                }
+            }
+            return false;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+            return false;
+        }
+    }
+
     public void createNewUser(Document document)
     {
         try {

@@ -190,7 +190,7 @@ public class Yuconz_project_app {
      * logout
      * Logs out the current user
      */
-    private void logout()
+    public void logout()
     {
         if(currentUser!=null){
             System.out.println(currentUser.getName() + " has been logged out.");
@@ -214,17 +214,17 @@ public class Yuconz_project_app {
         int selectionInt = 0;
 
         userDetails.print();
-        String name;
-        String surname;
-        String dob;
-        String address;
-        String townCity;
-        String county;
-        String postcode;
-        String telephoneNumber;
-        String mobileNumber;
-        String emergencyContact;
-        String emergencyContactNumber;
+        String name = userDetails.getName();
+        String surname = userDetails.getSurname();
+        String dob = userDetails.getDob();
+        String address = userDetails.getAddress();
+        String townCity = userDetails.getTownCity();
+        String county = userDetails.getCounty();
+        String postcode = userDetails.getPostcode();
+        String telephoneNumber = userDetails.getTelephoneNumber();
+        String mobileNumber = userDetails.getMobileNumber();
+        String emergencyContact = userDetails.getEmergencyContact();
+        String emergencyContactNumber = userDetails.getEmergencyContactNumber();
 
         do {
             System.out.println("\n");
@@ -282,16 +282,20 @@ public class Yuconz_project_app {
                 case 10: System.out.print("Enter a new emergency contact");
                     emergencyContact = input.next();
                     break;
-                case 11: System.out.print("Enter a new staff number");
+                case 11: System.out.print("Enter a new emergency contact number");
                     emergencyContactNumber = input.next();
                     break;
                 case 0:
                     break;
+                default:
+                    System.out.println("That is not a valid choice.");
+                    break;
             }
 
         } while (selectionInt != 0);
-
-        return userDetails;
+        Document newUserDetails = new Document(userDetails.getUsername());
+        newUserDetails.populateDocument(userDetails.getStaffNo(), name, surname, dob, address, townCity, county, postcode, telephoneNumber, mobileNumber, emergencyContact, emergencyContactNumber);
+        return newUserDetails;
     }
 
     /**
@@ -320,27 +324,27 @@ public class Yuconz_project_app {
         System.out.println("\n");
         System.out.println("Please input the personal details as prompted:");
         System.out.println("\n");
-        System.out.println("forename:");
+        System.out.println("Forename:");
         name = input.next();
-        System.out.println("surname:");
+        System.out.println("Surname:");
         surname = input.next();
-        System.out.println("dob:");
+        System.out.println("Date of birth:");
         dob = input.next();
-        System.out.println("address:");
+        System.out.println("Address:");
         address = input.next();
-        System.out.println("townCity:");
+        System.out.println("Town/City:");
         townCity = input.next();
-        System.out.println("county:");
+        System.out.println("County:");
         county = input.next();
-        System.out.println("postcode:");
+        System.out.println("Postcode:");
         postcode = input.next();
-        System.out.println("telephoneNumber:");
+        System.out.println("TelephoneNumber:");
         telephoneNumber = input.next();
-        System.out.println("mobileNumber:");
+        System.out.println("Mobile number:");
         mobileNumber = input.next();
-        System.out.println("emergencyContact:");
+        System.out.println("Emergency contact:");
         emergencyContact = input.next();
-        System.out.println("emergencyContactNumber:");
+        System.out.println("Emergency contact number:");
         emergencyContactNumber = input.next();
 
         newUser.populateDocument(database.getStaffID(username), name, surname, dob, address, townCity, county, postcode, telephoneNumber, mobileNumber, emergencyContact, emergencyContactNumber);
@@ -348,34 +352,46 @@ public class Yuconz_project_app {
 
     }
 
-    private boolean readPersonalDetails(String userIn){
+    public boolean readPersonalDetails(String userIn){
         //run authorisation method with readPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn,"readPersonalDetails")){
-            Document doc = database.fetchPersonalDetails(userIn);
-            doc.print();
-            return true;
-        } else{return false;}
+            if(database.checkExists(userIn)) {
+                Document doc = database.fetchPersonalDetails(userIn);
+                doc.print();
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
-    private boolean createPersonalDetails(String userIn){
+    public boolean createPersonalDetails(String userIn){
         //run authorisation method with createPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn, "createPersonalDetails")){
             if(!database.checkExists(userIn)) {
                return true;
+            } else {
+                return false;
             }
+        } else {
+            return false;
         }
-        return false;
     }
 
-    private  boolean amendPersonalDetails(String userIn){
+    public  boolean amendPersonalDetails(String userIn){
         //run authorisation method with amendPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn, "amendPersonalDetails")){
            if(database.checkExists(userIn)){
                Document doc = database.fetchPersonalDetails(userIn);
                doc.print();
+               return true;
+           } else {
+               return false;
            }
-           return true;
+        } else {
+            return false;
         }
-        return false;
     }
 }

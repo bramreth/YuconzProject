@@ -158,8 +158,9 @@ public class Database {
     {
         try {
             Statement s = con.createStatement();
-            String sql = "SELECT * FROM Personal_Details WHERE username='" + username + "'";
+            String sql = "DELETE FROM Personal_Details WHERE username='" + document.getUsername() + "'";
             ResultSet rs = s.executeQuery(sql);
+            createNewUser(document);
         } catch (SQLException err) {
             System.out.println(err.getMessage());
         }

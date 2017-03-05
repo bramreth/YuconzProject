@@ -51,6 +51,10 @@ public class Yuconz_project_app {
         return this.loggedIn;
     }
 
+    public Database getDatabase() {
+        return database;
+    }
+
     public Authorisation getAuthorisation(){
         return this.authorisation;
     }
@@ -104,7 +108,6 @@ public class Yuconz_project_app {
                             Document temp = createPersonalDetailsDocument(createUser);
                             System.out.println("\n");
                             temp.print();
-
                             /*
                              * Confirmation of entered data
                              */
@@ -214,7 +217,7 @@ public class Yuconz_project_app {
      * @param userDetails
      * @return the document
      */
-    private Document amendPersonalDetailsDocument(Document userDetails)
+    public Document amendPersonalDetailsDocument(Document userDetails)
     {
         String selection;
         int selectionInt = 0;

@@ -16,7 +16,11 @@ class Yuconz_project_appTest {
 
     @org.junit.jupiter.api.AfterEach
     void tearDown() {
+        Document temp = app.getDatabase().fetchPersonalDetails("hruser2");
+        temp.setName("John");
+        app.getDatabase().amendUserPersonalDetails(temp);
         app = null;
+
     }
 
     //stage 3
@@ -77,43 +81,57 @@ class Yuconz_project_appTest {
     }
 
     @org.junit.jupiter.api.Test
-    public void validReadPersonalDetails(){
+    public void allowedReadPersonalDetails(){
         System.out.println("valid read personal details");
         app.login("hruser2","password2");//has permission
         assertTrue(app.readPersonalDetails("hruser2"));
     }
 
     @org.junit.jupiter.api.Test
-    public void inValidReadPersonalDetails(){
+    public void disallowedReadPersonalDetails(){
         System.out.println("invalid read personal details");
         app.login("user1","pass1");//doesn't have permission
         assertFalse(app.readPersonalDetails("hruser2"));
     }
 
     @org.junit.jupiter.api.Test
-    public void validCreatePersonalDetails(){
+    public void allowedCreatePersonalDetails(){
         System.out.println("valid create personal details");
         app.login("hruser1","password1");//is in hr
         assertTrue(app.createPersonalDetails("hruser"));
     }
     //invalid case
     @org.junit.jupiter.api.Test
-    public void invalidCreatePersonalDetails(){
+    public void disallowedCreatePersonalDetails(){
         System.out.println("invalid create personal details");
         app.login("user3","pass3");//not in hr
         assertFalse(app.createPersonalDetails("user3"));
     }
     //ammend valid details
 
-    //-----------------------------implement!!!
-    /*
     @org.junit.jupiter.api.Test
-    public void validAmmendPersonalDetails(){
+    public void allowedAmendPersonalDetails(){
         System.out.println("valid ammend personal details");
-        app.login("hruser","password1");//is in hr
-        assertEquals(app.ammendPersonalDetails("hruser"));
+        app.login("hruser2","password2");//is in hr
+        assertTrue(app.amendPersonalDetails("hruser"));
     }
     //invalid ammend details
-*/
+    @org.junit.jupiter.api.Test
+    public void disallowedAmendPersonalDetails(){
+        System.out.println("valid ammend personal details");
+        app.login("user2","pass2");//isnt in hr
+        assertTrue(app.amendPersonalDetails("hruser"));
+    }
 
+    @org.junit.jupiter.api.Test
+    public void validAmendPersonalDetails(){
+        System.out.println("valid ammend personal details");
+        app.login("hruser2","password2");//is in hr
+        Document temp1Doc = app.getDatabase().fetchPersonalDetails("hruser2");
+        Document temp2Doc = app.getDatabase().fetchPersonalDetails("hruser2");
+        temp2Doc.setName("Enid");
+        app.getDatabase().amendUserPersonalDetails(temp2Doc);
+        Document temp3Doc = app.getDatabase().fetchPersonalDetails("hruser2");
+        assertNotEquals(temp1Doc.getName(),temp3Doc.getName());
+    }
 }

@@ -320,18 +320,6 @@ public class Yuconz_project_app {
         System.out.println("\n");
         System.out.println("Please input the personal details as prompted:");
         System.out.println("\n");
-
-        do {
-            System.out.println("staff number:");
-            String userInput = input.next();
-
-            try {
-                staffNo = Integer.parseInt(userInput);
-            } catch (NumberFormatException e) {
-                validStaffNo = false;
-            }
-        } while(!validStaffNo);
-
         System.out.println("forename:");
         name = input.next();
         System.out.println("surname:");
@@ -355,7 +343,7 @@ public class Yuconz_project_app {
         System.out.println("emergencyContactNumber:");
         emergencyContactNumber = input.next();
 
-        newUser.populateDocument(staffNo, name, surname, dob, address, townCity, county, postcode, telephoneNumber, mobileNumber, emergencyContact, emergencyContactNumber);
+        newUser.populateDocument(database.getStaffID(username), name, surname, dob, address, townCity, county, postcode, telephoneNumber, mobileNumber, emergencyContact, emergencyContactNumber);
         return newUser;
 
     }

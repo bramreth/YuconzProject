@@ -8,44 +8,56 @@ public class Document {
             telephoneNumber, mobileNumber, emergencyContact, emergencyContactNumber;
     private int staffNo;
 
-    public Document(String userIn){
+    public Document(String userIn)
+    {
         username = userIn;
     }
-
-    public String getUsername() {
+    public String getUsername()
+    {
         return username;
     }
-    public String getSurname() {
+    public String getSurname()
+    {
         return surname;
     }
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
-    public String getDob() {
+    public String getDob()
+    {
         return dob;
     }
-    public String getAddress() {
+    public String getAddress()
+    {
         return address;
     }
-    public String getCounty() {
+    public String getCounty()
+    {
         return county;
     }
-    public String getTownCity() {
+    public String getTownCity()
+    {
         return townCity;
     }
-    public String getEmergencyContact() {
+    public String getEmergencyContact()
+    {
         return emergencyContact;
     }
-    public String getEmergencyContactNumber() {
+    public String getEmergencyContactNumber()
+    {
         return emergencyContactNumber;
     }
-    public String getMobileNumber() {
+    public String getMobileNumber()
+    {
         return mobileNumber;
     }
-    public String getPostcode() {
+    public String getPostcode()
+    {
         return postcode;
     }
-    public String getTelephoneNumber() {
+    public String getTelephoneNumber()
+    {
         return telephoneNumber;
     }
 
@@ -82,7 +94,6 @@ public class Document {
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
-
     public void setTelephoneNumber(String telephoneNumber) {
         this.telephoneNumber = telephoneNumber;
     }

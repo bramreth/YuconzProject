@@ -69,6 +69,21 @@ public class Database {
         return null;
     }
 
+    public int getStaffID(String username)
+    {
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT userID FROM Employee_Data WHERE username='" + username + "'";
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                return rs.getInt("userID");
+            }
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return 0;
+    }
+
     public ArrayList<String> getSubordinates(String username)
     {
         ArrayList<String> subordinatesID = new ArrayList<>();
@@ -132,13 +147,8 @@ public class Database {
     {
         try {
             Statement s = con.createStatement();
-            String sql = "SELECT * FROM Personal_Details WHERE username='" + username + "'";
+            String sql = "INSERT INTO Personal_Details (name, surname, dateofbirth, address, town, county, postcode, telephonenumber, mobilenumber, emergencycontact,emergencycontactnumber,username,userID) values ('"+ document.getName() + "','" + document.getSurname() + "','" + document.getDob() + "','" + document.getAddress() + "','" + document.getTownCity() + "','" + document.getPostcode() + "','" + document.getTelephoneNumber() + "','" +document.getMobileNumber() + "','" + document.getEmergencyContact() + "','" + document.getEmergencyContactNumber() + "','" + document.getUsername() + "','" + getStaffID(document.getUsername()) + "')";
             ResultSet rs = s.executeQuery(sql);
-            Document doc = new Document(username);
-            while(rs.next()){
-                //will overwrite doc each time it loops...
-                doc.populateDocument(rs.getInt("documentID"), rs.getString("name"), rs.getString("surname"), rs.getString("dateofbirth"), rs.getString("address"), rs.getString("town"), rs.getString("County"), rs.getString("postcode"), rs.getString("telephonenumber"), rs.getString("mobilenumber"), rs.getString("emergencycontact"), rs.getString("emergencycontactnumber"));
-            }
         } catch (SQLException err) {
             System.out.println(err.getMessage());
         }

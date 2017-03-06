@@ -76,7 +76,7 @@ class Yuconz_project_appTest {
     public void invalidAuthorisationCheck(){
         System.out.println("invalid authorisation check");
         app.login("user1","pass1");//doesnt have permission
-        assertTrue(app.getAuthorisation().authorisationCheck(app.getCurrentUser(),"user3", "ammendPersonalDetails"));
+        assertFalse(app.getAuthorisation().authorisationCheck(app.getCurrentUser(),"user3", "ammendPersonalDetails"));
 
     }
 
@@ -98,7 +98,7 @@ class Yuconz_project_appTest {
     public void allowedCreatePersonalDetails(){
         System.out.println("valid create personal details");
         app.login("hruser1","password1");//is in hr
-        assertTrue(app.createPersonalDetails("hruser"));
+        assertTrue(app.createPersonalDetails("hruser1"));
     }
     //invalid case
     @org.junit.jupiter.api.Test
@@ -113,14 +113,14 @@ class Yuconz_project_appTest {
     public void allowedAmendPersonalDetails(){
         System.out.println("valid ammend personal details");
         app.login("hruser2","password2");//is in hr
-        assertTrue(app.amendPersonalDetails("hruser"));
+        assertTrue(app.amendPersonalDetails("hruser2"));
     }
     //invalid ammend details
     @org.junit.jupiter.api.Test
     public void disallowedAmendPersonalDetails(){
         System.out.println("valid ammend personal details");
         app.login("user2","pass2");//isnt in hr
-        assertTrue(app.amendPersonalDetails("hruser"));
+        assertFalse(app.amendPersonalDetails("hruser2"));
     }
 
     @org.junit.jupiter.api.Test

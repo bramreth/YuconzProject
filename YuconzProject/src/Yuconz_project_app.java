@@ -51,17 +51,33 @@ public class Yuconz_project_app {
         return this.loggedIn;
     }
 
+    /**
+     * getDatabase
+     * gets the database
+     * @return the database
+     */
     public Database getDatabase() {
         return database;
     }
 
+    /**
+     * getAuthorisation
+     * gets the authorisation
+     * @return the authorisation
+     */
     public Authorisation getAuthorisation(){
         return this.authorisation;
     }
 
+    /**
+     * getCurrentUser
+     * gets the current logged in user
+     * @return the current user
+     */
     public User getCurrentUser(){
         return this.currentUser;
     }
+
     /**
      * menu
      * Displays the options the users have
@@ -185,6 +201,13 @@ public class Yuconz_project_app {
         }
     }
 
+    /**
+     * login
+     * Logs the user in
+     * @param username
+     * @param password
+     * @return true if successful, otherwise false
+     */
     public boolean login(String username, String password){
         if (authentication_server.verifyLogin(username, password)) {
             currentUser = database.getUser(username);
@@ -194,6 +217,7 @@ public class Yuconz_project_app {
             return false;
         }
     }
+
     /**
      * logout
      * Logs out the current user

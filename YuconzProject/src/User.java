@@ -36,13 +36,13 @@ public class User
 
     public String getUserInfo()
     {
-        return ("User ID:      " + getUserID() + "\n" +
-                "Username:     " + getUsername() + "\n" +
-                "Name:         " + getName() + "\n" +
-                "Position:     " + getPosition().getPositionName() + "\n" +
-                "Supervisor:   " + getSupervisorID() + "\n" +
-                "Subordinates: " + getSubordinatesString() + "\n" +
-                "Department:   " + getDepartment()
+        return ("<HTML>User ID:      " + getUserID() + "<BR>" +
+                "Username:     " + getUsername() + "<BR>" +
+                "Name:         " + getName() + "<BR>" +
+                "Position:     " + getPosition().getPositionName() + "<BR>" +
+                "Supervisor:   " + getSupervisorID() + "<BR>" +
+                "Subordinates: " + getSubordinatesString() + "<BR>" +
+                "Department:   " + getDepartment() + "</HTML>"
                 );
     }
 

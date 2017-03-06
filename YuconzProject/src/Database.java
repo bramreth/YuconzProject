@@ -14,7 +14,8 @@ public class Database {
      * Constructor
      * Initializes the database connection for logging in and out
      */
-    public Database(String host, String username, String password) {
+    public Database(String host, String username, String password)
+    {
         try {
             this.host = host;
             this.username = username;
@@ -53,7 +54,8 @@ public class Database {
      * @param username
      * @return user
      */
-    public User getUser(String username){
+    public User getUser(String username)
+    {
         try {
             Statement s = con.createStatement();
             String sql = "SELECT * FROM Employee_Data WHERE username='" + username + "'";
@@ -65,6 +67,21 @@ public class Database {
             System.out.println(err.getMessage());
         }
         return null;
+    }
+
+    public int getStaffID(String username)
+    {
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT userID FROM Employee_Data WHERE username='" + username + "'";
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                return rs.getInt("userID");
+            }
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return 0;
     }
 
     public ArrayList<String> getSubordinates(String username)
@@ -84,7 +101,8 @@ public class Database {
         return null;
     }
 
-    public Document fetchPersonalDetails(String username){
+    public Document fetchPersonalDetails(String username)
+    {
 
         try {
             Statement s = con.createStatement();
@@ -107,7 +125,8 @@ public class Database {
      * @param userIn
      * @return
      */
-    public boolean checkExists(String userIn){
+    public boolean checkExists(String userIn)
+    {
         try {
             Statement s = con.createStatement();
             String sql = "SELECT * FROM Personal_Details";
@@ -122,5 +141,53 @@ public class Database {
             System.out.println(err.getMessage());
             return false;
         }
+    }
+
+    /**
+     * check whether or not there is a employee data entry for the given user
+     * @param userIn
+     * @return
+     */
+    public boolean checkExistsEmployee(String userIn)
+    {
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT * FROM Employee_Data";
+            ResultSet rs = s.executeQuery(sql);
+            while(rs.next()){
+                if(rs.getString("username").equals(userIn)){
+                    return true;
+                }
+            }
+            return false;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+            return false;
+        }
+    }
+
+    public void createNewUser(Document document)
+    {
+        try {
+            Statement s = con.createStatement();
+            String sql = "INSERT INTO Personal_Details (name, surname, dateofbirth, address, town, County, postcode, telephonenumber, mobilenumber, emergencycontact, emergencycontactnumber, username, userID) values ('"+ document.getName() + "','" + document.getSurname() + "','" + document.getDob() + "','" + document.getAddress() + "','" + document.getTownCity() + "','" + document.getCounty() + "','" + document.getPostcode() + "','" + document.getTelephoneNumber() + "','" +document.getMobileNumber() + "','" + document.getEmergencyContact() + "','" + document.getEmergencyContactNumber() + "','" + document.getUsername() + "','" + getStaffID(document.getUsername()) + "')";
+            s.executeUpdate(sql);
+            System.out.println("Document has been created successfully");
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+    }
+
+    public void amendUserPersonalDetails(Document document)
+    {
+        try {
+            Statement s = con.createStatement();
+            String sql = "DELETE FROM Personal_Details WHERE username='" + document.getUsername() + "'";
+            s.executeUpdate(sql);
+            createNewUser(document);
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+
     }
 }

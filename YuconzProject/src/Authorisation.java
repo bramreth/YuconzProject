@@ -22,16 +22,16 @@ public class Authorisation {
     public boolean authorisationCheck(User currentUser, String userIn, String action) {
         switch (action) {
             case "readPersonalDetails" :
-                if(currentUser.getDepartment().equals("Human Resources") || currentUser.getDepartment().equals("Director")){
+                if(currentUser.getDepartment().equals("Human Resources") || currentUser.getDepartment().equals("Director") || currentUser.getUsername().equals(userIn)) {
                     return true;
-                }else if(currentUser.getUsername().equals(userIn)){return true;};
+                }
                 break;
             case "createPersonalDetails" :
                 if(currentUser.getDepartment().equals("Human Resources")){
                     return true;
                 }
                 break;
-            case "ammendPersonalDetails" :
+            case "amendPersonalDetails" :
                 if(currentUser.getDepartment().equals("Human Resources")){
                     return true;
                 }

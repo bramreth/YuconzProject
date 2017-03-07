@@ -1,7 +1,6 @@
 import java.util.Scanner;
 import java.awt.*;
 import java.awt.event.*;
-import javax.imageio.plugins.jpeg.JPEGHuffmanTable;
 import javax.swing.*;
 /**
  * Created by bramreth on 2/13/17.
@@ -9,7 +8,8 @@ import javax.swing.*;
  * Main application class
  */
 
-public class Yuconz_project_app implements ActionListener {
+public class Yuconz_project_app implements ActionListener
+{
     //region global variables
     private Authentication_server authentication_server;
     private static Authorisation authorisation;
@@ -434,8 +434,11 @@ public class Yuconz_project_app implements ActionListener {
     //region GUI
 
     //GUI card names
-    final static String LOGIN = "Login";
-    final static String MAINMENU = "Main Menu";
+    private final static String LOGIN = "Login";
+    private final static String MAINMENU = "Main Menu";
+    private final static String VIEWPD = "View Personal Details";
+    private final static String AMENDPD = "Amend Personal Details";
+    private final static String CREATEPD = "Create Personal Details";
 
     /**
      * display login menu
@@ -479,7 +482,8 @@ public class Yuconz_project_app implements ActionListener {
      * adds all components to the contentPane
      * @param contentPane
      */
-    private void addComponentsToPane(Container contentPane) {
+    private void addComponentsToPane(Container contentPane)
+    {
         //create the header
         JPanel headerPn = new JPanel();
         JLabel headerLbl = new JLabel("Yuconz File System App");
@@ -502,9 +506,23 @@ public class Yuconz_project_app implements ActionListener {
      * creates the JPanel of the main menu screen
      * @return a JPanel main menu screen
      */
-    private JPanel createMenuCard() {
+    private JPanel createMenuCard()
+    {
         JPanel menu = new JPanel(new GridLayout(0,2));
-        JPanel menuRight = new JPanel((new GridLayout(0,1)));
+        JPanel menuRight = new JPanel();
+        menuRight.setLayout(new BoxLayout(menuRight, BoxLayout.PAGE_AXIS));
+
+        JButton btnViewPD = new JButton(VIEWPD);
+        btnViewPD.addActionListener(this);
+        btnViewPD.setActionCommand(VIEWPD);
+
+        JButton btnCreatePD = new JButton(CREATEPD);
+        btnCreatePD.addActionListener(this);
+        btnCreatePD.setActionCommand(CREATEPD);
+
+        JButton btnAmendPD = new JButton(AMENDPD);
+        btnAmendPD.addActionListener(this);
+        btnAmendPD.setActionCommand(AMENDPD);
 
         JButton btnLogout = new JButton("Log Out");
         btnLogout.addActionListener(this);
@@ -518,6 +536,9 @@ public class Yuconz_project_app implements ActionListener {
         userInfo.setVerticalAlignment(SwingConstants.TOP);
 
         menuRight.add(menuLabel);
+        menuRight.add(btnViewPD);
+        menuRight.add(btnCreatePD);
+        menuRight.add(btnAmendPD);
         menuRight.add(btnLogout);
 
         menu.add(userInfo);
@@ -531,7 +552,8 @@ public class Yuconz_project_app implements ActionListener {
      * creates the JPanel of the login screen
      * @return a JPanel login screen
      */
-    private JPanel createLoginCard() {
+    private JPanel createLoginCard()
+    {
         JPanel login = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         JButton btnLogin = new JButton("Login");
@@ -546,8 +568,13 @@ public class Yuconz_project_app implements ActionListener {
         return login;
     }
 
+    /**
+     * ActionListener
+     * @param e
+     */
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)
+    {
         CardLayout cl = (CardLayout)(cards.getLayout());
 
         if(e.getActionCommand().equalsIgnoreCase("authenticate")) {
@@ -571,6 +598,11 @@ public class Yuconz_project_app implements ActionListener {
             warningLabel.setText("");
         }
 
+    }
+
+    private void inputUser()
+    {
+        JFrame inputFrame = new JFrame();
     }
     //endregion
 }

@@ -21,10 +21,11 @@ public class Yuconz_project_app implements ActionListener
     //GUI variables
     private static JFrame frame;
     private JPanel cards; //a panel that uses CardLayout
-    JTextField tfUsername = new JTextField("Username", 20);
-    JTextField tfPassword = new JTextField("Password", 20);
-    JLabel warningLabel = new JLabel();
-    JLabel userInfo = new JLabel();
+    private JTextField tfUsername = new JTextField("Username", 20);
+    private JTextField tfPassword = new JTextField("Password", 20);
+    private JLabel warningLabel = new JLabel();
+    private JLabel userInfo = new JLabel();
+    private Color ooccoo = new Color(0, 204, 0);
     //endregion
 
     //region main method and constructor
@@ -510,7 +511,7 @@ public class Yuconz_project_app implements ActionListener
     {
         JPanel menu = new JPanel(new GridLayout(0,2));
         JPanel menuRight = new JPanel();
-        menuRight.setLayout(new BoxLayout(menuRight, BoxLayout.PAGE_AXIS));
+        menuRight.setLayout(new GridLayout(4,0));
 
         JButton btnViewPD = new JButton(VIEWPD);
         btnViewPD.addActionListener(this);
@@ -528,14 +529,9 @@ public class Yuconz_project_app implements ActionListener
         btnLogout.addActionListener(this);
         btnLogout.setActionCommand(LOGIN);
 
-        JLabel menuLabel = new JLabel(MAINMENU);
-        menuLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        menuLabel.setVerticalAlignment(SwingConstants.CENTER);
-
         userInfo.setHorizontalAlignment(SwingConstants.CENTER);
-        userInfo.setVerticalAlignment(SwingConstants.TOP);
+        userInfo.setVerticalAlignment(SwingConstants.CENTER);
 
-        menuRight.add(menuLabel);
         menuRight.add(btnViewPD);
         menuRight.add(btnCreatePD);
         menuRight.add(btnAmendPD);

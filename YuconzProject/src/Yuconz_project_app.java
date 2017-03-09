@@ -1,17 +1,34 @@
 import java.util.Scanner;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 /**
  * Created by bramreth on 2/13/17.
  *
  * Main application class
  */
 
-public class Yuconz_project_app {
+public class Yuconz_project_app implements ActionListener
+{
+    //region global variables
     private Authentication_server authentication_server;
     private static Authorisation authorisation;
     private Database database;
     private User currentUser;
     private Scanner input = new Scanner(System.in);
     private boolean loggedIn;
+
+    //GUI variables
+    private static JFrame frame;
+    private JPanel cards; //a panel that uses CardLayout
+    private JTextField tfUsername = new JTextField("Username", 20);
+    private JTextField tfPassword = new JTextField("Password", 20);
+    private JLabel warningLabel = new JLabel();
+    private JLabel userInfo = new JLabel();
+    private Color ooccoo = new Color(0, 204, 0);
+    //endregion
+
+    //region main method and constructor
 
     /**
      * Main method
@@ -21,9 +38,14 @@ public class Yuconz_project_app {
     public static void main(String args[]) {
         Yuconz_project_app app = new Yuconz_project_app();
 
-        if(app.database.isReady()){
-            app.displayLoginMenu();
-        }
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                displayLoginMenu(app);
+            }
+        });
+        //if(app.database.isReady()){
+          //  app.displayLoginMenu();
+        //}
     }
 
     /**v3
@@ -41,7 +63,9 @@ public class Yuconz_project_app {
             System.out.print("Connection to database failed");
         }
     }
+    //endregion
 
+    //region Accessors
     /**
      * getLoggedIn
      * gets whether or not a user is logged in
@@ -77,6 +101,7 @@ public class Yuconz_project_app {
     public User getCurrentUser(){
         return this.currentUser;
     }
+    //endregion
 
     /**
      * menu
@@ -176,30 +201,10 @@ public class Yuconz_project_app {
             }
         } while(loggedIn);
 
-        displayLoginMenu();
+        //displayLoginMenu();
     }
 
-    /**
-     * display login menu
-     * Prompts the user for login details
-     */
-    private void displayLoginMenu()
-    {
-        while (!loggedIn) {
-            System.out.println("Username:");
-            String username = input.nextLine();
-            System.out.println("Password:");
-            String password = input.nextLine();
-            if(login(username, password)){
-                currentUser.getPosition().setSubordinates(database.getSubordinates(username));
-                System.out.println("\n\n\n\n\n\n\n");
-                System.out.println(currentUser.getUserInfo());
-                menu();
-            }else{
-                System.out.println("Failure");
-            }
-        }
-    }
+    //region login/logout
 
     /**
      * login
@@ -233,7 +238,9 @@ public class Yuconz_project_app {
             loggedIn = false;
         }
     }
+    //endregion
 
+    //region Personal Details
     /**
      * amendPersonalDetailsDocument
      * edits an existing personal details document
@@ -423,4 +430,175 @@ public class Yuconz_project_app {
             return false;
         }
     }
+    //endregion
+
+    //region GUI
+
+    //GUI card names
+    private final static String LOGIN = "Login";
+    private final static String MAINMENU = "Main Menu";
+    private final static String VIEWPD = "View Personal Details";
+    private final static String AMENDPD = "Amend Personal Details";
+    private final static String CREATEPD = "Create Personal Details";
+
+    /**
+     * display login menu
+     * Prompts the user for login details
+     */
+    private static void displayLoginMenu(Yuconz_project_app app)
+    {
+        //Create and set up the window.
+        frame = new JFrame("Yuconz File App");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+
+        //Create and set up the content pane.
+        app.addComponentsToPane(frame.getContentPane());
+
+        //Display the window.
+        frame.pack();
+        frame.setSize(new Dimension(300, 150));
+        frame.setVisible(true);
+
+        /*
+        while (!loggedIn) {
+            System.out.println("Username:");
+            String username = input.nextLine();
+            System.out.println("Password:");
+            String password = input.nextLine();
+            if(login(username, password)){
+                currentUser.getPosition().setSubordinates(database.getSubordinates(username));
+                System.out.println("\n\n\n\n\n\n\n");
+                System.out.println(currentUser.getUserInfo());
+                menu();
+            }else{
+                System.out.println("Failure");
+            }
+        }
+        */
+    }
+
+    /**
+     * addComponnentsToPane
+     * adds all components to the contentPane
+     * @param contentPane
+     */
+    private void addComponentsToPane(Container contentPane)
+    {
+        //create the header
+        JPanel headerPn = new JPanel();
+        JLabel headerLbl = new JLabel("Yuconz File System App");
+        headerPn.add(headerLbl);
+
+        JPanel card1 = createLoginCard();
+        JPanel card2 = createMenuCard();
+
+        //Create the panel that contains the "cards".
+        cards = new JPanel(new CardLayout());
+        cards.add(card1, LOGIN);
+        cards.add(card2, MAINMENU);
+
+        contentPane.add(headerPn, BorderLayout.PAGE_START);
+        contentPane.add(cards, BorderLayout.CENTER);
+    }
+
+    /**
+     * createMenuCard
+     * creates the JPanel of the main menu screen
+     * @return a JPanel main menu screen
+     */
+    private JPanel createMenuCard()
+    {
+        JPanel menu = new JPanel(new GridLayout(0,2));
+        JPanel menuRight = new JPanel();
+        menuRight.setLayout(new GridLayout(4,0));
+
+        JButton btnViewPD = new JButton(VIEWPD);
+        btnViewPD.addActionListener(this);
+        btnViewPD.setActionCommand(VIEWPD);
+
+        JButton btnCreatePD = new JButton(CREATEPD);
+        btnCreatePD.addActionListener(this);
+        btnCreatePD.setActionCommand(CREATEPD);
+
+        JButton btnAmendPD = new JButton(AMENDPD);
+        btnAmendPD.addActionListener(this);
+        btnAmendPD.setActionCommand(AMENDPD);
+
+        JButton btnLogout = new JButton("Log Out");
+        btnLogout.addActionListener(this);
+        btnLogout.setActionCommand(LOGIN);
+
+        userInfo.setHorizontalAlignment(SwingConstants.CENTER);
+        userInfo.setVerticalAlignment(SwingConstants.CENTER);
+
+        menuRight.add(btnViewPD);
+        menuRight.add(btnCreatePD);
+        menuRight.add(btnAmendPD);
+        menuRight.add(btnLogout);
+
+        menu.add(userInfo);
+        menu.add(menuRight);
+
+        return menu;
+    }
+
+    /**
+     * createLoginCard
+     * creates the JPanel of the login screen
+     * @return a JPanel login screen
+     */
+    private JPanel createLoginCard()
+    {
+        JPanel login = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        JButton btnLogin = new JButton("Login");
+        btnLogin.addActionListener(this);
+        btnLogin.setActionCommand("authenticate");
+
+        login.add(tfUsername);
+        login.add(tfPassword);
+        login.add(btnLogin);
+        login.add(warningLabel);
+
+        return login;
+    }
+
+    /**
+     * ActionListener
+     * @param e
+     */
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        CardLayout cl = (CardLayout)(cards.getLayout());
+
+        if(e.getActionCommand().equalsIgnoreCase("authenticate")) {
+            if (login(tfUsername.getText(), tfPassword.getText())) {
+                cl.show(cards, MAINMENU);
+                frame.setSize(new Dimension(640,360));
+                warningLabel.setText("");
+                currentUser.getPosition().setSubordinates(database.getSubordinates(tfUsername.getText()));
+                userInfo.setText(currentUser.getUserInfo());
+            } else {
+                tfUsername.setText("Username");
+                tfPassword.setText("Password");
+                warningLabel.setText("Incorrect Login");
+            }
+        } else if (e.getActionCommand().equals(LOGIN)) {
+            cl.show(cards, LOGIN);
+            frame.setSize(new Dimension(300,150));
+            warningLabel.setText("");
+        } else {
+            cl.show(cards, (String)e.getActionCommand());
+            warningLabel.setText("");
+        }
+
+    }
+
+    private void inputUser()
+    {
+        JFrame inputFrame = new JFrame();
+    }
+    //endregion
 }

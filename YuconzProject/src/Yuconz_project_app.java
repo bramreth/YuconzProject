@@ -578,7 +578,7 @@ public class Yuconz_project_app implements ActionListener
             frame.setSize(new Dimension(300,150));
 
             /*
-             * Popup window here
+             * Popup window
               * inputUser() returns what they put in
              */
         } else if (e.getActionCommand().equals(CREATEPD) || e.getActionCommand().equals(AMENDPD) || e.getActionCommand().equals(VIEWPD)){

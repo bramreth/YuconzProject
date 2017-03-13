@@ -129,4 +129,20 @@ public class Document {
                         "Emergency Contact Number: " + emergencyContactNumber + "\n"
         );
     }
+
+    public String read(){
+
+        return          "<html>Staff No: " + staffNo + "<br>" +
+                        "Name: " + name + "<br>" +
+                        "Surname: " + surname + "<br>" +
+                        "Date Of Birth: " + dob + "<br>" +
+                        "Address: " + address + "<br>" +
+                        "Town/City: " + townCity + "<br>" +
+                        "County: " + county + "<br>" +
+                        "Postcode: " + postcode + "<br>" +
+                        "telephone Number: " + telephoneNumber + "<br>" +
+                        "Mobile Number: " + mobileNumber + "<br>" +
+                        "Emergency Contact Name: " + emergencyContact + "<br>" +
+                        "Emergency Contact Number: " + emergencyContactNumber + "<br><html>";
+    }
 }

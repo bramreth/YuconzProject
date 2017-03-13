@@ -17,6 +17,7 @@ public class Yuconz_project_app implements ActionListener
     private User currentUser;
     private Scanner input = new Scanner(System.in);
     private boolean loggedIn;
+    private Document detailsDocument;
 
     //GUI variables
     private static JFrame frame;
@@ -25,7 +26,21 @@ public class Yuconz_project_app implements ActionListener
     private JTextField tfPassword = new JTextField("Password", 20);
     private JLabel warningLabel = new JLabel();
     private JLabel userInfo = new JLabel();
+    private JLabel viewDetailsField = new JLabel();
     private final Color OOCCOO = new Color(0, 204, 0);
+    //document text boxes
+    private JTextField surname = new JTextField("surname", 20);
+    private JTextField name = new JTextField("name", 20);
+    private JTextField dob = new JTextField("dob", 20);
+    private JTextField address = new JTextField("address", 20);
+    private JTextField townCity = new JTextField("townCity", 20);
+    private JTextField county = new JTextField("county", 20);
+    private JTextField postcode = new JTextField("postcode", 20);
+    private JTextField telephoneNumber = new JTextField("telephoneNumber", 20);
+    private JTextField mobileNumber = new JTextField("mobileNumber", 20);
+    private JTextField emergencyContact = new JTextField("emergencyContact", 20);
+    private JTextField emergencyContactNumber = new JTextField("emergencyContactNumber", 20);
+    private JTextField staffNo = new JTextField("staffNo", 20);
     //endregion
 
     //region main method and constructor
@@ -393,7 +408,7 @@ public class Yuconz_project_app implements ActionListener
         if(authorisation.authorisationCheck(currentUser, userIn,"readPersonalDetails")){
             if(database.checkExists(userIn)) {
                 Document doc = database.fetchPersonalDetails(userIn);
-                doc.print();
+                detailsDocument = doc;
                 return true;
             } else {
                 return false;
@@ -421,7 +436,7 @@ public class Yuconz_project_app implements ActionListener
         if(authorisation.authorisationCheck(currentUser, userIn, "amendPersonalDetails")){
            if(database.checkExists(userIn)){
                Document doc = database.fetchPersonalDetails(userIn);
-               doc.print();
+               detailsDocument = doc;
                return true;
            } else {
                return false;
@@ -475,11 +490,15 @@ public class Yuconz_project_app implements ActionListener
 
         JPanel card1 = createLoginCard();
         JPanel card2 = createMenuCard();
+        JPanel card3 = createViewCard();
+        JPanel card4 = createAmmendCard();
 
         //Create the panel that contains the "cards".
         cards = new JPanel(new CardLayout());
         cards.add(card1, LOGIN);
         cards.add(card2, MAINMENU);
+        cards.add(card3, VIEWPD);
+        cards.add(card4, AMENDPD);
 
         headerPn.setBackground(OOCCOO);
 
@@ -527,6 +546,62 @@ public class Yuconz_project_app implements ActionListener
         menu.setBackground(OOCCOO);
 
         return menu;
+    }
+
+    /**
+     * createViewCard
+     * creates the JPanel of the view personal details screen
+     * @return a JPanel main menu screen
+     */
+    private JPanel createViewCard() {
+        JPanel target = new JPanel(new GridLayout(0,2));
+
+        JButton backButton = new JButton("back");
+        backButton.addActionListener(this);
+        backButton.setActionCommand(MAINMENU);
+
+        //target.add(userInfo);
+        target.add(viewDetailsField);
+        target.add(backButton);
+        //target.add(menuRight);
+
+        return target;
+    }
+
+    /**
+     * createAmmendCard
+     * creates the JPanel of the ammend personal details screen
+     * @return a JPanel main menu screen
+     */
+    private JPanel createAmmendCard() {
+        JPanel target = new JPanel(new GridLayout(12,2));
+
+        JButton confirmButton = new JButton("confirm");
+        confirmButton.addActionListener(this);
+        confirmButton.setActionCommand("confirmAmmend");
+
+        JButton backButton = new JButton("back");
+        backButton.addActionListener(this);
+        backButton.setActionCommand(MAINMENU);
+
+        //target.add(userInfo);
+        target.add(surname);
+        target.add(name);
+        target.add(dob);
+        target.add(address);
+        target.add(townCity);
+        target.add(county);
+        target.add(postcode);
+        target.add(telephoneNumber);
+        target.add(mobileNumber);
+        target.add(emergencyContact);
+        target.add(emergencyContactNumber);
+        target.add(staffNo);
+        target.add(confirmButton);
+        target.add(backButton);
+        //target.add(menuRight);
+
+        return target;
     }
 
     /**
@@ -582,16 +657,41 @@ public class Yuconz_project_app implements ActionListener
               * inputUser() returns what they put in
              */
         } else if (e.getActionCommand().equals(CREATEPD) || e.getActionCommand().equals(AMENDPD) || e.getActionCommand().equals(VIEWPD)){
-            if (inputUser() == null) {
+            String temp = inputUser();
+            if (temp == null) {
                 JOptionPane.showMessageDialog(frame,
                         "Username can't be empty",
                         "Username error",
                         JOptionPane.PLAIN_MESSAGE);
             } else {
-                cl.show(cards, (String)e.getActionCommand());
+                switch (e.getActionCommand()){
+                    case VIEWPD:
+                        if(readPersonalDetails(temp)){
+                            viewDetailsField.setText(detailsDocument.read());
+                            cl.show(cards, (String)e.getActionCommand());
+                        }else{
+                            viewDetailsField.setText("invalid permissions");
+                        }
+                        break;
+                    case AMENDPD:
+                        if(amendPersonalDetails(temp)){
+                            cl.show(cards, (String)e.getActionCommand());
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         } else {
             cl.show(cards, (String)e.getActionCommand());
+        }
+        if (e.getActionCommand().equals(MAINMENU)) {
+            cl.show(cards, MAINMENU);
+            frame.setSize(new Dimension(640,360));
+            warningLabel.setText("");
+        } else {
+            cl.show(cards, (String)e.getActionCommand());
+            warningLabel.setText("");
         }
 
     }

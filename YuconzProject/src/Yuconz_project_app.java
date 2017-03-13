@@ -25,7 +25,7 @@ public class Yuconz_project_app implements ActionListener
     private JTextField tfPassword = new JTextField("Password", 20);
     private JLabel warningLabel = new JLabel();
     private JLabel userInfo = new JLabel();
-    private Color ooccoo = new Color(0, 204, 0);
+    private final Color OOCCOO = new Color(0, 204, 0);
     //endregion
 
     //region main method and constructor
@@ -459,23 +459,6 @@ public class Yuconz_project_app implements ActionListener
         frame.pack();
         frame.setSize(new Dimension(300, 150));
         frame.setVisible(true);
-
-        /*
-        while (!loggedIn) {
-            System.out.println("Username:");
-            String username = input.nextLine();
-            System.out.println("Password:");
-            String password = input.nextLine();
-            if(login(username, password)){
-                currentUser.getPosition().setSubordinates(database.getSubordinates(username));
-                System.out.println("\n\n\n\n\n\n\n");
-                System.out.println(currentUser.getUserInfo());
-                menu();
-            }else{
-                System.out.println("Failure");
-            }
-        }
-        */
     }
 
     /**
@@ -497,6 +480,8 @@ public class Yuconz_project_app implements ActionListener
         cards = new JPanel(new CardLayout());
         cards.add(card1, LOGIN);
         cards.add(card2, MAINMENU);
+
+        headerPn.setBackground(OOCCOO);
 
         contentPane.add(headerPn, BorderLayout.PAGE_START);
         contentPane.add(cards, BorderLayout.CENTER);
@@ -539,6 +524,7 @@ public class Yuconz_project_app implements ActionListener
 
         menu.add(userInfo);
         menu.add(menuRight);
+        menu.setBackground(OOCCOO);
 
         return menu;
     }
@@ -560,6 +546,8 @@ public class Yuconz_project_app implements ActionListener
         login.add(tfPassword);
         login.add(btnLogin);
         login.add(warningLabel);
+
+        login.setBackground(OOCCOO);
 
         return login;
     }
@@ -588,17 +576,36 @@ public class Yuconz_project_app implements ActionListener
         } else if (e.getActionCommand().equals(LOGIN)) {
             cl.show(cards, LOGIN);
             frame.setSize(new Dimension(300,150));
-            warningLabel.setText("");
+
+            /*
+             * Popup window here
+              * inputUser() returns what they put in
+             */
+        } else if (e.getActionCommand().equals(CREATEPD) || e.getActionCommand().equals(AMENDPD) || e.getActionCommand().equals(VIEWPD)){
+            if (inputUser() == null) {
+                JOptionPane.showMessageDialog(frame,
+                        "Username can't be empty",
+                        "Username error",
+                        JOptionPane.PLAIN_MESSAGE);
+            } else {
+                cl.show(cards, (String)e.getActionCommand());
+            }
         } else {
             cl.show(cards, (String)e.getActionCommand());
-            warningLabel.setText("");
         }
 
     }
 
-    private void inputUser()
+    private String inputUser()
     {
-        JFrame inputFrame = new JFrame();
+        String usernameInput = (String)JOptionPane.showInputDialog(frame, "Enter an employee username", "Username Required", JOptionPane.PLAIN_MESSAGE);
+
+        //If a string was returned, say so.
+        if ((usernameInput != null) && (usernameInput.length() > 0)) {
+            return usernameInput;
+        } else {
+            return null;
+        }
     }
     //endregion
 }

@@ -2,6 +2,7 @@
   <library name="mysql-connector-java-5.1.40-bin-Copy">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/YuconzProject/lib/mysql-connector-java-5.1.40-bin-Copy.jar!/" />
+      <root url="jar://$PROJECT_DIR$/YuconzProject/lib/sqlite-jdbc-3.16.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -415,11 +415,20 @@ public class Yuconz_project_app implements ActionListener
 
     /**
      * check authorisation to create review record for a target user
-     * @param target
+     * @param userIn
      * @return
      */
-    public boolean createReviewRecord(String target){
-        return true;
+    public boolean createReviewRecord(String userIn){
+        //run authorisation method with readPersonalDetails as an action
+        if(authorisation.authorisationCheck(currentUser, userIn,"createReviewRecord")){
+            if(database.checkExists(userIn)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     /**

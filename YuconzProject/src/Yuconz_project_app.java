@@ -68,7 +68,7 @@ public class Yuconz_project_app implements ActionListener
      * Initializes the App object and prompts the user for login
      */
     public Yuconz_project_app() {
-        database = new Database("jdbc:mysql://dragon.kent.ac.uk/sjl66", "sjl66", "lef/u");
+        database = new Database("jdbc:sqlite:Yuconz_Database.db");
         authentication_server = new Authentication_server(database.getConnection());
         authorisation = new Authorisation();
 
@@ -360,45 +360,9 @@ public class Yuconz_project_app implements ActionListener
     private Document createPersonalDetailsDocument(String username)
     {
         Document newUser = new Document(username);
-        int staffNo = 0;
-        String name;
-        String surname;
-        String dob;
-        String address;
-        String townCity;
-        String county;
-        String postcode;
-        String telephoneNumber;
-        String mobileNumber;
-        String emergencyContact;
-        String emergencyContactNumber;
-        System.out.println("\n");
-        System.out.println("Please input the personal details as prompted:");
-        System.out.println("\n");
-        System.out.println("Forename:");
-        name = input.nextLine();
-        System.out.println("Surname:");
-        surname = input.nextLine();
-        System.out.println("Date of birth:");
-        dob = input.nextLine();
-        System.out.println("Address:");
-        address = input.nextLine();
-        System.out.println("Town/City:");
-        townCity = input.nextLine();
-        System.out.println("County:");
-        county = input.nextLine();
-        System.out.println("Postcode:");
-        postcode = input.nextLine();
-        System.out.println("TelephoneNumber:");
-        telephoneNumber = input.nextLine();
-        System.out.println("Mobile number:");
-        mobileNumber = input.nextLine();
-        System.out.println("Emergency contact:");
-        emergencyContact = input.nextLine();
-        System.out.println("Emergency contact number:");
-        emergencyContactNumber = input.nextLine();
 
-        newUser.populateDocument(database.getStaffID(username), name, surname, dob, address, townCity, county, postcode, telephoneNumber, mobileNumber, emergencyContact, emergencyContactNumber);
+        newUser.populateDocument(database.getStaffID(username), name.getText(), surname.getText(), dob.getText(), address.getText(), townCity.getText(), county.getText(), postcode.getText(), telephoneNumber.getText(),
+                mobileNumber.getText(), emergencyContact.getText(), emergencyContactNumber.getText());
         return newUser;
 
     }
@@ -554,23 +518,22 @@ public class Yuconz_project_app implements ActionListener
      * @return a JPanel main menu screen
      */
     private JPanel createViewCard() {
-        JPanel target = new JPanel(new GridLayout(0,2));
+        JPanel target = new JPanel(new FlowLayout());
 
         JButton backButton = new JButton("back");
         backButton.addActionListener(this);
         backButton.setActionCommand(MAINMENU);
 
-        //target.add(userInfo);
         target.add(viewDetailsField);
         target.add(backButton);
-        //target.add(menuRight);
+        target.setBackground(OOCCOO);
 
         return target;
     }
 
     /**
      * createAmmendCard
-     * creates the JPanel of the ammend personal details screen
+     * creates the JPanel of the ammend and create personal details screen
      * @return a JPanel main menu screen
      */
     private JPanel createAmmendCard() {
@@ -578,13 +541,12 @@ public class Yuconz_project_app implements ActionListener
 
         JButton confirmButton = new JButton("confirm");
         confirmButton.addActionListener(this);
-        confirmButton.setActionCommand("confirmAmmend");
+        confirmButton.setActionCommand("confirmPD");
 
         JButton backButton = new JButton("back");
         backButton.addActionListener(this);
         backButton.setActionCommand(MAINMENU);
 
-        //target.add(userInfo);
         target.add(surname);
         target.add(name);
         target.add(dob);
@@ -599,7 +561,7 @@ public class Yuconz_project_app implements ActionListener
         target.add(staffNo);
         target.add(confirmButton);
         target.add(backButton);
-        //target.add(menuRight);
+        target.setBackground(OOCCOO);
 
         return target;
     }
@@ -668,14 +630,22 @@ public class Yuconz_project_app implements ActionListener
                             viewDetailsField.setText(detailsDocument.read());
                             cl.show(cards, (String)e.getActionCommand());
                         }else{
-                            viewDetailsField.setText("invalid permissions");
+                            JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
                         }
                         break;
                     case AMENDPD:
                         if(amendPersonalDetails(temp)){
                             cl.show(cards, (String)e.getActionCommand());
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
                         }
                         break;
+                    case CREATEPD:
+                        if(createPersonalDetails(temp)){
+                            cl.show(cards, AMENDPD);
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
+                        }
                     default:
                         break;
                 }

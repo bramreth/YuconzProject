@@ -26,7 +26,7 @@ public class Authentication_server {
     public boolean verifyLogin(String username,  String password) {
         try {
             Statement s = con.createStatement();
-            String sql = "SELECT Username FROM Yuconz_Users WHERE Password=sha1('" + password + "')";
+            String sql = "SELECT Username FROM Yuconz_Users WHERE Password='" + password + "'";
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
                 if (rs.getString("username").equals(username)) {

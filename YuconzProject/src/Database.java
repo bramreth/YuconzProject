@@ -14,18 +14,17 @@ public class Database {
      * Constructor
      * Initializes the database connection for logging in and out
      */
-    public Database(String host, String username, String password)
+    public Database(String dbName)
     {
+        con = null;
         try {
-            this.host = host;
-            this.username = username;
-            this.password = password;
-            con = DriverManager.getConnection(host,username,password);
+            Class.forName("org.sqlite.JDBC");
+            con = DriverManager.getConnection(dbName);
             ready = true;
+            System.out.println("Opened database successfully");
+        } catch ( Exception e ) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-        catch ( SQLException err ) {
-        System.out.println( err.getMessage( ) );
-    }
 }
 
     /**
@@ -173,6 +172,7 @@ public class Database {
             String sql = "INSERT INTO Personal_Details (name, surname, dateofbirth, address, town, County, postcode, telephonenumber, mobilenumber, emergencycontact, emergencycontactnumber, username, userID) values ('"+ document.getName() + "','" + document.getSurname() + "','" + document.getDob() + "','" + document.getAddress() + "','" + document.getTownCity() + "','" + document.getCounty() + "','" + document.getPostcode() + "','" + document.getTelephoneNumber() + "','" +document.getMobileNumber() + "','" + document.getEmergencyContact() + "','" + document.getEmergencyContactNumber() + "','" + document.getUsername() + "','" + getStaffID(document.getUsername()) + "')";
             s.executeUpdate(sql);
             System.out.println("Document has been created successfully");
+            con.commit();
         } catch (SQLException err) {
             System.out.println(err.getMessage());
         }
@@ -185,6 +185,7 @@ public class Database {
             String sql = "DELETE FROM Personal_Details WHERE username='" + document.getUsername() + "'";
             s.executeUpdate(sql);
             createNewUser(document);
+            con.commit();
         } catch (SQLException err) {
             System.out.println(err.getMessage());
         }

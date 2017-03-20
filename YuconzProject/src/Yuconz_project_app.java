@@ -411,6 +411,26 @@ public class Yuconz_project_app implements ActionListener
     }
     //endregion
 
+    //region review record
+
+    /**
+     * check authorisation to create review record for a target user
+     * @param target
+     * @return
+     */
+    public boolean createReviewRecord(String target){
+        return true;
+    }
+
+    /**
+     * check whether the user has permission to read the targets review record
+     * @param target
+     * @return
+     */
+    public boolean readReviewRecord(String target){return true;}
+
+    //endregion
+
     //region GUI
 
     //GUI card names
@@ -537,7 +557,7 @@ public class Yuconz_project_app implements ActionListener
      * @return a JPanel main menu screen
      */
     private JPanel createAmmendCard() {
-        JPanel target = new JPanel(new GridLayout(12,2));
+        JPanel target = new JPanel(new GridLayout(7,2));
 
         JButton confirmButton = new JButton("confirm");
         confirmButton.addActionListener(this);

@@ -134,4 +134,35 @@ class Yuconz_project_appTest {
         Document temp3Doc = app.getDatabase().fetchPersonalDetails("hruser2");
         assertNotEquals(temp1Doc.getName(),temp3Doc.getName());
     }
+
+    /*
+    stage 5
+     */
+    @org.junit.jupiter.api.Test
+    public void validRevieweeCreateReview(){
+        System.out.println("valid create review for a reviewee");
+        app.login("user1","pass1");//is a reviewee
+        assertTrue(app.createReviewRecord("user1"));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void validReviewerCreateReview(){
+        System.out.println("valid create review for a reviewee");
+        app.login("user2","pass2");//is a manager of user1
+        assertTrue(app.createReviewRecord("user1"));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void invalidReviewerCreateReview(){
+        System.out.println("invalid read review");
+        app.login("user2","pass2");//is not  a manager of user1
+        assertFalse(app.createReviewRecord("user1"));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void invalidReadReview(){
+        System.out.println("invalid read review");
+        app.login("user5","pass5");//is not  a manager of user1
+        assertTrue(app.readReviewRecord("user1"));
+    }
 }

@@ -429,6 +429,22 @@ public class Yuconz_project_app implements ActionListener
      */
     public boolean readReviewRecord(String target){return true;}
 
+    /**
+     * check whether the user has permission to read the targets previous review record
+     * @param target
+     * @param number is the index of the previous record
+     * @return
+     */
+    public boolean readPastReviewRecord(String target, int number){return true;}
+
+    /**
+     * checks whether an hremployee has permission to add a reviewer, returning true and allowing the update
+     * if they do
+     * @param target
+     * @param allocatedReviewer
+     * @return
+     */
+    public boolean allocateReviewer(String target, String allocatedReviewer){return true;}
     //endregion
 
     //region GUI

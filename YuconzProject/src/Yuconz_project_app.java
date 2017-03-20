@@ -634,6 +634,7 @@ public class Yuconz_project_app implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        System.out.println("Run: " + e.getActionCommand());
         CardLayout cl = (CardLayout)(cards.getLayout());
 
         if(e.getActionCommand().equalsIgnoreCase("authenticate")) {
@@ -659,10 +660,7 @@ public class Yuconz_project_app implements ActionListener
         } else if (e.getActionCommand().equals(CREATEPD) || e.getActionCommand().equals(AMENDPD) || e.getActionCommand().equals(VIEWPD)){
             String temp = inputUser();
             if (temp == null) {
-                JOptionPane.showMessageDialog(frame,
-                        "Username can't be empty",
-                        "Username error",
-                        JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Username can't be empty", "Username error", JOptionPane.PLAIN_MESSAGE);
             } else {
                 switch (e.getActionCommand()){
                     case VIEWPD:
@@ -682,10 +680,7 @@ public class Yuconz_project_app implements ActionListener
                         break;
                 }
             }
-        } else {
-            cl.show(cards, (String)e.getActionCommand());
-        }
-        if (e.getActionCommand().equals(MAINMENU)) {
+        } else if (e.getActionCommand().equals(MAINMENU)) {
             cl.show(cards, MAINMENU);
             frame.setSize(new Dimension(640,360));
             warningLabel.setText("");

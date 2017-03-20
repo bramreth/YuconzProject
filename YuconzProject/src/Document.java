@@ -6,7 +6,7 @@ import java.util.Date;
 public class Document {
     private String username, surname, name, dob, address, townCity, county, postcode,
             telephoneNumber, mobileNumber, emergencyContact, emergencyContactNumber;
-    private int staffNo;
+    private int staffNo, documentID;
 
     public Document(String userIn)
     {
@@ -64,6 +64,7 @@ public class Document {
     public int getStaffNo(){
         return  staffNo;
     }
+    public int getDocumentID() {return  documentID;}
     public void setName(String name) {
         this.name = name;
     }
@@ -97,7 +98,9 @@ public class Document {
     public void setTelephoneNumber(String telephoneNumber) {
         this.telephoneNumber = telephoneNumber;
     }
-    public void populateDocument(int staffNo, String name, String surname, String dob, String address, String townCity, String county, String postcode, String telephoneNumber, String mobileNumber, String emergencyContact, String emergencyContactNumber){
+
+    public void populateDocument(int documentID, int staffNo, String name, String surname, String dob, String address, String townCity, String county, String postcode, String telephoneNumber, String mobileNumber, String emergencyContact, String emergencyContactNumber){
+        this.documentID = documentID;
         this.staffNo = staffNo;
         this.name = name;
         this.surname = surname;

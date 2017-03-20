@@ -1,3 +1,6 @@
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import java.awt.*;
 import java.awt.event.*;
@@ -18,6 +21,8 @@ public class Yuconz_project_app implements ActionListener
     private Scanner input = new Scanner(System.in);
     private boolean loggedIn;
     private Document detailsDocument;
+    private String personalDetailsUser = null;
+    private int personalDetailsDocumentID = 0;
 
     //GUI variables
     private static JFrame frame;
@@ -41,6 +46,7 @@ public class Yuconz_project_app implements ActionListener
     private JTextField emergencyContact = new JTextField("emergencyContact", 20);
     private JTextField emergencyContactNumber = new JTextField("emergencyContactNumber", 20);
     private JTextField staffNo = new JTextField("staffNo", 20);
+    private JButton btnConfirmPD;
     //endregion
 
     //region main method and constructor
@@ -118,107 +124,6 @@ public class Yuconz_project_app implements ActionListener
     }
     //endregion
 
-    /**
-     * menu
-     * Displays the options the users have
-     */
-    private void menu()
-    {
-        String selection;
-        String response;
-        int selectionInt;
-        int responseInt;
-
-        do{
-            System.out.println("\n");
-            System.out.println("Please select an option from below");
-            System.out.println("1. Show user information");
-            System.out.println("2. Read details");
-            System.out.println("3. Create details");
-            System.out.println("4. Amend details");
-            System.out.println("5. Logout");
-
-            selection = input.nextLine();
-
-            try{
-                 selectionInt = Integer.parseInt(selection);
-            } catch (NumberFormatException e) {
-                selectionInt = 0;
-            }
-
-            System.out.println("\n\n\n\n\n\n\n");
-
-            switch(selectionInt) {
-                case 0: System.out.println("Please enter a number"); break;
-                case 1: System.out.println(currentUser.getUserInfo()); break;
-                case 2: System.out.println("Please enter the username of employee:") ;
-                    String username = input.nextLine();
-                    if(!readPersonalDetails(username)){
-                        System.out.println("unauthorised access");
-                    }break;
-                case 3: System.out.println("Please enter the username of employee:") ;
-                    Boolean confirmed = false;
-                    while(!confirmed) {
-                        String createUser = input.nextLine();
-                        if (createPersonalDetails(createUser)) {
-                            Document temp = createPersonalDetailsDocument(createUser);
-                            System.out.println("\n");
-                            temp.print();
-                            /*
-                             * Confirmation of entered data
-                             */
-                            do {
-                                System.out.println("Are these details correct? Type 1 for 'yes' or 2 for 'no' or 3 to quit:");
-                                response = input.nextLine();
-                                try {
-                                    responseInt = Integer.parseInt(response);
-                                } catch (NumberFormatException e) {
-                                    responseInt = 0;
-                                }
-
-                                switch (responseInt) {
-                                    case 1: //yes
-                                        database.createNewUser(temp);
-                                        confirmed = true;
-                                        break;
-                                    case 2: //no
-                                        System.out.println("Please re-enter details:");
-                                        temp = createPersonalDetailsDocument(createUser);
-                                        System.out.println("\n");
-                                        temp.print();
-                                        break;
-                                    case 3: //quit
-                                        confirmed = true;
-                                        System.out.println("No user added");
-                                        break;
-                                    default: //no number entered
-                                        System.out.println("Please enter a number"); //need this part to loop
-                                        break;
-                                }
-                            } while (!confirmed);
-
-                        } else {
-                            System.out.println("unauthorised access");
-                            break;
-                        }
-                } break;
-                case 4:
-                    System.out.println("Please enter the username of employee:") ;
-                    String amendUser = input.nextLine();
-                    if (amendPersonalDetails(amendUser)) {
-                        database.amendUserPersonalDetails(amendPersonalDetailsDocument(database.fetchPersonalDetails(amendUser)));
-                        break;
-                    } else {
-                        System.out.println("unauthorised access");
-                        break;
-                    }
-                case 5: logout(); break;
-            }
-        } while(loggedIn);
-
-        //displayLoginMenu();
-    }
-
     //region login/logout
 
     /**
@@ -257,117 +162,75 @@ public class Yuconz_project_app implements ActionListener
 
     //region Personal Details
     /**
-     * amendPersonalDetailsDocument
-     * edits an existing personal details document
-     * @param userDetails
-     * @return the document
-     */
-    public Document amendPersonalDetailsDocument(Document userDetails)
-    {
-        String selection;
-        int selectionInt = 0;
-
-        String name = userDetails.getName();
-        String surname = userDetails.getSurname();
-        String dob = userDetails.getDob();
-        String address = userDetails.getAddress();
-        String townCity = userDetails.getTownCity();
-        String county = userDetails.getCounty();
-        String postcode = userDetails.getPostcode();
-        String telephoneNumber = userDetails.getTelephoneNumber();
-        String mobileNumber = userDetails.getMobileNumber();
-        String emergencyContact = userDetails.getEmergencyContact();
-        String emergencyContactNumber = userDetails.getEmergencyContactNumber();
-
-        do {
-            System.out.println("\n");
-            System.out.println("Which would you like to change?");
-            System.out.println("1: Name: " + name);
-            System.out.println("2: Surname: " + surname);
-            System.out.println("3: Date of Birth: " + dob);
-            System.out.println("4: Address: " + address);
-            System.out.println("5: Town/City: " + townCity);
-            System.out.println("6: County: " + county);
-            System.out.println("7: Post Code: " + postcode);
-            System.out.println("8: Telephone Number: " + telephoneNumber);
-            System.out.println("9: Mobile Number: " + mobileNumber);
-            System.out.println("10: Emergency Contact: " + emergencyContact);
-            System.out.println("11: Emergency Contact Number: " + emergencyContactNumber);
-            System.out.println("0: Quit");
-            System.out.println("\n");
-
-            selection = input.nextLine();
-
-            try{
-                selectionInt = Integer.parseInt(selection);
-            } catch (NumberFormatException e) {
-                selectionInt = -1;
-            }
-
-            switch (selectionInt) {
-                case 1: System.out.println("Enter a new name");
-                    name = input.nextLine();
-                    break;
-                case 2: System.out.println("Enter a new surname");
-                    surname = input.nextLine();
-                    break;
-                case 3: System.out.println("Enter a new date of birth");
-                    dob = input.nextLine();
-                    break;
-                case 4: System.out.println("Enter a new address");
-                    address = input.nextLine();
-                    break;
-                case 5: System.out.println("Enter a new town or city");
-                    townCity = input.nextLine();
-                    break;
-                case 6: System.out.println("Enter a new county");
-                    county = input.nextLine();
-                    break;
-                case 7: System.out.println("Enter a new postcode");
-                    postcode = input.nextLine();
-                    break;
-                case 8: System.out.println("Enter a new telephone number");
-                    telephoneNumber = input.nextLine();
-                    break;
-                case 9: System.out.println("Enter a new mobile number");
-                    mobileNumber = input.nextLine();
-                    break;
-                case 10: System.out.println("Enter a new emergency contact");
-                    emergencyContact = input.nextLine();
-                    break;
-                case 11: System.out.println("Enter a new emergency contact number");
-                    emergencyContactNumber = input.nextLine();
-                    break;
-                case 0:
-                    break;
-                default:
-                    System.out.println("That is not a valid choice.");
-                    break;
-            }
-
-        } while (selectionInt != 0);
-        Document newUserDetails = new Document(userDetails.getUsername());
-        newUserDetails.populateDocument(userDetails.getStaffNo(), name, surname, dob, address, townCity, county, postcode, telephoneNumber, mobileNumber, emergencyContact, emergencyContactNumber);
-        return newUserDetails;
-    }
-
-    /**
      * createPersonalDetailsDocument
      * Creates a personal details document for a user
      * @param username
      * @return the document
      */
-    private Document createPersonalDetailsDocument(String username)
+    private Document getPersonalDetailsDocument(String username)
     {
-        Document newUser = new Document(username);
+        Document userDetails = new Document(username);
 
-        newUser.populateDocument(database.getStaffID(username), name.getText(), surname.getText(), dob.getText(), address.getText(), townCity.getText(), county.getText(), postcode.getText(), telephoneNumber.getText(),
-                mobileNumber.getText(), emergencyContact.getText(), emergencyContactNumber.getText());
-        return newUser;
+        if (personalDetailsDocumentID > 0) {
+            userDetails.populateDocument(personalDetailsDocumentID, Integer.parseInt(staffNo.getText()), name.getText(), surname.getText(), dob.getText(), address.getText(), townCity.getText(), county.getText(), postcode.getText(), telephoneNumber.getText(), mobileNumber.getText(), emergencyContact.getText(), emergencyContactNumber.getText());
+        } else {
+            userDetails.populateDocument((database.getPDCount()+1), Integer.parseInt(staffNo.getText()), name.getText(), surname.getText(), dob.getText(), address.getText(), townCity.getText(), county.getText(), postcode.getText(), telephoneNumber.getText(), mobileNumber.getText(), emergencyContact.getText(), emergencyContactNumber.getText());
+        }
 
+        return userDetails;
     }
 
-    public boolean readPersonalDetails(String userIn){
+    /**
+     * setExistingDetails
+     * sets the text box text to the details found in the database
+     * @param username
+     */
+    private void setExistingDetails(String username)
+    {
+        Document existingUserData = database.fetchPersonalDetails(username);
+        personalDetailsDocumentID = existingUserData.getDocumentID();
+        staffNo.setText("" + existingUserData.getStaffNo());
+        name.setText(existingUserData.getName());
+        surname.setText(existingUserData.getSurname());
+        dob.setText(existingUserData.getDob());
+        address.setText(existingUserData.getAddress());
+        townCity.setText(existingUserData.getTownCity());
+        county.setText(existingUserData.getCounty());
+        postcode.setText(existingUserData.getPostcode());
+        telephoneNumber.setText(existingUserData.getTelephoneNumber());
+        mobileNumber.setText(existingUserData.getMobileNumber());
+        emergencyContact.setText(existingUserData.getEmergencyContact());
+        emergencyContactNumber.setText(existingUserData.getEmergencyContactNumber());
+    }
+
+    /**
+     * setExistingDetails
+     * sets the text box text to the details found in the database
+     */
+    private void clearExistingDetails()
+    {
+        staffNo.setText("Staff number (Integer)");
+        name.setText("Name");
+        surname.setText("Surname");
+        dob.setText("Date of birth (yyyy-mm-dd)");
+        address.setText("Address");
+        townCity.setText("Town/City");
+        county.setText("County");
+        postcode.setText("PostCode");
+        telephoneNumber.setText("Telephone Number");
+        mobileNumber.setText("Mobile Number");
+        emergencyContact.setText("Emergency Contact");
+        emergencyContactNumber.setText("Emergency Contact Number");
+    }
+
+    /**
+     * readPersonalDetails
+     * checks permissions of the user for reading personal details files
+     * @param userIn
+     * @return true if allowed, otherwise false
+     */
+    public boolean readPersonalDetails(String userIn)
+    {
         //run authorisation method with readPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn,"readPersonalDetails")){
             if(database.checkExists(userIn)) {
@@ -382,7 +245,14 @@ public class Yuconz_project_app implements ActionListener
         }
     }
 
-    public boolean createPersonalDetails(String userIn){
+    /**
+     * createPersonalDetails
+     * checks permissions of the user for creating personal details files
+     * @param userIn
+     * @return true if allowed, otherwise false
+     */
+    public boolean createPersonalDetails(String userIn)
+    {
         //run authorisation method with createPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn, "createPersonalDetails")){
             if(!database.checkExists(userIn) && database.checkExistsEmployee(userIn)) {
@@ -395,7 +265,14 @@ public class Yuconz_project_app implements ActionListener
         }
     }
 
-    public  boolean amendPersonalDetails(String userIn){
+    /**
+     * amendPersonalDetails
+     * checks permissions of the user for amending personal details files
+     * @param userIn
+     * @return true if allowed, otherwise false
+     */
+    public  boolean amendPersonalDetails(String userIn)
+    {
         //run authorisation method with amendPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn, "amendPersonalDetails")){
            if(database.checkExists(userIn)){
@@ -517,7 +394,8 @@ public class Yuconz_project_app implements ActionListener
      * creates the JPanel of the view personal details screen
      * @return a JPanel main menu screen
      */
-    private JPanel createViewCard() {
+    private JPanel createViewCard()
+    {
         JPanel target = new JPanel(new FlowLayout());
 
         JButton backButton = new JButton("back");
@@ -536,12 +414,12 @@ public class Yuconz_project_app implements ActionListener
      * creates the JPanel of the ammend and create personal details screen
      * @return a JPanel main menu screen
      */
-    private JPanel createAmmendCard() {
+    private JPanel createAmmendCard()
+    {
         JPanel target = new JPanel(new GridLayout(12,2));
 
-        JButton confirmButton = new JButton("confirm");
-        confirmButton.addActionListener(this);
-        confirmButton.setActionCommand("confirmPD");
+        btnConfirmPD = new JButton("confirm");
+        btnConfirmPD.addActionListener(this);
 
         JButton backButton = new JButton("back");
         backButton.addActionListener(this);
@@ -559,7 +437,7 @@ public class Yuconz_project_app implements ActionListener
         target.add(emergencyContact);
         target.add(emergencyContactNumber);
         target.add(staffNo);
-        target.add(confirmButton);
+        target.add(btnConfirmPD);
         target.add(backButton);
         target.setBackground(OOCCOO);
 
@@ -599,50 +477,71 @@ public class Yuconz_project_app implements ActionListener
         System.out.println("Run: " + e.getActionCommand());
         CardLayout cl = (CardLayout)(cards.getLayout());
 
-        if(e.getActionCommand().equalsIgnoreCase("authenticate")) {
-            if (login(tfUsername.getText(), tfPassword.getText())) {
+        if(e.getActionCommand().equalsIgnoreCase("authenticate")) { //loggin in from login screen
+            if (login(tfUsername.getText(), tfPassword.getText())) { //checks login details
                 cl.show(cards, MAINMENU);
-                frame.setSize(new Dimension(640,360));
+                frame.setSize(new Dimension(640,360)); //shows main menu and resizes
+
                 warningLabel.setText("");
                 currentUser.getPosition().setSubordinates(database.getSubordinates(tfUsername.getText()));
                 userInfo.setText(currentUser.getUserInfo());
-            } else {
+
+            } else { //wrong login details
                 tfUsername.setText("Username");
                 tfPassword.setText("Password");
                 warningLabel.setText("Incorrect Login");
             }
-        } else if (e.getActionCommand().equals(LOGIN)) {
-            cl.show(cards, LOGIN);
-            frame.setSize(new Dimension(300,150));
 
-            /*
-             * Popup window
-              * inputUser() returns what they put in
-             */
-        } else if (e.getActionCommand().equals(CREATEPD) || e.getActionCommand().equals(AMENDPD) || e.getActionCommand().equals(VIEWPD)){
-            String temp = inputUser();
-            if (temp == null) {
+        } else if (e.getActionCommand().equals(LOGIN)) { //return to login screen
+            cl.show(cards, LOGIN);
+            logout();
+            tfUsername.setText("Username");
+            tfPassword.setText("Password");
+            frame.setSize(new Dimension(300,150)); //shows login screen and resizes
+
+        } else if (e.getActionCommand().equals(CREATEPD) || e.getActionCommand().equals(AMENDPD) || e.getActionCommand().equals(VIEWPD)) { //working with personal details files
+
+            personalDetailsUser = inputUser(); //popup window returns string the user entered (should be a username)
+
+            if (personalDetailsUser == null) { //nothing entered into the
+
                 JOptionPane.showMessageDialog(frame, "Username can't be empty", "Username error", JOptionPane.PLAIN_MESSAGE);
+
+            } else if (!database.checkExists(personalDetailsUser) && !e.getActionCommand().equals(CREATEPD)) { //user doesn't exist
+
+                JOptionPane.showMessageDialog(frame, "User does not have a personal details file", "Username error", JOptionPane.PLAIN_MESSAGE);
+
+            } else if (database.checkExists(personalDetailsUser) && e.getActionCommand().equals(CREATEPD)) { //trying to create a file that already exists
+
+                JOptionPane.showMessageDialog(frame, "User already exists", "Username error", JOptionPane.PLAIN_MESSAGE);
+
             } else {
-                switch (e.getActionCommand()){
+                switch (e.getActionCommand()) {
                     case VIEWPD:
-                        if(readPersonalDetails(temp)){
+                        if (readPersonalDetails(personalDetailsUser)) {
                             viewDetailsField.setText(detailsDocument.read());
-                            cl.show(cards, (String)e.getActionCommand());
-                        }else{
+                            cl.show(cards, (String) e.getActionCommand());
+                        } else {
                             JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
                         }
                         break;
                     case AMENDPD:
-                        if(amendPersonalDetails(temp)){
-                            cl.show(cards, (String)e.getActionCommand());
+                        if (amendPersonalDetails(personalDetailsUser)) {
+                            cl.show(cards, (String) e.getActionCommand());
+                            setExistingDetails(personalDetailsUser);
+                            staffNo.setEditable(false);
+                            btnConfirmPD.setActionCommand("confirmAmendPD");
+
                         } else {
                             JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
                         }
                         break;
                     case CREATEPD:
-                        if(createPersonalDetails(temp)){
+                        if (createPersonalDetails(personalDetailsUser)) {
                             cl.show(cards, AMENDPD);
+                            clearExistingDetails();
+                            staffNo.setEditable(true);
+                            btnConfirmPD.setActionCommand("confirmCreatePD");
                         } else {
                             JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
                         }
@@ -650,6 +549,30 @@ public class Yuconz_project_app implements ActionListener
                         break;
                 }
             }
+        } else if (e.getActionCommand().equals("confirmAmendPD") || e.getActionCommand().equals("confirmCreatePD")) {
+
+            String dobString = dob.getText();
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date dateOfBirth;
+
+            try {
+                dateOfBirth = df.parse(dobString);
+                String newDateString = df.format(dateOfBirth);
+
+                Integer.parseInt(staffNo.getText());
+
+                if (e.getActionCommand().equals("confirmAmendPD")) {
+                    database.amendUserPersonalDetails(getPersonalDetailsDocument(personalDetailsUser));
+                } else {
+                    database.createNewUser(getPersonalDetailsDocument(personalDetailsUser));
+                }
+
+                personalDetailsDocumentID = 0;
+                cl.show(cards, MAINMENU);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frame, "Ensure staff number is an integer and date of birth is in the format: yyyy-mm-dd.", "Invalid Entry", JOptionPane.PLAIN_MESSAGE);
+            }
+
         } else if (e.getActionCommand().equals(MAINMENU)) {
             cl.show(cards, MAINMENU);
             frame.setSize(new Dimension(640,360));
@@ -661,6 +584,11 @@ public class Yuconz_project_app implements ActionListener
 
     }
 
+    /**
+     * inputUser
+     * creates and shows a popup window prompting the user for a username
+     * @return the username if one is given, otherwise return null
+     */
     private String inputUser()
     {
         String usernameInput = (String)JOptionPane.showInputDialog(frame, "Enter an employee username", "Username Required", JOptionPane.PLAIN_MESSAGE);

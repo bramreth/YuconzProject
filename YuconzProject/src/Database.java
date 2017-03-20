@@ -110,7 +110,7 @@ public class Database {
             Document doc = new Document(username);
             while(rs.next()){
                 //will overwrite doc each time it loops...
-                doc.populateDocument(rs.getInt("documentID"), rs.getString("name"), rs.getString("surname"), rs.getString("dateofbirth"), rs.getString("address"), rs.getString("town"), rs.getString("County"), rs.getString("postcode"), rs.getString("telephonenumber"), rs.getString("mobilenumber"), rs.getString("emergencycontact"), rs.getString("emergencycontactnumber"));
+                doc.populateDocument(rs.getInt("documentID"), rs.getInt("userID"), rs.getString("name"), rs.getString("surname"), rs.getString("dateofbirth"), rs.getString("address"), rs.getString("town"), rs.getString("county"), rs.getString("postcode"), rs.getString("telephonenumber"), rs.getString("mobilenumber"), rs.getString("emergencycontact"), rs.getString("emergencycontactnumber"));
             }
             return doc;
         } catch (SQLException err) {
@@ -169,7 +169,7 @@ public class Database {
     {
         try {
             Statement s = con.createStatement();
-            String sql = "INSERT INTO Personal_Details (name, surname, dateofbirth, address, town, County, postcode, telephonenumber, mobilenumber, emergencycontact, emergencycontactnumber, username, userID) values ('"+ document.getName() + "','" + document.getSurname() + "','" + document.getDob() + "','" + document.getAddress() + "','" + document.getTownCity() + "','" + document.getCounty() + "','" + document.getPostcode() + "','" + document.getTelephoneNumber() + "','" +document.getMobileNumber() + "','" + document.getEmergencyContact() + "','" + document.getEmergencyContactNumber() + "','" + document.getUsername() + "','" + getStaffID(document.getUsername()) + "')";
+            String sql = "INSERT INTO Personal_Details (documentID, name, surname, dateofbirth, address, town, County, postcode, telephonenumber, mobilenumber, emergencycontact, emergencycontactnumber, username, userID) values ('" + document.getDocumentID() + "','" + document.getName() + "','" + document.getSurname() + "','" + document.getDob() + "','" + document.getAddress() + "','" + document.getTownCity() + "','" + document.getCounty() + "','" + document.getPostcode() + "','" + document.getTelephoneNumber() + "','" +document.getMobileNumber() + "','" + document.getEmergencyContact() + "','" + document.getEmergencyContactNumber() + "','" + document.getUsername() + "','" + getStaffID(document.getUsername()) + "')";
             s.executeUpdate(sql);
             System.out.println("Document has been created successfully");
             con.commit();
@@ -190,5 +190,22 @@ public class Database {
             System.out.println(err.getMessage());
         }
 
+    }
+
+    public int getPDCount()
+    {
+        int count = 0;
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT count(*) FROM Personal_Details;";
+            ResultSet rs = s.executeQuery(sql);
+            while(rs.next()){
+                count = rs.getInt("count(*)");
+            }
+            return count;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+            return count;
+        }
     }
 }

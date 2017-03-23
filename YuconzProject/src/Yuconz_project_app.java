@@ -1,5 +1,6 @@
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 import java.awt.*;
@@ -11,7 +12,7 @@ import javax.swing.*;
  * Main application class
  */
 
-public class Yuconz_project_app implements ActionListener
+public class Yuconz_project_app implements ActionListener,FocusListener
 {
     //region global variables
     private Authentication_server authentication_server;
@@ -28,7 +29,7 @@ public class Yuconz_project_app implements ActionListener
     private static JFrame frame;
     private JPanel cards; //a panel that uses CardLayout
     private JTextField tfUsername = new JTextField("Username", 20);
-    private JTextField tfPassword = new JTextField("Password", 20);
+    private JPasswordField tfPassword = new JPasswordField("Password", 20);
     private JLabel warningLabel = new JLabel();
     private JLabel userInfo = new JLabel();
     private JLabel viewDetailsField = new JLabel();
@@ -174,7 +175,7 @@ public class Yuconz_project_app implements ActionListener
         if (personalDetailsDocumentID > 0) {
             userDetails.populateDocument(personalDetailsDocumentID, Integer.parseInt(staffNo.getText()), name.getText(), surname.getText(), dob.getText(), address.getText(), townCity.getText(), county.getText(), postcode.getText(), telephoneNumber.getText(), mobileNumber.getText(), emergencyContact.getText(), emergencyContactNumber.getText());
         } else {
-            userDetails.populateDocument((database.getPDCount()+1), Integer.parseInt(staffNo.getText()), name.getText(), surname.getText(), dob.getText(), address.getText(), townCity.getText(), county.getText(), postcode.getText(), telephoneNumber.getText(), mobileNumber.getText(), emergencyContact.getText(), emergencyContactNumber.getText());
+            userDetails.populateDocument((database.countRows("Personal_Details")+1), Integer.parseInt(staffNo.getText()), name.getText(), surname.getText(), dob.getText(), address.getText(), townCity.getText(), county.getText(), postcode.getText(), telephoneNumber.getText(), mobileNumber.getText(), emergencyContact.getText(), emergencyContactNumber.getText());
         }
 
         return userDetails;
@@ -185,8 +186,7 @@ public class Yuconz_project_app implements ActionListener
      * sets the text box text to the details found in the database
      * @param username
      */
-    private void setExistingDetails(String username)
-    {
+    private void setExistingDetails(String username)   {
         Document existingUserData = database.fetchPersonalDetails(username);
         personalDetailsDocumentID = existingUserData.getDocumentID();
         staffNo.setText("" + existingUserData.getStaffNo());
@@ -335,7 +335,7 @@ public class Yuconz_project_app implements ActionListener
     }
 
     /**
-     * addComponnentsToPane
+     * addComponentsToPane
      * adds all components to the contentPane
      * @param contentPane
      */
@@ -349,7 +349,7 @@ public class Yuconz_project_app implements ActionListener
         JPanel card1 = createLoginCard();
         JPanel card2 = createMenuCard();
         JPanel card3 = createViewCard();
-        JPanel card4 = createAmmendCard();
+        JPanel card4 = createAmendCard();
         JPanel card5 = createReviewCard();
 
         //Create the panel that contains the "cards".
@@ -457,11 +457,11 @@ public class Yuconz_project_app implements ActionListener
     }
 
     /**
-     * createAmmendCard
-     * creates the JPanel of the ammend and create personal details screen
+     * createAmendCard
+     * creates the JPanel of the amend and create personal details screen
      * @return a JPanel main menu screen
      */
-    private JPanel createAmmendCard()
+    private JPanel createAmendCard()
     {
         JPanel target = new JPanel(new GridLayout(12,2));
 
@@ -471,6 +471,19 @@ public class Yuconz_project_app implements ActionListener
         JButton backButton = new JButton("back");
         backButton.addActionListener(this);
         backButton.setActionCommand(MAINMENU);
+
+        surname.addFocusListener(this);
+        name.addFocusListener(this);
+        dob.addFocusListener(this);
+        address.addFocusListener(this);
+        townCity.addFocusListener(this);
+        county.addFocusListener(this);
+        postcode.addFocusListener(this);
+        telephoneNumber.addFocusListener(this);
+        mobileNumber.addFocusListener(this);
+        emergencyContactNumber.addFocusListener(this);
+        emergencyContact.addFocusListener(this);
+        staffNo.addFocusListener(this);
 
         target.add(surname);
         target.add(name);
@@ -504,19 +517,8 @@ public class Yuconz_project_app implements ActionListener
         btnLogin.addActionListener(this);
         btnLogin.setActionCommand("authenticate");
 
-        tfUsername.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-                tfUsername.setText("");
-            }
-        });
-
-        tfPassword.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-                tfPassword.setText("");
-            }
-        });
+        tfUsername.addFocusListener(this);
+        tfPassword.addFocusListener(this);
 
         login.add(tfUsername);
         login.add(tfPassword);
@@ -561,54 +563,54 @@ public class Yuconz_project_app implements ActionListener
 
         } else if (e.getActionCommand().equals(CREATEPD) || e.getActionCommand().equals(AMENDPD) || e.getActionCommand().equals(VIEWPD)) { //working with personal details files
 
-            personalDetailsUser = inputUser(); //popup window returns string the user entered (should be a username)
-
-            if (personalDetailsUser == null) { //nothing entered into the
-
-                JOptionPane.showMessageDialog(frame, "Username can't be empty", "Username error", JOptionPane.PLAIN_MESSAGE);
-
-            } else if (!database.checkExistsPersonalDetails(personalDetailsUser) && !e.getActionCommand().equals(CREATEPD)) { //user doesn't exist
-
-                JOptionPane.showMessageDialog(frame, "User does not have a personal details file", "Username error", JOptionPane.PLAIN_MESSAGE);
-
-            } else if (database.checkExistsPersonalDetails(personalDetailsUser) && e.getActionCommand().equals(CREATEPD)) { //trying to create a file that already exists
-
-                JOptionPane.showMessageDialog(frame, "User already exists", "Username error", JOptionPane.PLAIN_MESSAGE);
-
-            } else {
-                switch (e.getActionCommand()) {
-                    case VIEWPD:
-                        if (readPersonalDetails(personalDetailsUser)) {
-                            viewDetailsField.setText(detailsDocument.read());
-                            cl.show(cards, (String) e.getActionCommand());
-                        } else {
-                            JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
-                        }
+            switch (e.getActionCommand()) {
+                case VIEWPD:
+                    personalDetailsUser = selectPDUser(VIEWPD); //popup window returns string the user entered (should be a username)
+                    if(personalDetailsUser == null || personalDetailsUser.equals("None found")) {
                         break;
-                    case AMENDPD:
-                        if (amendPersonalDetails(personalDetailsUser)) {
-                            cl.show(cards, (String) e.getActionCommand());
-                            setExistingDetails(personalDetailsUser);
-                            staffNo.setEditable(false);
-                            btnConfirmPD.setActionCommand("confirmAmendPD");
+                    }
 
-                        } else {
-                            JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
-                        }
+                    if (readPersonalDetails(personalDetailsUser)) {
+                        viewDetailsField.setText(detailsDocument.read());
+                        cl.show(cards, (String) e.getActionCommand());
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
+                    }
+                    break;
+                case AMENDPD:
+                    personalDetailsUser = selectPDUser(AMENDPD); //popup window returns string the user entered (should be a username)
+                    if(personalDetailsUser == null || personalDetailsUser.equals("None found")) {
                         break;
-                    case CREATEPD:
-                        if (createPersonalDetails(personalDetailsUser)) {
-                            cl.show(cards, AMENDPD);
-                            clearExistingDetails(personalDetailsUser);
-                            staffNo.setEditable(true);
-                            btnConfirmPD.setActionCommand("confirmCreatePD");
-                        } else {
-                            JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
-                        }
-                    default:
+                    }
+
+                    if (amendPersonalDetails(personalDetailsUser)) {
+                        cl.show(cards, (String) e.getActionCommand());
+                        setExistingDetails(personalDetailsUser);
+                        staffNo.setEditable(false);
+                        btnConfirmPD.setActionCommand("confirmAmendPD");
+
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
+                    }
+                    break;
+                case CREATEPD:
+                    personalDetailsUser = selectPDUser(CREATEPD); //popup window returns string the user entered (should be a username)
+                    if(personalDetailsUser == null || personalDetailsUser.equals("None found")) {
                         break;
-                }
+                    }
+
+                    if (createPersonalDetails(personalDetailsUser)) {
+                        cl.show(cards, AMENDPD);
+                        clearExistingDetails(personalDetailsUser);
+                        staffNo.setEditable(true);
+                        btnConfirmPD.setActionCommand("confirmCreatePD");
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
+                    }
+                default:
+                    break;
             }
+
         } else if (e.getActionCommand().equals("confirmAmendPD") || e.getActionCommand().equals("confirmCreatePD")) {
 
             String dobString = dob.getText();
@@ -637,8 +639,8 @@ public class Yuconz_project_app implements ActionListener
             warningLabel.setText("");
         } else if (e.getActionCommand().equals("createReview")) {
             if(createReview()) {
-                String reviewee = selectUser();
-                System.out.println(reviewee);
+                String reviewee = selectReviewee();
+                database.createNewReview(currentUser.getUsername(), reviewee);
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
             }
@@ -654,7 +656,7 @@ public class Yuconz_project_app implements ActionListener
      * shows the manager or director a list of their subordinates to choose from
      * @return selected user's username
      */
-    private String selectUser() {
+    private String selectReviewee() {
 
         Object[] employees = new Object[currentUser.getPosition().getSubordinates().size()];
 
@@ -673,20 +675,51 @@ public class Yuconz_project_app implements ActionListener
     }
 
     /**
-     * inputUser
+     * selectPDUser
      * creates and shows a popup window prompting the user for a username
      * @return the username if one is given, otherwise return null
      */
-    private String inputUser()
+     private String selectPDUser(String action)
     {
-        String usernameInput = (String)JOptionPane.showInputDialog(frame, "Enter an employee username", "Username Required", JOptionPane.PLAIN_MESSAGE);
+        ArrayList<String> employeesArrayList;
+        Object[] employees;
+        if (action.equals(AMENDPD) || action.equals(VIEWPD)) { //viewing and amending requires the same list of usernames
+            employeesArrayList = database.getPersonalDetailsUserList();
+            employees = new Object[employeesArrayList.size()];
+
+        } else if (action.equals(CREATEPD)) { //creating requires a list of all users without personal details files
+            employeesArrayList = database.getUsersWithoutPersonalDetails();
+            employees = new Object[employeesArrayList.size()];
+
+        } else { //if action is an unknown option no users are found
+            employeesArrayList = new ArrayList<String>();
+            employeesArrayList.set(0, "None found");
+            employees = new Object[1];
+        }
+
+        for(int i = 0; i < employees.length; i++) {
+            employees[i] = employeesArrayList.get(i);
+        }
+
+        String subordinate = (String)JOptionPane.showInputDialog(frame, "Select an employee", action, JOptionPane.PLAIN_MESSAGE, null, employees, employees[0]);
 
         //If a string was returned, return it to above
-        if ((usernameInput != null) && (usernameInput.length() > 0)) {
-            return usernameInput;
+        if ((subordinate != null) && (subordinate.length() > 0)) {
+            return subordinate;
         } else {
             return null;
         }
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        JTextField tempTF = (JTextField)e.getComponent();
+        tempTF.selectAll();
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        //nothing to see here
     }
     //endregion
 }

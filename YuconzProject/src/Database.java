@@ -142,6 +142,40 @@ public class Database {
         }
     }
 
+    public ArrayList<String> getPersonalDetailsUserList()
+    {
+        ArrayList<String> personalDetailsUserList = new ArrayList<>();
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT username FROM Personal_Details";
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                personalDetailsUserList.add(rs.getString("username"));
+            }
+            return personalDetailsUserList;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return null;
+    }
+
+    public ArrayList<String> getUsersWithoutPersonalDetails()
+    {
+        ArrayList<String> personalDetailsUserList = new ArrayList<>();
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT Employee_Data.username FROM Employee_Data WHERE NOT EXISTS (SELECT Personal_Details.username FROM Personal_Details WHERE Personal_Details.username = Employee_Data.username)";
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                personalDetailsUserList.add(rs.getString("username"));
+            }
+            return personalDetailsUserList;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return null;
+    }
+
     /**
      * check whether or not there is a employee data entry for the given user
      * @param userIn
@@ -192,12 +226,12 @@ public class Database {
 
     }
 
-    public int getPDCount()
+    public int countRows(String table)
     {
         int count = 0;
         try {
             Statement s = con.createStatement();
-            String sql = "SELECT count(*) FROM Personal_Details;";
+            String sql = "SELECT count(*) FROM " + table;
             ResultSet rs = s.executeQuery(sql);
             while(rs.next()){
                 count = rs.getInt("count(*)");
@@ -206,6 +240,20 @@ public class Database {
         } catch (SQLException err) {
             System.out.println(err.getMessage());
             return count;
+        }
+    }
+
+    public void createNewReview (String supervisor, String reviewee)
+    {
+        try {
+            Statement s = con.createStatement();
+            String table = "Review_Details";
+            String sql = "INSERT INTO Review_Details (reviewID, username, userID, manager) values (" + (countRows(table)+1) + ", '" + reviewee + "', " + getStaffID(reviewee) + ", '" +  supervisor + "')";
+            s.executeUpdate(sql);
+            System.out.println("Review has been created successfully");
+            con.commit();
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
         }
     }
 }

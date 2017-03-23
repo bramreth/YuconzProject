@@ -13,6 +13,7 @@ public class Review {
     private String reviewerComments;
     private Recommendation reviewerRecommendation;
     private Signature revieweeSignature, managerSignature, secondManagerSignature;
+    private boolean signedOff;
 
     /**
      * sets all information except for performance summaries, goal summaries, the recommendation and signatures
@@ -97,6 +98,9 @@ public class Review {
         }
     }
 
+    public void signOff(boolean signedOffIn){
+        signedOff = signedOffIn;
+    }
     //endregion
 
     //region data structures

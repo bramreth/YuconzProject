@@ -32,7 +32,7 @@ public class Yuconz_project_app implements ActionListener
     private JLabel warningLabel = new JLabel();
     private JLabel userInfo = new JLabel();
     private JLabel viewDetailsField = new JLabel();
-    private final Color OOCCOO = new Color(0, 204, 0);
+    private final Color OOCCOO = new Color(174, 198, 207);
     //document text boxes
     private JTextField surname = new JTextField("surname", 20);
     private JTextField name = new JTextField("name", 20);

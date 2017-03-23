@@ -42,6 +42,11 @@ public class Authorisation {
                     return true;
                 }
                 break;
+            case "readReviewRecord":
+                if (currentUser.getPosition().getPositionName().equals("") || currentUser.getPosition().getPositionName().equals("Director")) {
+                    return true;
+                }
+                break;
         }
         return false;
     }

@@ -32,11 +32,11 @@ class Yuconz_project_appTest {
         assertTrue(result);
     }
 
-    //add inlalid password valid login
+    //add Invalid password valid login
 
     @org.junit.jupiter.api.Test
     public void testInValidLogin(){
-        System.out.println("Inalid login");
+        System.out.println("Invalid login");
         boolean result = app.login("notARealName","INVALIDPASSWORD");
         assertFalse(result);
     }
@@ -50,7 +50,7 @@ class Yuconz_project_appTest {
 
     @org.junit.jupiter.api.Test
     public void testInValidLogout(){
-        System.out.println("inalid logout");
+        System.out.println("Invalid logout");
         app.logout();
         assertFalse(app.getLoggedIn());
     }
@@ -84,7 +84,7 @@ class Yuconz_project_appTest {
     public void allowedReadPersonalDetails(){
         System.out.println("valid read personal details");
         app.login("hruser2","password2");//has permission
-        assertTrue(app.readPersonalDetails("hruser2"));
+        assertTrue(app.readPersonalDetails("user1"));
     }
 
     @org.junit.jupiter.api.Test

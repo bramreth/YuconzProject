@@ -207,16 +207,17 @@ public class Yuconz_project_app implements ActionListener
      * setExistingDetails
      * sets the text box text to the details found in the database
      */
-    private void clearExistingDetails()
+    private void clearExistingDetails(String username)
     {
-        staffNo.setText("Staff number (Integer)");
-        name.setText("Name");
-        surname.setText("Surname");
+        Document existingUserData = database.fetchPersonalDetails(username);
+        staffNo.setText("" + existingUserData.getStaffNo());
+        name.setText(existingUserData.getName());
+        surname.setText(existingUserData.getSurname());
         dob.setText("Date of birth (yyyy-mm-dd)");
         address.setText("Address");
         townCity.setText("Town/City");
         county.setText("County");
-        postcode.setText("PostCode");
+        postcode.setText("Post Code");
         telephoneNumber.setText("Telephone Number");
         mobileNumber.setText("Mobile Number");
         emergencyContact.setText("Emergency Contact");
@@ -233,7 +234,7 @@ public class Yuconz_project_app implements ActionListener
     {
         //run authorisation method with readPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn,"readPersonalDetails")){
-            if(database.checkExists(userIn)) {
+            if(database.checkExistsPersonalDetails(userIn)) {
                 Document doc = database.fetchPersonalDetails(userIn);
                 detailsDocument = doc;
                 return true;
@@ -255,7 +256,7 @@ public class Yuconz_project_app implements ActionListener
     {
         //run authorisation method with createPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn, "createPersonalDetails")){
-            if(!database.checkExists(userIn) && database.checkExistsEmployee(userIn)) {
+            if(!database.checkExistsPersonalDetails(userIn) && database.checkExistsEmployeeData(userIn)) {
                return true;
             } else {
                 return false;
@@ -275,13 +276,28 @@ public class Yuconz_project_app implements ActionListener
     {
         //run authorisation method with amendPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, userIn, "amendPersonalDetails")){
-           if(database.checkExists(userIn)){
+           if(database.checkExistsPersonalDetails(userIn)){
                Document doc = database.fetchPersonalDetails(userIn);
                detailsDocument = doc;
                return true;
            } else {
                return false;
            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * createReview
+     * checks permissions of the user for creating a review document
+     * @return true if allowed, otherwise false
+     */
+    public  boolean createReview()
+    {
+        //run authorisation method with amendPersonalDetails as an action
+        if(authorisation.authorisationCheck(currentUser, "", "createReviewRecord")){
+           return true;
         } else {
             return false;
         }
@@ -296,6 +312,7 @@ public class Yuconz_project_app implements ActionListener
     private final static String VIEWPD = "View Personal Details";
     private final static String AMENDPD = "Amend Personal Details";
     private final static String CREATEPD = "Create Personal Details";
+    private final static String REVIEW = "Review";
 
     /**
      * display login menu
@@ -333,6 +350,7 @@ public class Yuconz_project_app implements ActionListener
         JPanel card2 = createMenuCard();
         JPanel card3 = createViewCard();
         JPanel card4 = createAmmendCard();
+        JPanel card5 = createReviewCard();
 
         //Create the panel that contains the "cards".
         cards = new JPanel(new CardLayout());
@@ -340,11 +358,35 @@ public class Yuconz_project_app implements ActionListener
         cards.add(card2, MAINMENU);
         cards.add(card3, VIEWPD);
         cards.add(card4, AMENDPD);
+        cards.add(card5, REVIEW);
 
         headerPn.setBackground(OOCCOO);
 
         contentPane.add(headerPn, BorderLayout.PAGE_START);
         contentPane.add(cards, BorderLayout.CENTER);
+    }
+
+    /**
+     * createReviewCard
+     * creates the JPanel of the review screen
+     * @return
+     */
+    private JPanel createReviewCard() {
+        JPanel reviewPanel = new JPanel(new FlowLayout());
+
+        JButton backButton = new JButton("back");
+        backButton.addActionListener(this);
+        backButton.setActionCommand(MAINMENU);
+
+        JButton btnReview = new JButton("Create a new review");
+        btnReview.addActionListener(this);
+        btnReview.setActionCommand("createReview");
+
+        reviewPanel.add(backButton);
+        reviewPanel.add(btnReview);
+        reviewPanel.setBackground(OOCCOO);
+
+        return reviewPanel;
     }
 
     /**
@@ -356,7 +398,7 @@ public class Yuconz_project_app implements ActionListener
     {
         JPanel menu = new JPanel(new GridLayout(0,2));
         JPanel menuRight = new JPanel();
-        menuRight.setLayout(new GridLayout(4,0));
+        menuRight.setLayout(new GridLayout(5,0));
 
         JButton btnViewPD = new JButton(VIEWPD);
         btnViewPD.addActionListener(this);
@@ -370,6 +412,10 @@ public class Yuconz_project_app implements ActionListener
         btnAmendPD.addActionListener(this);
         btnAmendPD.setActionCommand(AMENDPD);
 
+        JButton btnReview = new JButton(REVIEW);
+        btnReview.addActionListener(this);
+        btnReview.setActionCommand(REVIEW);
+
         JButton btnLogout = new JButton("Log Out");
         btnLogout.addActionListener(this);
         btnLogout.setActionCommand(LOGIN);
@@ -380,6 +426,7 @@ public class Yuconz_project_app implements ActionListener
         menuRight.add(btnViewPD);
         menuRight.add(btnCreatePD);
         menuRight.add(btnAmendPD);
+        menuRight.add(btnReview);
         menuRight.add(btnLogout);
 
         menu.add(userInfo);
@@ -472,15 +519,14 @@ public class Yuconz_project_app implements ActionListener
      * @param e
      */
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        System.out.println("Run: " + e.getActionCommand());
-        CardLayout cl = (CardLayout)(cards.getLayout());
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("ActionCommand: " + e.getActionCommand());
+        CardLayout cl = (CardLayout) (cards.getLayout());
 
-        if(e.getActionCommand().equalsIgnoreCase("authenticate")) { //loggin in from login screen
+        if (e.getActionCommand().equalsIgnoreCase("authenticate")) { //loggin in from login screen
             if (login(tfUsername.getText(), tfPassword.getText())) { //checks login details
                 cl.show(cards, MAINMENU);
-                frame.setSize(new Dimension(640,360)); //shows main menu and resizes
+                frame.setSize(new Dimension(640, 360)); //shows main menu and resizes
 
                 warningLabel.setText("");
                 currentUser.getPosition().setSubordinates(database.getSubordinates(tfUsername.getText()));
@@ -497,7 +543,7 @@ public class Yuconz_project_app implements ActionListener
             logout();
             tfUsername.setText("Username");
             tfPassword.setText("Password");
-            frame.setSize(new Dimension(300,150)); //shows login screen and resizes
+            frame.setSize(new Dimension(300, 150)); //shows login screen and resizes
 
         } else if (e.getActionCommand().equals(CREATEPD) || e.getActionCommand().equals(AMENDPD) || e.getActionCommand().equals(VIEWPD)) { //working with personal details files
 
@@ -507,11 +553,11 @@ public class Yuconz_project_app implements ActionListener
 
                 JOptionPane.showMessageDialog(frame, "Username can't be empty", "Username error", JOptionPane.PLAIN_MESSAGE);
 
-            } else if (!database.checkExists(personalDetailsUser) && !e.getActionCommand().equals(CREATEPD)) { //user doesn't exist
+            } else if (!database.checkExistsPersonalDetails(personalDetailsUser) && !e.getActionCommand().equals(CREATEPD)) { //user doesn't exist
 
                 JOptionPane.showMessageDialog(frame, "User does not have a personal details file", "Username error", JOptionPane.PLAIN_MESSAGE);
 
-            } else if (database.checkExists(personalDetailsUser) && e.getActionCommand().equals(CREATEPD)) { //trying to create a file that already exists
+            } else if (database.checkExistsPersonalDetails(personalDetailsUser) && e.getActionCommand().equals(CREATEPD)) { //trying to create a file that already exists
 
                 JOptionPane.showMessageDialog(frame, "User already exists", "Username error", JOptionPane.PLAIN_MESSAGE);
 
@@ -539,7 +585,7 @@ public class Yuconz_project_app implements ActionListener
                     case CREATEPD:
                         if (createPersonalDetails(personalDetailsUser)) {
                             cl.show(cards, AMENDPD);
-                            clearExistingDetails();
+                            clearExistingDetails(personalDetailsUser);
                             staffNo.setEditable(true);
                             btnConfirmPD.setActionCommand("confirmCreatePD");
                         } else {
@@ -559,8 +605,6 @@ public class Yuconz_project_app implements ActionListener
                 dateOfBirth = df.parse(dobString);
                 String newDateString = df.format(dateOfBirth);
 
-                Integer.parseInt(staffNo.getText());
-
                 if (e.getActionCommand().equals("confirmAmendPD")) {
                     database.amendUserPersonalDetails(getPersonalDetailsDocument(personalDetailsUser));
                 } else {
@@ -575,13 +619,43 @@ public class Yuconz_project_app implements ActionListener
 
         } else if (e.getActionCommand().equals(MAINMENU)) {
             cl.show(cards, MAINMENU);
-            frame.setSize(new Dimension(640,360));
+            frame.setSize(new Dimension(640, 360));
             warningLabel.setText("");
+        } else if (e.getActionCommand().equals("createReview")) {
+            if(createReview()) {
+                String reviewee = selectUser();
+                System.out.println(reviewee);
+            } else {
+                JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
+            }
         } else {
             cl.show(cards, (String)e.getActionCommand());
             warningLabel.setText("");
         }
 
+    }
+
+    /**
+     * selectUser
+     * shows the manager or director a list of their subordinates to choose from
+     * @return selected user's username
+     */
+    private String selectUser() {
+
+        Object[] employees = new Object[currentUser.getPosition().getSubordinates().size()];
+
+        for(int i = 0; i < employees.length; i++) {
+            employees[i] = currentUser.getPosition().getSubordinates().get(i);
+        }
+
+        String subordinate = (String)JOptionPane.showInputDialog(frame, "Select an employee", "User Required", JOptionPane.PLAIN_MESSAGE, null, employees, employees[0]);
+
+        //If a string was returned, return it to above
+        if ((subordinate != null) && (subordinate.length() > 0)) {
+            return subordinate;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -593,7 +667,7 @@ public class Yuconz_project_app implements ActionListener
     {
         String usernameInput = (String)JOptionPane.showInputDialog(frame, "Enter an employee username", "Username Required", JOptionPane.PLAIN_MESSAGE);
 
-        //If a string was returned, say so.
+        //If a string was returned, return it to above
         if ((usernameInput != null) && (usernameInput.length() > 0)) {
             return usernameInput;
         } else {

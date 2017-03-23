@@ -124,7 +124,7 @@ public class Database {
      * @param userIn
      * @return
      */
-    public boolean checkExists(String userIn)
+    public boolean checkExistsPersonalDetails(String userIn)
     {
         try {
             Statement s = con.createStatement();
@@ -147,7 +147,7 @@ public class Database {
      * @param userIn
      * @return
      */
-    public boolean checkExistsEmployee(String userIn)
+    public boolean checkExistsEmployeeData(String userIn)
     {
         try {
             Statement s = con.createStatement();

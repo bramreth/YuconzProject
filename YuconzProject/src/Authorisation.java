@@ -38,13 +38,8 @@ public class Authorisation {
                 }
                 break;
             case "createReviewRecord":
-                if (currentUser.getPosition().getPositionName().equals("Director")) {
+                if (currentUser.getPosition().getPositionName().equals("Manager") || currentUser.getPosition().getPositionName().equals("Director")) {
                     return true;
-                }
-                for (String str : currentUser.getPosition().getSubordinates()) {
-                    if(str.equals(userIn)){
-                        return  true;
-                    }
                 }
                 break;
         }

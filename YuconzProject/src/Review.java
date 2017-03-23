@@ -7,16 +7,99 @@ import java.util.Date;
 public class Review {
     private int staffNo;
     private String name, manager, secondManager, section, jobTitle;
-    private ArrayList<PastPerformance> performancearrayList;
+    private ArrayList<PastPerformance> performanceArrayList;
     private String performanceSummary;
-    private ArrayList<GoalList> goalListArrayList;
+    private ArrayList<GoalList> goalArrayList;
     private String reviewerComments;
     private Recommendation reviewerRecommendation;
-    private Signature revieweeSignature, managerSignature, secondReviewerSignature;
-    public Review(){
+    private Signature revieweeSignature, managerSignature, secondManagerSignature;
 
+    /**
+     * sets all information except for performance summaries, goal summaries, the recommendation and signatures
+     * and second manager
+     * @param staffNoIn
+     * @param nameIn
+     * @param managerIn
+     * @param sectionIn
+     * @param jobTitleIn
+     */
+    public Review(int staffNoIn, String nameIn, String managerIn,
+                  String sectionIn, String jobTitleIn){
+        staffNo = staffNoIn;
+        name = nameIn;
+        manager = managerIn;
+        section = sectionIn;
+        jobTitle = jobTitleIn;
+        revieweeSignature = new Signature(SignatureType.REVIEWEE);
+        managerSignature = new Signature(SignatureType.MANAGER);
+        secondManagerSignature = new Signature(SignatureType.SECOND_MANAGER);
     }
 
+    public boolean checkComplete(){
+        if(revieweeSignature.signed && managerSignature.signed && secondManagerSignature.signed){
+            return true;
+        }
+        return false;
+    }
+
+    //region addInformation
+    /**
+     * add a performance summary
+     * @param performanceSummaryIn
+     */
+    public void addPerformanceSummary(String performanceSummaryIn){
+       performanceSummary = performanceSummaryIn;
+    }
+
+    /**
+     * add performances to the performance list
+     * @param performIn
+     */
+    public void addPerformance(PastPerformance performIn){
+        performanceArrayList.add(performIn);
+    }
+
+    /**
+     * add goals to the goal list
+     * @param goalIn
+     */
+    public void addGoal(GoalList goalIn){
+        goalArrayList.add(goalIn);
+    }
+
+    /**
+     * add a reviewer comment
+     * @param commentIn
+     */
+    public void addReviewerComment(String commentIn){
+        reviewerComments = commentIn;
+    }
+
+    /**
+     * add the reviewers recommendation
+     * @param recommendationIn
+     */
+    public void addRecommendation(Recommendation recommendationIn){
+        reviewerRecommendation = recommendationIn;
+    }
+
+    public void sign(SignatureType type, Date dateIn){
+        switch (type){
+            case REVIEWEE:
+                revieweeSignature.sign(true,dateIn);
+                break;
+            case MANAGER:
+                managerSignature.sign(true,dateIn);
+                break;
+            case SECOND_MANAGER:
+                secondManagerSignature.sign(true,dateIn);
+                break;
+        }
+    }
+
+    //endregion
+
+    //region data structures
     /**
      * data structure for list of past performances
      */
@@ -47,20 +130,27 @@ public class Review {
      */
     public class Signature{
         private boolean signed;
-        private String  type;
+        private SignatureType  type;
         private Date date;
-        public Signature(String typeIn){
+        public Signature(SignatureType typeIn){
             signed = false;
-            type = typeIn;
             date = null;
+            type = typeIn;
         }
         public void sign(boolean signedIn, Date dateIn){
             signed = signedIn;
             date = dateIn;
         }
     }
+//endregion
 
+    //region Enums
     public enum Recommendation{
-        STAY_IN_POST, SALARY_INCREASE, PROMOTION, PROBATION
+        STAY_IN_POST, SALARY_INCREASE, PROMOTION, PROBATION, TERMINATION
     }
+
+    public enum SignatureType{
+        MANAGER, SECOND_MANAGER, REVIEWEE
+    }
+    //endregion
 }

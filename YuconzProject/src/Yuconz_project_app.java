@@ -11,7 +11,7 @@ import javax.swing.*;
  * Main application class
  */
 
-public class Yuconz_project_app implements ActionListener
+public class Yuconz_project_app implements ActionListener,FocusListener
 {
     //region global variables
     private Authentication_server authentication_server;
@@ -472,6 +472,19 @@ public class Yuconz_project_app implements ActionListener
         backButton.addActionListener(this);
         backButton.setActionCommand(MAINMENU);
 
+        surname.addFocusListener(this);
+        name.addFocusListener(this);
+        dob.addFocusListener(this);
+        address.addFocusListener(this);
+        townCity.addFocusListener(this);
+        county.addFocusListener(this);
+        postcode.addFocusListener(this);
+        telephoneNumber.addFocusListener(this);
+        mobileNumber.addFocusListener(this);
+        emergencyContactNumber.addFocusListener(this);
+        emergencyContact.addFocusListener(this);
+        staffNo.addFocusListener(this);
+
         target.add(surname);
         target.add(name);
         target.add(dob);
@@ -504,19 +517,8 @@ public class Yuconz_project_app implements ActionListener
         btnLogin.addActionListener(this);
         btnLogin.setActionCommand("authenticate");
 
-        tfUsername.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-                tfUsername.setText("");
-            }
-        });
-
-        tfPassword.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-                tfPassword.setText("");
-            }
-        });
+        tfUsername.addFocusListener(this);
+        tfPassword.addFocusListener(this);
 
         login.add(tfUsername);
         login.add(tfPassword);
@@ -687,6 +689,17 @@ public class Yuconz_project_app implements ActionListener
         } else {
             return null;
         }
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        JTextField tempTF = (JTextField)e.getComponent();
+        tempTF.selectAll();
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+
     }
     //endregion
 }

@@ -504,6 +504,20 @@ public class Yuconz_project_app implements ActionListener
         btnLogin.addActionListener(this);
         btnLogin.setActionCommand("authenticate");
 
+        tfUsername.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                tfUsername.setText("");
+            }
+        });
+
+        tfPassword.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                tfPassword.setText("");
+            }
+        });
+
         login.add(tfUsername);
         login.add(tfPassword);
         login.add(btnLogin);

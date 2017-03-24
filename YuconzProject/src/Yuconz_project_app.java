@@ -430,7 +430,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
 
         userInfo.setHorizontalAlignment(SwingConstants.CENTER);
         userInfo.setVerticalAlignment(SwingConstants.CENTER);
-
+        userInfo.setFont(normalFont);
         menuRight.add(btnViewPD);
         menuRight.add(btnCreatePD);
         menuRight.add(btnAmendPD);

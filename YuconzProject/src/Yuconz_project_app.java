@@ -682,9 +682,8 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //If a string was returned, return it to above
         if ((subordinate != null) && (subordinate.length() > 0)) {
             return subordinate;
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
@@ -719,9 +718,8 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //If a string was returned, return it to above
         if ((subordinate != null) && (subordinate.length() > 0)) {
             return subordinate;
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override

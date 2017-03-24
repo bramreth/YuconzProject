@@ -34,6 +34,8 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private JLabel userInfo = new JLabel();
     private JLabel viewDetailsField = new JLabel();
     private final Color OOCCOO = new Color(174, 198, 207);
+    private Font normalFont = new Font("sans-serif", Font.PLAIN, 12);
+    private Font titleFont = new Font("sans-serif", Font.BOLD, 13);
     //document text boxes
     private JTextField surname = new JTextField("surname", 20);
     private JTextField name = new JTextField("name", 20);
@@ -344,6 +346,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //create the header
         JPanel headerPn = new JPanel();
         JLabel headerLbl = new JLabel("Yuconz File System App");
+        headerLbl.setFont(titleFont);
         headerPn.add(headerLbl);
 
         JPanel card1 = createLoginCard();
@@ -401,22 +404,27 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         menuRight.setLayout(new GridLayout(5,0));
 
         JButton btnViewPD = new JButton(VIEWPD);
+        btnViewPD.setFont(normalFont);
         btnViewPD.addActionListener(this);
         btnViewPD.setActionCommand(VIEWPD);
 
         JButton btnCreatePD = new JButton(CREATEPD);
+        btnCreatePD.setFont(normalFont);
         btnCreatePD.addActionListener(this);
         btnCreatePD.setActionCommand(CREATEPD);
 
         JButton btnAmendPD = new JButton(AMENDPD);
+        btnAmendPD.setFont(normalFont);
         btnAmendPD.addActionListener(this);
         btnAmendPD.setActionCommand(AMENDPD);
 
         JButton btnReview = new JButton(REVIEW);
+        btnReview.setFont(normalFont);
         btnReview.addActionListener(this);
         btnReview.setActionCommand(REVIEW);
 
         JButton btnLogout = new JButton("Log Out");
+        btnLogout.setFont(normalFont);
         btnLogout.addActionListener(this);
         btnLogout.setActionCommand(LOGIN);
 
@@ -446,9 +454,11 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         JPanel target = new JPanel(new FlowLayout());
 
         JButton backButton = new JButton("back");
+        backButton.setFont(normalFont);
         backButton.addActionListener(this);
         backButton.setActionCommand(MAINMENU);
 
+        viewDetailsField.setFont(normalFont);
         target.add(viewDetailsField);
         target.add(backButton);
         target.setBackground(OOCCOO);
@@ -466,9 +476,11 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         JPanel target = new JPanel(new GridLayout(12,2));
 
         btnConfirmPD = new JButton("confirm");
+        btnConfirmPD.setFont(normalFont);
         btnConfirmPD.addActionListener(this);
 
         JButton backButton = new JButton("back");
+        backButton.setFont(normalFont);
         backButton.addActionListener(this);
         backButton.setActionCommand(MAINMENU);
 
@@ -514,6 +526,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         JPanel login = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         JButton btnLogin = new JButton("Login");
+        btnLogin.setFont(normalFont);
         btnLogin.addActionListener(this);
         btnLogin.setActionCommand("authenticate");
 

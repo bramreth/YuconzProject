@@ -50,6 +50,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private JTextField emergencyContactNumber = new JTextField("emergencyContactNumber", 20);
     private JTextField staffNo = new JTextField("staffNo", 20);
     private JButton btnConfirmPD;
+    private JButton handleReview;
     //endregion
 
     //region main method and constructor
@@ -377,21 +378,49 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private JPanel createReviewCard() {
         JPanel reviewPanel = new JPanel(new FlowLayout());
 
+        handleReview = new JButton("Handle existing review");
+        handleReview.setFont(normalFont);
+        handleReview.addActionListener(this);
+        handleReview.setActionCommand("handle review");
+        handleReview.setVisible(false);
+
         JButton backButton = new JButton("back");
+        backButton.setFont(normalFont);
         backButton.addActionListener(this);
         backButton.setActionCommand(MAINMENU);
 
         JButton btnReview = new JButton("Create a new review");
+        btnReview.setFont(normalFont);
         btnReview.addActionListener(this);
         btnReview.setActionCommand("createReview");
 
+        reviewPanel.add(handleReview);
         reviewPanel.add(backButton);
         reviewPanel.add(btnReview);
         reviewPanel.setBackground(OOCCOO);
 
         return reviewPanel;
     }
+/*
+    /**
+     * amendReviewCard
+     * creates the JPanel of the amend review screen
+     * @return
 
+    private JPanel amendReviewCard() {
+        JPanel amendReviewPanel = new JPanel(new FlowLayout());
+
+        JButton backButton = new JButton("back");
+        backButton.addActionListener(this);
+        backButton.setActionCommand(MAINMENU);
+
+
+        amendReviewPanel.add(backButton);
+        amendReviewPanel.setBackground(OOCCOO);
+
+        return amendReviewPanel;
+    }
+*/
     /**
      * createMenuCard
      * creates the JPanel of the main menu screen
@@ -554,6 +583,14 @@ public class Yuconz_project_app implements ActionListener,FocusListener
 
         if (e.getActionCommand().equalsIgnoreCase("authenticate")) { //loggin in from login screen
             if (login(tfUsername.getText(), tfPassword.getText())) { //checks login details
+                /*
+                if the user is in hr, set the hr specific refiew button to be visible
+                 */
+                if(currentUser.getDepartment().equals("Human Resources")){
+                    handleReview.setVisible(true);
+                }else{
+                    handleReview.setVisible(false);
+                }
                 cl.show(cards, MAINMENU);
                 frame.setSize(new Dimension(640, 360)); //shows main menu and resizes
 
@@ -624,6 +661,10 @@ public class Yuconz_project_app implements ActionListener,FocusListener
                     break;
             }
 
+        }else if(e.getActionCommand().equals("handle review")) {
+            //get list of pending reviews without second manager,
+            //present them in a dropdown dialog box
+            //select a manager from another dropdown
         } else if (e.getActionCommand().equals("confirmAmendPD") || e.getActionCommand().equals("confirmCreatePD")) {
 
             String dobString = dob.getText();

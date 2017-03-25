@@ -662,9 +662,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
             }
 
         }else if(e.getActionCommand().equals("handle review")) {
-            //get list of pending reviews without second manager,
-            //present them in a dropdown dialog box
-            //select a manager from another dropdown
+            String selectedUnfinishedReview = selectUnfinishedReviews();
         } else if (e.getActionCommand().equals("confirmAmendPD") || e.getActionCommand().equals("confirmCreatePD")) {
 
             String dobString = dob.getText();
@@ -719,6 +717,34 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         }
 
         String subordinate = (String)JOptionPane.showInputDialog(frame, "Select an employee", "User Required", JOptionPane.PLAIN_MESSAGE, null, employees, employees[0]);
+
+        //If a string was returned, return it to above
+        if ((subordinate != null) && (subordinate.length() > 0)) {
+            return subordinate;
+        }
+        return null;
+    }
+
+    /**
+     * selectUser
+     * shows the manager or director a list of their subordinates to choose from
+     * @return selected user's username
+     */
+    private String selectUnfinishedReviews() {
+
+        ArrayList<String> reviewsList = database.getReviewsMissingSecondManager();
+        Object[] reviews = new Object[reviewsList.size()];
+
+        if(reviewsList.size() > 0) {
+            for(int i = 0; i < reviews.length; i++) {
+                reviews[i] = reviewsList.get(i);
+            }
+        } else {
+            reviews = new Object[1];
+            reviews[0] = "None found";
+        }
+
+        String subordinate = (String)JOptionPane.showInputDialog(frame, "Select an employee", "User Required", JOptionPane.PLAIN_MESSAGE, null, reviews, reviews[0]);
 
         //If a string was returned, return it to above
         if ((subordinate != null) && (subordinate.length() > 0)) {

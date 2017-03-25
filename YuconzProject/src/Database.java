@@ -256,4 +256,21 @@ public class Database {
             System.out.println(err.getMessage());
         }
     }
+
+    public ArrayList<String> getReviewsMissingSecondManager()
+    {
+        ArrayList<String> reviews = new ArrayList<>();
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT username,reviewID,manager FROM Review_Details WHERE secondManager IS NULL";
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                reviews.add(rs.getInt("reviewID") + ", Name: " + rs.getString("username") + ", Manager: " + rs.getString("manager"));
+            }
+            return reviews;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return null;
+    }
 }

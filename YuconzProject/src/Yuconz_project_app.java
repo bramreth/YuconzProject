@@ -483,15 +483,15 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         reviewPerformanceObjective.addFocusListener(this);
         reviewPerformanceAchievement.addFocusListener(this);
         JButton addPerformance = new JButton("add performance");
-        backButton.addActionListener(this);
-        backButton.setActionCommand("addPerformance");//implement!
+        addPerformance.addActionListener(this);
+        addPerformance.setActionCommand("addPerformance");//implement!
 
         reviewGoalNumber.addFocusListener(this);
         reviewGoalNumber.setEditable(false);
         reviewGoal.addFocusListener(this);
         JButton addGoal = new JButton("add goal");
-        backButton.addActionListener(this);
-        backButton.setActionCommand("addGoal");//implement!
+        addGoal.addActionListener(this);
+        addGoal.setActionCommand("addGoal");//implement!
 
         reviewPerformanceSummary.addFocusListener(this);
 
@@ -886,7 +886,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         if (action.equals("handle review")) {
             reviewsList = database.getReviewsMissingSecondManager();
         } else {
-            reviewsList = database.getReviewsWithSecondManager();
+            reviewsList = database.getReviewsWithSecondManager(currentUser.getUsername());
         }
 
         Object[] reviews = new Object[reviewsList.size()];

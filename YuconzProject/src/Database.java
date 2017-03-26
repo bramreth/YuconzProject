@@ -293,12 +293,12 @@ public class Database {
         return null;
     }
 
-    public ArrayList<String> getReviewsWithSecondManager()
+    public ArrayList<String> getReviewsWithSecondManager(String username)
     {
         ArrayList<String> supervisors = new ArrayList<>();
         try {
             Statement s = con.createStatement();
-            String sql = "SELECT username,reviewID,manager,secondManager FROM Review_Details WHERE secondManager IS NOT NULL AND revieweeSignature IS NULL AND managerSignature IS NULL AND secondManagerSignature IS NULL";
+            String sql = "SELECT username,reviewID,manager,secondManager FROM Review_Details WHERE secondManager IS NOT NULL AND revieweeSignature IS NULL AND managerSignature IS NULL AND secondManagerSignature IS NULL AND manager='" + username + "'";
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
                 supervisors.add(rs.getInt("reviewID") + ", Name: " + rs.getString("username") + ", Supervisor: " + rs.getString("manager") + ", Second Supervisor: " + rs.getString("secondManager"));

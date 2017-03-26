@@ -134,4 +134,96 @@ class Yuconz_project_appTest {
         Document temp3Doc = app.getDatabase().fetchPersonalDetails("hruser2");
         assertNotEquals(temp1Doc.getName(),temp3Doc.getName());
     }
+
+    /*
+         stage 5
+    */
+    @org.junit.jupiter.api.Test
+    public void validRevieweeCreateReview(){
+        System.out.println("valid create review for a reviewee");
+        app.login("user1","pass1");//is a reviewee
+        assertTrue(app.createReviewRecord("user1"));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void validReviewerCreateReview(){
+        System.out.println("valid create review for a reviewee");
+        app.login("user2","pass2");//is a manager of user1
+        assertTrue(app.createReviewRecord("user1"));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void invalidReviewerCreateReview(){
+        System.out.println("invalid read review");
+        app.login("user2","pass2");//is not  a manager of user1
+        assertFalse(app.createReviewRecord("user1"));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void validReadReview(){
+        System.out.println("invalid read review");
+        app.login("user2","pass2");//is not  a manager of user1
+        assertTrue(app.readReviewRecord("user1"));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void invalidReadReview(){
+        System.out.println("invalid read review");
+        app.login("user5","pass5");//is not  a manager of user1
+        assertFalse(app.readReviewRecord("user1"));
+    }
+    /*
+    complete ammend~~ review
+
+    @org.junit.jupiter.api.Test
+    public void validAmmendReview(){
+        System.out.println("valid amend review");
+        app.login("user2","pass2");//is not  a manager of user1
+        Review tempReview =
+    }
+    */
+
+    //read past completed review record
+    @org.junit.jupiter.api.Test
+    public void validReadPastReview(){
+        System.out.println("valid read past review");
+        app.login("user2","pass2");//is not  a manager of user1
+        assertTrue(app.readPastReviewRecord("user1",2));//checks whether reading record 2 of that user is valid
+    }
+
+    @org.junit.jupiter.api.Test
+    public void invalidReadPastReview(){
+        System.out.println("valid read past review");
+        app.login("user5","pass5");//is not  a manager of user1
+        assertFalse(app.readPastReviewRecord("user1",2));//checks whether reading record 2 of that user is valid
+    }
+    //record allocated reviewer
+    @org.junit.jupiter.api.Test
+    public void validAllocateReviewer(){
+        System.out.println("valid allocate reviewer");
+        app.login("user2","pass2");
+        app.createReviewRecord("user1");
+        app.logout();
+        app.login("hruser1","password1");//is not  a manager of user1
+        assertTrue(app.allocateReviewer("user1", "user4"));
+    }
+
+    @org.junit.jupiter.api.Test
+    public void invalidAllocateReviewer(){
+        System.out.println("invalid allocate reviewer");
+        app.login("user2","pass2");
+        app.createReviewRecord("user1");
+        assertFalse(app.allocateReviewer("user1", "user4"));//not in HR
+    }
+    /*
+    complete sign off~~ review
+
+    @org.junit.jupiter.api.Test
+    public void validSignOffReview(){
+        System.out.println("valid sign off review");
+        app.login("user2","pass2");//is not  a manager of user1
+        Review tempReview =
+    }
+    */
+
 }

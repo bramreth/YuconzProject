@@ -28,6 +28,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     //GUI variables
     private static JFrame frame;
     private JPanel cards; //a panel that uses CardLayout
+    private JButton btnLogin;
     private JTextField tfUsername = new JTextField("Username", 20);
     private JPasswordField tfPassword = new JPasswordField("Password", 20);
     private JLabel warningLabel = new JLabel();
@@ -51,6 +52,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private JTextField staffNo = new JTextField("staff number", 20);
     private JButton btnConfirmPD;
     private JButton handleReview;
+    private JButton amendReview;
     private JTextField reviewStaffNo = new JTextField("staff number", 20);
     private JTextField reviewName = new JTextField("reviewee name", 20);
     private JTextField reviewManager = new JTextField("manager username", 20);
@@ -357,7 +359,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //Create and set up the window.
         frame = new JFrame("Yuconz File App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        frame.setResizable(true);
 
         //Create and set up the content pane.
         app.addComponentsToPane(frame.getContentPane());
@@ -440,10 +442,11 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         btnReview.addActionListener(this);
         btnReview.setActionCommand("createReview");
 
-        JButton amendReview = new JButton("Amend a review");
+        amendReview = new JButton("Amend a review");
         amendReview.setFont(normalFont);
         amendReview.addActionListener(this);
         amendReview.setActionCommand(AMENDREVIEW);
+        amendReview.setVisible(false);
 
         reviewPanel.add(btnReview);
         reviewPanel.add(handleReview);
@@ -465,6 +468,10 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         JButton backButton = new JButton("back");
         backButton.addActionListener(this);
         backButton.setActionCommand(REVIEW);
+
+        JButton confirmButton = new JButton("confirm");
+        confirmButton.addActionListener(this);
+        confirmButton.setActionCommand("submit review");//neeeds implementing
 
         reviewName.addFocusListener(this);
         reviewName.setEditable(false);
@@ -492,7 +499,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         JButton addGoal = new JButton("add goal");
         addGoal.addActionListener(this);
         addGoal.setActionCommand("addGoal");//implement!
-
+        reviewComments.addFocusListener(this);
         reviewPerformanceSummary.addFocusListener(this);
 
         amendReviewPanel.add(reviewName);
@@ -508,6 +515,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         amendReviewPanel.add(reviewPerformanceSummary);
         amendReviewPanel.add(reviewGoalNumber);
         amendReviewPanel.add(reviewGoal);
+        amendReviewPanel.add(reviewComments);
         amendReviewPanel.add(reviewRecommendation);
 
 
@@ -604,7 +612,6 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         btnConfirmPD = new JButton("confirm");
         btnConfirmPD.setFont(normalFont);
         btnConfirmPD.addActionListener(this);
-
         JButton backButton = new JButton("back");
         backButton.setFont(normalFont);
         backButton.addActionListener(this);
@@ -650,12 +657,10 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private JPanel createLoginCard()
     {
         JPanel login = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-        JButton btnLogin = new JButton("Login");
+        btnLogin = new JButton("Login");
         btnLogin.setFont(normalFont);
         btnLogin.addActionListener(this);
         btnLogin.setActionCommand("authenticate");
-
         tfUsername.addFocusListener(this);
         tfPassword.addFocusListener(this);
 
@@ -663,9 +668,8 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         login.add(tfPassword);
         login.add(btnLogin);
         login.add(warningLabel);
-
         login.setBackground(OOCCOO);
-
+        frame.getRootPane().setDefaultButton(btnLogin);
         return login;
     }
 
@@ -683,10 +687,16 @@ public class Yuconz_project_app implements ActionListener,FocusListener
                 /*
                 if the user is in hr, set the hr specific refiew button to be visible
                  */
+                frame.getRootPane().setDefaultButton(null);
                 if(currentUser.getDepartment().equals("Human Resources")){
                     handleReview.setVisible(true);
                 }else{
                     handleReview.setVisible(false);
+                }
+                if(currentUser.getPosition().getPositionName().equals("Manager") ||currentUser.getPosition().getPositionName().equals("Director") ){
+                    amendReview.setVisible(true);
+                }else{
+                    amendReview.setVisible(false);
                 }
                 cl.show(cards, MAINMENU);
                 frame.setSize(new Dimension(640, 360)); //shows main menu and resizes
@@ -708,6 +718,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
             tfUsername.setText("Username");
             tfPassword.setText("Password");
             frame.setSize(new Dimension(300, 150)); //shows login screen and resizes
+            frame.getRootPane().setDefaultButton(btnLogin);
              centerFrame();
 
         } else if (e.getActionCommand().equals(CREATEPD) || e.getActionCommand().equals(AMENDPD) || e.getActionCommand().equals(VIEWPD)) { //working with personal details files

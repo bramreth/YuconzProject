@@ -21,14 +21,16 @@ public class Review {
      * @param staffNoIn
      * @param nameIn
      * @param managerIn
+     * @param secondManagerIn
      * @param sectionIn
      * @param jobTitleIn
      */
-    public Review(int staffNoIn, String nameIn, String managerIn,
+    public Review(int staffNoIn, String nameIn, String managerIn, String secondManagerIn,
                   String sectionIn, String jobTitleIn){
         staffNo = staffNoIn;
         name = nameIn;
         manager = managerIn;
+        secondManager =secondManagerIn;
         section = sectionIn;
         jobTitle = jobTitleIn;
         revieweeSignature = new Signature(SignatureType.REVIEWEE);

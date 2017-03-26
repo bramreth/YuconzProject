@@ -48,9 +48,24 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private JTextField mobileNumber = new JTextField("mobileNumber", 20);
     private JTextField emergencyContact = new JTextField("emergencyContact", 20);
     private JTextField emergencyContactNumber = new JTextField("emergencyContactNumber", 20);
-    private JTextField staffNo = new JTextField("staffNo", 20);
+    private JTextField staffNo = new JTextField("staff number", 20);
     private JButton btnConfirmPD;
     private JButton handleReview;
+    private JTextField reviewStaffNo = new JTextField("staff number", 20);
+    private JTextField reviewName = new JTextField("reviewee name", 20);
+    private JTextField reviewManager = new JTextField("manager username", 20);
+    private JTextField reviewSecondManager = new JTextField("second manager username", 20);
+    private JTextField reviewSection = new JTextField("reviewee section", 20);
+    private JTextField reviewJobTitle = new JTextField("reviewee job title", 20);
+    private JTextField reviewPerformanceNumber = new JTextField("performance number", 20);
+    private JTextField reviewPerformanceObjective = new JTextField("performance objective", 20);
+    private JTextField reviewPerformanceAchievement = new JTextField("performance achievement", 20);
+    private JTextField reviewPerformanceSummary = new JTextField("performance summary", 20);
+    private JTextField reviewGoalNumber = new JTextField("goal number", 20);
+    private JTextField reviewGoal = new JTextField("goal description", 20);
+    private JTextField reviewComments = new JTextField("reviewer comments", 20);
+    String[] choices = {"Stay in post","Salary increase","Promotion", "Probation", "Termination"};
+    private JComboBox<String> reviewRecommendation = new JComboBox<String>(choices);
     //endregion
 
     //region main method and constructor
@@ -418,25 +433,75 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         btnReview.addActionListener(this);
         btnReview.setActionCommand("createReview");
 
-        reviewPanel.add(handleReview);
-        reviewPanel.add(backButton);
+        JButton amendReview = new JButton("Amend a review");
+        amendReview.setFont(normalFont);
+        amendReview.addActionListener(this);
+        amendReview.setActionCommand("AMENDREVIEW");
+
         reviewPanel.add(btnReview);
+        reviewPanel.add(handleReview);
+        reviewPanel.add(amendReview);
+        reviewPanel.add(backButton);
         reviewPanel.setBackground(OOCCOO);
 
         return reviewPanel;
     }
-/*
+
     /**
      * amendReviewCard
      * creates the JPanel of the amend review screen
      * @return
-
+    */
     private JPanel amendReviewCard() {
         JPanel amendReviewPanel = new JPanel(new FlowLayout());
 
         JButton backButton = new JButton("back");
         backButton.addActionListener(this);
-        backButton.setActionCommand(MAINMENU);
+        backButton.setActionCommand(REVIEW);
+
+        reviewName.addFocusListener(this);
+        reviewName.setEditable(false);
+        reviewStaffNo.addFocusListener(this);
+        reviewStaffNo.setEditable(false);
+        reviewManager.addFocusListener(this);
+        reviewManager.setEditable(false);
+        reviewSecondManager.addFocusListener(this);
+        reviewSecondManager.setEditable(false);
+        reviewSection.addFocusListener(this);
+        reviewJobTitle.addFocusListener(this);
+
+
+        reviewPerformanceNumber.addFocusListener(this);
+        reviewPerformanceNumber.setEditable(false);
+        reviewPerformanceObjective.addFocusListener(this);
+        reviewPerformanceAchievement.addFocusListener(this);
+        JButton addPerformance = new JButton("add performance");
+        backButton.addActionListener(this);
+        backButton.setActionCommand("addPerformance");//implement!
+
+        reviewGoalNumber.addFocusListener(this);
+        reviewGoalNumber.setEditable(false);
+        reviewGoal.addFocusListener(this);
+        JButton addGoal = new JButton("add goal");
+        backButton.addActionListener(this);
+        backButton.setActionCommand("addGoal");//implement!
+
+        reviewPerformanceSummary.addFocusListener(this);
+
+        amendReviewPanel.add(reviewName);
+        amendReviewPanel.add(reviewStaffNo);
+        amendReviewPanel.add(reviewManager);
+        amendReviewPanel.add(reviewSecondManager);
+        amendReviewPanel.add(reviewJobTitle);
+        amendReviewPanel.add(reviewSection);
+        amendReviewPanel.add(reviewPerformanceNumber);
+        amendReviewPanel.add(reviewPerformanceObjective);
+        amendReviewPanel.add(reviewPerformanceAchievement);
+        amendReviewPanel.add(addPerformance);
+        amendReviewPanel.add(reviewPerformanceSummary);
+        amendReviewPanel.add(reviewGoalNumber);
+        amendReviewPanel.add(reviewGoal);
+        amendReviewPanel.add(reviewRecommendation);
 
 
         amendReviewPanel.add(backButton);
@@ -444,7 +509,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
 
         return amendReviewPanel;
     }
-*/
+
     /**
      * createMenuCard
      * creates the JPanel of the main menu screen
@@ -745,7 +810,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
                 JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
             }
 
-        //failsafe that cat hes any stray button clicks that takes the user to where the button action command would take it
+        //failsafe that catches any stray button clicks that takes the user to where the button action command would take it
         } else {
             cl.show(cards, (String)e.getActionCommand());
             warningLabel.setText("");

@@ -276,7 +276,7 @@ public class Database {
 
     public Review getReviewForAmending(int reviewID)
     {
-        Review review = new Review(1, "test", "test", "test", "test");
+        Review review = new Review(1, "test", "test", "test", "test", "test");
         return review;
     }
 

@@ -314,12 +314,12 @@ public class Database {
         return null;
     }
 
-    public ArrayList<String> getEmployeesWithPosition(String position)
+    public ArrayList<String> getEmployeesWithPosition(String position, int reveiwID)
     {
         ArrayList<String> employees = new ArrayList<>();
         try {
             Statement s = con.createStatement();
-            String sql = "SELECT username FROM Employee_Data WHERE position='" + position + "'";
+            String sql = "SELECT username FROM Employee_Data WHERE position='" + position + "' AND username <> '" + getReviewManager(reveiwID).getUsername() + "'";
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
                 employees.add(rs.getString("username"));

@@ -733,7 +733,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
 
             if(!(unfinishedReviewString == null) && !(unfinishedReviewString.equals("None found"))) {
                 int reviewID = Integer.parseInt(unfinishedReviewString.substring(0,unfinishedReviewString.indexOf(",")));
-                database.addSecondManager(reviewID, secondManagerSelection(database.getReviewManager(reviewID).getPosition().getPositionName()));
+                database.addSecondManager(reviewID, secondManagerSelection(database.getReviewManager(reviewID).getPosition().getPositionName(), reviewID));
             }
 
         //create a new review
@@ -756,9 +756,9 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     /**
      *
      */
-    private String secondManagerSelection(String position)
+    private String secondManagerSelection(String position, int reviewID)
     {
-        ArrayList<String> supervisorList = database.getEmployeesWithPosition(position);
+        ArrayList<String> supervisorList = database.getEmployeesWithPosition(position, reviewID);
 
         Object[] supervisors = new Object[supervisorList.size()];
 

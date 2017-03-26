@@ -394,6 +394,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         JPanel card3 = createViewCard();
         JPanel card4 = createAmendCard();
         JPanel card5 = createReviewCard();
+        JPanel card6 = createAmendReviewCard();
 
         //Create the panel that contains the "cards".
         cards = new JPanel(new CardLayout());
@@ -402,6 +403,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         cards.add(card3, VIEWPD);
         cards.add(card4, AMENDPD);
         cards.add(card5, REVIEW);
+        cards.add(card6, AMENDREVIEW);
 
         headerPn.setBackground(OOCCOO);
 
@@ -448,11 +450,11 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     }
 
     /**
-     * amendReviewCard
+     * createAmendReviewCard
      * creates the JPanel of the amend review screen
      * @return
     */
-    private JPanel amendReviewCard() {
+    private JPanel createAmendReviewCard() {
         JPanel amendReviewPanel = new JPanel(new FlowLayout());
 
         JButton backButton = new JButton("back");

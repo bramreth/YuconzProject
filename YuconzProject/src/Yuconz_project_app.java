@@ -186,7 +186,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
 
     /**
      * setExistingDetails
-     * sets the text box text to the details found in the database
+     * sets the text fields' text to the details found in the database
      * @param username
      */
     private void setExistingDetails(String username)   {
@@ -204,6 +204,16 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         mobileNumber.setText(existingUserData.getMobileNumber());
         emergencyContact.setText(existingUserData.getEmergencyContact());
         emergencyContactNumber.setText(existingUserData.getEmergencyContactNumber());
+    }
+
+    /**
+     * setExistingReviewDetails
+     * sets the text fields' text to the details found in the database
+     * @param review
+     */
+    private void setExistingReviewDetails(Review review)
+    {
+
     }
 
     /**
@@ -316,6 +326,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private final static String AMENDPD = "Amend Personal Details";
     private final static String CREATEPD = "Create Personal Details";
     private final static String REVIEW = "Review";
+    private final static String AMENDREVIEW = "Amend Review";
 
     /**
      * display login menu
@@ -334,7 +345,20 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //Display the window.
         frame.pack();
         frame.setSize(new Dimension(300, 150));
+        centerFrame();
         frame.setVisible(true);
+    }
+
+    /**
+     * centerFrame
+     * centers the frame
+     */
+    public static void centerFrame()
+    {
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int xPos = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+        int yPos = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+        frame.setLocation(xPos, yPos);
     }
 
     /**
@@ -469,6 +493,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         menu.add(userInfo);
         menu.add(menuRight);
         menu.setBackground(OOCCOO);
+        menuRight.setBackground(OOCCOO);
 
         return menu;
     }
@@ -593,6 +618,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
                 }
                 cl.show(cards, MAINMENU);
                 frame.setSize(new Dimension(640, 360)); //shows main menu and resizes
+                centerFrame();
 
                 warningLabel.setText("");
                 currentUser.getPosition().setSubordinates(database.getSubordinates(tfUsername.getText()));
@@ -610,6 +636,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
             tfUsername.setText("Username");
             tfPassword.setText("Password");
             frame.setSize(new Dimension(300, 150)); //shows login screen and resizes
+             centerFrame();
 
         } else if (e.getActionCommand().equals(CREATEPD) || e.getActionCommand().equals(AMENDPD) || e.getActionCommand().equals(VIEWPD)) { //working with personal details files
 
@@ -661,8 +688,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
                     break;
             }
 
-        }else if(e.getActionCommand().equals("handle review")) {
-            String selectedUnfinishedReview = selectUnfinishedReviews();
+        //confirming edits to or brand new personal details files
         } else if (e.getActionCommand().equals("confirmAmendPD") || e.getActionCommand().equals("confirmCreatePD")) {
 
             String dobString = dob.getText();
@@ -685,10 +711,24 @@ public class Yuconz_project_app implements ActionListener,FocusListener
                 JOptionPane.showMessageDialog(frame, "Ensure staff number is an integer and date of birth is in the format: yyyy-mm-dd.", "Invalid Entry", JOptionPane.PLAIN_MESSAGE);
             }
 
+        //return to the main menu
         } else if (e.getActionCommand().equals(MAINMENU)) {
             cl.show(cards, MAINMENU);
-            frame.setSize(new Dimension(640, 360));
             warningLabel.setText("");
+
+        //handle an existing review
+        }else if(e.getActionCommand().equals("handle review")) {
+            String unfinishedReviewString = selectUnfinishedReviews();
+
+            if(!(unfinishedReviewString == null) && !(unfinishedReviewString.equals("None found"))) {
+                int reviewID = Integer.parseInt(unfinishedReviewString.substring(0,unfinishedReviewString.indexOf(",")));
+                cl.show(cards, AMENDREVIEW);
+                Review review = database.getReviewForAmending(reviewID);
+                setExistingReviewDetails(review);
+            }
+
+
+        //create a new review
         } else if (e.getActionCommand().equals("createReview")) {
             if(createReview()) {
                 String reviewee = selectReviewee();
@@ -696,6 +736,8 @@ public class Yuconz_project_app implements ActionListener,FocusListener
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
             }
+
+        //failsafe that cat hes any stray button clicks that takes the user to where the button action command would take it
         } else {
             cl.show(cards, (String)e.getActionCommand());
             warningLabel.setText("");

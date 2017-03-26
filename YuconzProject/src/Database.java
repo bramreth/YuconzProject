@@ -273,4 +273,10 @@ public class Database {
         }
         return null;
     }
+
+    public Review getReviewForAmending(int reviewID)
+    {
+        Review review = new Review(1, "test", "test", "test", "test");
+        return review;
+    }
 }

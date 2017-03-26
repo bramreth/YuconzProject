@@ -276,8 +276,21 @@ public class Database {
 
     public Review getReviewForAmending(int reviewID)
     {
-        Review review = new Review(1, "test", "test", "test", "test", "test");
-        return review;
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT * FROM Review_Details WHERE reviewID=" + reviewID;
+            ResultSet rs = s.executeQuery(sql);
+            Review review = null;
+            while(rs.next()){
+                User reviewUser = getUser(rs.getString("username"));
+                //will overwrite doc each time it loops...
+                review = new Review(rs.getInt("userID"), rs.getString("username"), rs.getString("manager"), rs.getString("secondManager"), reviewUser.getDepartment(), reviewUser.getPosition().getPositionName());
+            }
+            return review;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return null;
     }
 
     public ArrayList<String> getReviewsWithSecondManager()
@@ -285,7 +298,7 @@ public class Database {
         ArrayList<String> supervisors = new ArrayList<>();
         try {
             Statement s = con.createStatement();
-            String sql = "SELECT username,reviewID,manager,secondManager FROM Review_Details WHERE secondManager IS NOT NULL";
+            String sql = "SELECT username,reviewID,manager,secondManager FROM Review_Details WHERE secondManager IS NOT NULL AND revieweeSignature IS NULL AND managerSignature IS NULL AND secondManagerSignature IS NULL";
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
                 supervisors.add(rs.getInt("reviewID") + ", Name: " + rs.getString("username") + ", Supervisor: " + rs.getString("manager") + ", Second Supervisor: " + rs.getString("secondManager"));

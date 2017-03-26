@@ -228,7 +228,12 @@ public class Yuconz_project_app implements ActionListener,FocusListener
      */
     private void setExistingReviewDetails(Review review)
     {
-
+        reviewStaffNo.setText("" + review.getStaffNo());
+        reviewName.setText(review.getName());
+        reviewManager.setText(review.getManager());
+        reviewSecondManager.setText(review.getSecondManager());
+        reviewSection.setText(review.getSection());
+        reviewJobTitle.setText(review.getJobTitle());
     }
 
     /**

@@ -103,6 +103,30 @@ public class Review {
     public void signOff(boolean signedOffIn){
         signedOff = signedOffIn;
     }
+
+    public int getStaffNo() {
+        return staffNo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public String getSecondManager() {
+        return secondManager;
+    }
+
+    public String getSection() {
+        return section;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
     //endregion
 
     //region data structures

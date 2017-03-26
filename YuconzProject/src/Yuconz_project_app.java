@@ -515,10 +515,11 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         amendReviewPanel.add(reviewPerformanceSummary);
         amendReviewPanel.add(reviewGoalNumber);
         amendReviewPanel.add(reviewGoal);
+        amendReviewPanel.add(addGoal);
         amendReviewPanel.add(reviewComments);
         amendReviewPanel.add(reviewRecommendation);
 
-
+        amendReviewPanel.add(confirmButton);
         amendReviewPanel.add(backButton);
         amendReviewPanel.setBackground(OOCCOO);
 

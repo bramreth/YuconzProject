@@ -419,7 +419,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         JPanel card4 = createAmendCard();
         JPanel card5 = createReviewCard();
         JPanel card6 = createAmendReviewCard();
-        //JPanel card7 = createReadReviewCard();
+        JPanel card7 = createReadReviewCard();
 
         //Create the panel that contains the "cards".
         cards = new JPanel(new CardLayout());
@@ -429,7 +429,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         cards.add(card4, AMENDPD);
         cards.add(card5, REVIEW);
         cards.add(card6, AMENDREVIEW);
-        //cards.add(card7, READREVIEW);
+        cards.add(card7, READREVIEW);
 
         headerPn.setBackground(OOCCOO);
 
@@ -495,6 +495,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         JButton backButton = new JButton("back");
         backButton.addActionListener(this);
         backButton.setActionCommand(REVIEW);
+        readReviewPanel.add(readReviewTextArea);
         readReviewPanel.add(backButton);
         return readReviewPanel;
     }
@@ -886,16 +887,15 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //read a review record
         } else if (e.getActionCommand().equals(READREVIEW)) {
             ArrayList<String> reviewList = database.getReadableReviews(currentUser.getUsername());
-            if(reviewList != null){
+            if(reviewList == null){
                 JOptionPane.showMessageDialog(frame, "No reviews are available to view");
             }else{
                 String selectedReview = selectReview(currentUser.getUsername());
                 if(selectedReview != null){
                     int reviewID = Integer.parseInt(selectedReview.substring(0,selectedReview.indexOf(",")));
                     cl.show(cards, READREVIEW);
-                    Review review = database.getReviewForAmending(reviewID);
+                    Review review = database.getReviewForReading(reviewID);
                     readReviewTextArea.setText(review.getFullReview());
-                    setExistingReviewDetails(review);
                 }
             }
         //handle an existing review

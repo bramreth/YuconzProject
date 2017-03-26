@@ -40,7 +40,9 @@ public class Review {
     }
 
     public String getFullReview(){
-        return "b";
+        String fReview = "";
+        fReview += "reviewID: " +reviewID + "\nstaffNo: " + staffNo + "\nusername: " + name;
+        return fReview;
     }
 
     public boolean checkComplete(){

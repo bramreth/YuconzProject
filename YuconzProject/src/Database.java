@@ -331,7 +331,13 @@ public class Database {
             String sql = "SELECT * FROM Review_Details WHERE username='" + username + "' OR manager='" + username + "' OR secondManager= '" + username+"'";
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
-                listOfReviews.add(rs.getInt("reviewID") + ", Name: " + rs.getString("username") + ", Supervisor: " + rs.getString("manager") + ", Second Supervisor: " + rs.getString("secondManager"));
+                String complete;
+                if(rs.getBoolean("revieweeSignature") && rs.getBoolean("managerSignature") && rs.getBoolean("secondManagerSignature")) {
+                    complete = "[Complete]";
+                }else{
+                    complete = "[Incomplete]";
+                }
+                listOfReviews.add(rs.getInt("reviewID") + ", Name: " + rs.getString("username") + ", Supervisor: " + rs.getString("manager") + ", Second Supervisor: " + rs.getString("secondManager") + ", " + complete);
             }
             return listOfReviews;
         } catch (SQLException err) {

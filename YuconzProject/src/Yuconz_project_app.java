@@ -716,9 +716,9 @@ public class Yuconz_project_app implements ActionListener,FocusListener
             cl.show(cards, MAINMENU);
             warningLabel.setText("");
 
-        //handle an existing review
-        }else if(e.getActionCommand().equals("handle review")) {
-            String unfinishedReviewString = selectUnfinishedReviews();
+        //amend a review with all review required people present
+        } else if (e.getActionCommand().equals(AMENDREVIEW)) {
+            String unfinishedReviewString = selectUnfinishedReviews(e.getActionCommand());
 
             if(!(unfinishedReviewString == null) && !(unfinishedReviewString.equals("None found"))) {
                 int reviewID = Integer.parseInt(unfinishedReviewString.substring(0,unfinishedReviewString.indexOf(",")));
@@ -726,6 +726,12 @@ public class Yuconz_project_app implements ActionListener,FocusListener
                 Review review = database.getReviewForAmending(reviewID);
                 setExistingReviewDetails(review);
             }
+
+        //handle an existing review
+        }else if(e.getActionCommand().equals("handle review")) {
+            String unfinishedReviewString = selectUnfinishedReviews(e.getActionCommand());
+
+
 
 
         //create a new review
@@ -772,9 +778,15 @@ public class Yuconz_project_app implements ActionListener,FocusListener
      * shows the manager or director a list of their subordinates to choose from
      * @return selected user's username
      */
-    private String selectUnfinishedReviews() {
+    private String selectUnfinishedReviews(String action) {
 
-        ArrayList<String> reviewsList = database.getReviewsMissingSecondManager();
+        ArrayList<String> reviewsList = new ArrayList<String>();
+        if (action.equals(AMENDREVIEW)) {
+            reviewsList = database.getReviewsWithSecondManager();
+        } else if (action.equals("handle review")) {
+            reviewsList = database.getReviewsMissingSecondManager();
+        }
+
         Object[] reviews = new Object[reviewsList.size()];
 
         if(reviewsList.size() > 0) {

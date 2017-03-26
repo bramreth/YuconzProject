@@ -279,4 +279,20 @@ public class Database {
         Review review = new Review(1, "test", "test", "test", "test");
         return review;
     }
+
+    public ArrayList<String> getReviewsWithSecondManager() {
+        ArrayList<String> reviews = new ArrayList<>();
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT username,reviewID,manager,secondManager FROM Review_Details WHERE secondManager IS NOT NULL";
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                reviews.add(rs.getInt("reviewID") + ", Name: " + rs.getString("username") + ", Supervisor: " + rs.getString("manager") + ", Second Supervisor" + rs.getString("secondManager"));
+            }
+            return reviews;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return null;
+    }
 }

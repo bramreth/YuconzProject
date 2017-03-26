@@ -70,6 +70,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private JTextArea reviewComments = new JTextArea(4, 20);
     String[] choices = {"Stay in post","Salary increase","Promotion", "Probation", "Termination"};
     private JComboBox<String> reviewRecommendation = new JComboBox<String>(choices);
+    private JTextArea readReviewTextArea = new JTextArea(4, 20);
     //endregion
 
     //region main method and constructor
@@ -490,7 +491,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         JPanel readReviewPanel = new JPanel(new FlowLayout());
 
         readReviewPanel.setBackground(OOCCOO);
-
+        readReviewTextArea.setEditable(false);
         JButton backButton = new JButton("back");
         backButton.addActionListener(this);
         backButton.setActionCommand(REVIEW);
@@ -891,6 +892,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
                     int reviewID = Integer.parseInt(selectedReview.substring(0,selectedReview.indexOf(",")));
                     cl.show(cards, READREVIEW);
                     Review review = database.getReviewForAmending(reviewID);
+                    readReviewTextArea.setText(review.getFullReview());
                     setExistingReviewDetails(review);
                 }
             }

@@ -34,9 +34,13 @@ public class Review {
         section = sectionIn;
         jobTitle = jobTitleIn;
         reviewID = reviewIDIn;
-        revieweeSignature = new Signature(SignatureType.REVIEWEE);
-        managerSignature = new Signature(SignatureType.MANAGER);
-        secondManagerSignature = new Signature(SignatureType.SECOND_MANAGER);
+        revieweeSignature = new Signature("reviewee");
+        managerSignature = new Signature("manager");
+        secondManagerSignature = new Signature("secondManager");
+    }
+
+    public String getFullReview(){
+        return "b";
     }
 
     public boolean checkComplete(){
@@ -87,15 +91,15 @@ public class Review {
         reviewerRecommendation = recommendationIn;
     }
 
-    public void sign(SignatureType type, Date dateIn){
+    public void sign(String type, Date dateIn){
         switch (type){
-            case REVIEWEE:
+            case "reviewee":
                 revieweeSignature.sign(true,dateIn);
                 break;
-            case MANAGER:
+            case "manager":
                 managerSignature.sign(true,dateIn);
                 break;
-            case SECOND_MANAGER:
+            case "secondManager":
                 secondManagerSignature.sign(true,dateIn);
                 break;
         }
@@ -202,9 +206,9 @@ public class Review {
      */
     public class Signature{
         private boolean signed;
-        private SignatureType  type;
+        private String  type;
         private Date date;
-        public Signature(SignatureType typeIn){
+        public Signature(String typeIn){
             signed = false;
             date = null;
             type = typeIn;
@@ -221,8 +225,5 @@ public class Review {
         STAY_IN_POST, SALARY_INCREASE, PROMOTION, PROBATION, TERMINATION
     }
 
-    public enum SignatureType{
-        MANAGER, SECOND_MANAGER, REVIEWEE
-    }
     //endregion
 }

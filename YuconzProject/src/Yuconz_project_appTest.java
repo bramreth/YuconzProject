@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Created by bramreth on 2/14/17.
  */
 class Yuconz_project_appTest {
-
+/*
     private Yuconz_project_app app;
 
     @org.junit.jupiter.api.BeforeEach
@@ -138,6 +138,7 @@ class Yuconz_project_appTest {
     /*
          stage 5
     */
+/*
     @org.junit.jupiter.api.Test
     public void validRevieweeCreateReview(){
         System.out.println("valid create review for a reviewee");
@@ -182,7 +183,7 @@ class Yuconz_project_appTest {
         Review tempReview =
     }
     */
-
+/*
     //read past completed review record
     @org.junit.jupiter.api.Test
     public void validReadPastReview(){

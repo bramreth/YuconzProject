@@ -24,6 +24,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private Document detailsDocument;
     private String personalDetailsUser = null;
     private int personalDetailsDocumentID = 0;
+    private Review currentReview;
 
     //GUI variables
     private static JFrame frame;
@@ -60,11 +61,11 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private JTextField reviewSection = new JTextField("reviewee section", 20);
     private JTextField reviewJobTitle = new JTextField("reviewee job title", 20);
     private JTextField reviewPerformanceNumber = new JTextField("performance number", 20);
-    private JTextField reviewPerformanceObjective = new JTextField("performance objective", 20);
-    private JTextField reviewPerformanceAchievement = new JTextField("performance achievement", 20);
+    private JTextArea reviewPerformanceObjective = new JTextArea(4, 20);
+    private JTextArea reviewPerformanceAchievement = new JTextArea(4, 20);
     private JTextArea reviewPerformanceSummary = new JTextArea(4, 20);
     private JTextField reviewGoalNumber = new JTextField("goal number", 20);
-    private JTextField reviewGoal = new JTextField("goal description", 20);
+    private JTextArea reviewGoal = new JTextArea(4, 20);
     private JTextArea reviewComments = new JTextArea(4, 20);
     String[] choices = {"Stay in post","Salary increase","Promotion", "Probation", "Termination"};
     private JComboBox<String> reviewRecommendation = new JComboBox<String>(choices);
@@ -188,7 +189,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
      * @param username
      * @return the document
      */
-    private Document getPersonalDetailsDocument(String username)
+    private Document createPersonalDetailsDocument(String username)
     {
         Document userDetails = new Document(username);
 
@@ -206,7 +207,8 @@ public class Yuconz_project_app implements ActionListener,FocusListener
      * sets the text fields' text to the details found in the database
      * @param username
      */
-    private void setExistingDetails(String username)   {
+    private void setExistingDetails(String username)
+    {
         Document existingUserData = database.fetchPersonalDetails(username);
         personalDetailsDocumentID = existingUserData.getDocumentID();
         staffNo.setText("" + existingUserData.getStaffNo());
@@ -221,21 +223,6 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         mobileNumber.setText(existingUserData.getMobileNumber());
         emergencyContact.setText(existingUserData.getEmergencyContact());
         emergencyContactNumber.setText(existingUserData.getEmergencyContactNumber());
-    }
-
-    /**
-     * setExistingReviewDetails
-     * sets the text fields' text to the details found in the database
-     * @param review
-     */
-    private void setExistingReviewDetails(Review review)
-    {
-        reviewStaffNo.setText("" + review.getStaffNo());
-        reviewName.setText(review.getName());
-        reviewManager.setText(review.getManager());
-        reviewSecondManager.setText(review.getSecondManager());
-        reviewSection.setText(review.getSection());
-        reviewJobTitle.setText(review.getJobTitle());
     }
 
     /**
@@ -322,7 +309,9 @@ public class Yuconz_project_app implements ActionListener,FocusListener
             return false;
         }
     }
+    //endregion
 
+    //region Review
     /**
      * createReview
      * checks permissions of the user for creating a review document
@@ -332,10 +321,35 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     {
         //run authorisation method with amendPersonalDetails as an action
         if(authorisation.authorisationCheck(currentUser, "", "createReviewRecord")){
-           return true;
+            return true;
         } else {
             return false;
         }
+    }
+
+    private Review submitReviewDocument()
+    {
+        Review finalReview = currentReview;
+        currentReview.addPerformanceSummary(reviewPerformanceSummary.getText());
+        currentReview.addReviewerComment(reviewComments.getText());
+        currentReview.addRecommendation(reviewRecommendation.getSelectedItem().toString());
+        return finalReview;
+
+    }
+
+    /**
+     * setExistingReviewDetails
+     * sets the text fields' text to the details found in the database
+     * @param review
+     */
+    private void setExistingReviewDetails(Review review)
+    {
+        reviewStaffNo.setText("" + review.getStaffNo());
+        reviewName.setText(review.getName());
+        reviewManager.setText(review.getManager());
+        reviewSecondManager.setText(review.getSecondManager());
+        reviewSection.setText(review.getSection());
+        reviewJobTitle.setText(review.getJobTitle());
     }
     //endregion
 
@@ -485,7 +499,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
 
         JButton confirmButton = new JButton("confirm");
         confirmButton.addActionListener(this);
-        confirmButton.setActionCommand("submit review");//neeeds implementing
+        confirmButton.setActionCommand("submit review");//implement
 
         reviewName.addFocusListener(this);
         reviewName.setEditable(false);
@@ -496,21 +510,26 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         reviewSecondManager.addFocusListener(this);
         reviewSecondManager.setEditable(false);
         reviewSection.addFocusListener(this);
+        reviewSection.setEditable(false);
         reviewJobTitle.addFocusListener(this);
+        reviewJobTitle.setEditable(false);
 
 
         reviewPerformanceNumber.addFocusListener(this);
         reviewPerformanceNumber.setEditable(false);
         reviewPerformanceObjective.addFocusListener(this);
+        reviewPerformanceObjective.setText("performance objective");
         reviewPerformanceAchievement.addFocusListener(this);
-        JButton addPerformance = new JButton("add performance");
+        reviewPerformanceAchievement.setText("performance achievement");
+        JButton addPerformance = new JButton("Add performance");
         addPerformance.addActionListener(this);
         addPerformance.setActionCommand("addPerformance");//implement!
 
         reviewGoalNumber.addFocusListener(this);
         reviewGoalNumber.setEditable(false);
         reviewGoal.addFocusListener(this);
-        JButton addGoal = new JButton("add goal");
+        reviewGoal.setText("goal description");
+        JButton addGoal = new JButton("Add goal");
         addGoal.addActionListener(this);
         addGoal.setActionCommand("addGoal");//implement!
         reviewComments.addFocusListener(this);
@@ -807,9 +826,9 @@ public class Yuconz_project_app implements ActionListener,FocusListener
                 String newDateString = df.format(dateOfBirth);
 
                 if (e.getActionCommand().equals("confirmAmendPD")) {
-                    database.amendUserPersonalDetails(getPersonalDetailsDocument(personalDetailsUser));
+                    database.amendUserPersonalDetails(createPersonalDetailsDocument(personalDetailsUser));
                 } else {
-                    database.createNewUser(getPersonalDetailsDocument(personalDetailsUser));
+                    database.createNewUser(createPersonalDetailsDocument(personalDetailsUser));
                 }
 
                 personalDetailsDocumentID = 0;
@@ -830,8 +849,8 @@ public class Yuconz_project_app implements ActionListener,FocusListener
             if(!(unfinishedReviewString == null) && !(unfinishedReviewString.equals("None found"))) {
                 int reviewID = Integer.parseInt(unfinishedReviewString.substring(0,unfinishedReviewString.indexOf(",")));
                 cl.show(cards, AMENDREVIEW);
-                Review review = database.getReviewForAmending(reviewID);
-                setExistingReviewDetails(review);
+                currentReview = database.getReviewForAmending(reviewID);
+                setExistingReviewDetails(currentReview);
             }
 
         //handle an existing review
@@ -849,12 +868,16 @@ public class Yuconz_project_app implements ActionListener,FocusListener
 
         //create a new review
         } else if (e.getActionCommand().equals("createReview")) {
-            if(createReview()) {
+            if (createReview()) {
                 String reviewee = selectReviewee();
                 database.createNewReview(currentUser.getUsername(), reviewee);
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
             }
+
+        //submitting a review
+        } else if (e.getActionCommand().equals("submit review")) {
+            database.submitReview(submitReviewDocument());
 
         //failsafe that catches any stray button clicks that takes the user to where the button action command would take it
         } else {
@@ -986,8 +1009,13 @@ public class Yuconz_project_app implements ActionListener,FocusListener
 
     @Override
     public void focusGained(FocusEvent e) {
-        JTextField tempTF = (JTextField)e.getComponent();
-        tempTF.selectAll();
+        if(e.getComponent().getClass().toString().equals("class javax.swing.JTextArea")) {
+            JTextArea tempTA = (JTextArea)e.getComponent();
+            tempTA.selectAll();
+        } else {
+            JTextField tempTF = (JTextField)e.getComponent();
+            tempTF.selectAll();
+        }
     }
 
     @Override

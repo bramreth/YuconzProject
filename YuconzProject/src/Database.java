@@ -284,7 +284,7 @@ public class Database {
             while(rs.next()){
                 User reviewUser = getUser(rs.getString("username"));
                 //will overwrite doc each time it loops...
-                review = new Review(rs.getInt("userID"), rs.getString("username"), rs.getString("manager"), rs.getString("secondManager"), reviewUser.getDepartment(), reviewUser.getPosition().getPositionName());
+                review = new Review(rs.getInt("reviewID"), rs.getInt("userID"), rs.getString("username"), rs.getString("manager"), rs.getString("secondManager"), reviewUser.getDepartment(), reviewUser.getPosition().getPositionName());
             }
             return review;
         } catch (SQLException err) {
@@ -355,4 +355,60 @@ public class Database {
             System.out.println(err.getMessage());
         }
     }
+
+    public void submitReview(Review review)
+    {
+        try {
+            Statement s = con.createStatement();
+            String sql = "UPDATE Review_Details SET section = '" + review.getSection() + "', jobTitle = '" + review.getJobTitle() + "', performanceSummary = '" + review.getPerformanceSummary() + "', reviewerComments = '" + review.getReviewerComments() + "', reviewerReccomendation = '" + review.getReviewerRecommendation() + "' WHERE reviewID=" + review.getReviewID();
+            s.executeUpdate(sql);
+            con.commit();
+
+            submitReviewPerformance(review);
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+    }
+
+    public void submitReviewPerformance(Review review)
+    {
+        try {
+            Statement s = con.createStatement();
+            ArrayList<Review.PastPerformance> pastPerformances = review.getPerformanceArrayList();
+            int startingNum = countRows("Performance_Details") + 1;
+
+            for(Review.PastPerformance performance : pastPerformances) {
+                String sql = "INSERT INTO Performance_Details VALUES (" + startingNum + ", " + review.getReviewID() + ", '" + performance.getObjectives() + "', '" + performance.getAchievements() + "')";
+                s.executeUpdate(sql);
+                startingNum++;
+            }
+
+            con.commit();
+
+            submitReviewGoal(review);
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+    }
+
+    public void submitReviewGoal(Review review)
+    {
+        try {
+            Statement s = con.createStatement();
+            ArrayList<Review.GoalList> goals = review.getGoalArrayList();
+            int startingNum = countRows("Goal_List") + 1;
+
+            for(Review.GoalList goal : goals) {
+                String sql = "INSERT INTO Goal_List VALUES (" + startingNum + ", " + review.getReviewID() + ", '" + goal.getGoal() + "')";
+                s.executeUpdate(sql);
+                startingNum++;
+            }
+
+            con.commit();
+
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+    }
+
 }

@@ -5,13 +5,13 @@ import java.util.Date;
  * Created by bramreth on 3/20/17.
  */
 public class Review {
-    private int staffNo;
+    private int staffNo, reviewID;
     private String name, manager, secondManager, section, jobTitle;
     private ArrayList<PastPerformance> performanceArrayList;
     private String performanceSummary;
     private ArrayList<GoalList> goalArrayList;
     private String reviewerComments;
-    private Recommendation reviewerRecommendation;
+    private String reviewerRecommendation;
     private Signature revieweeSignature, managerSignature, secondManagerSignature;
     private boolean signedOff;
 
@@ -25,7 +25,7 @@ public class Review {
      * @param sectionIn
      * @param jobTitleIn
      */
-    public Review(int staffNoIn, String nameIn, String managerIn, String secondManagerIn,
+    public Review(int reviewIDIn, int staffNoIn, String nameIn, String managerIn, String secondManagerIn,
                   String sectionIn, String jobTitleIn){
         staffNo = staffNoIn;
         name = nameIn;
@@ -33,6 +33,7 @@ public class Review {
         secondManager =secondManagerIn;
         section = sectionIn;
         jobTitle = jobTitleIn;
+        reviewID = reviewIDIn;
         revieweeSignature = new Signature(SignatureType.REVIEWEE);
         managerSignature = new Signature(SignatureType.MANAGER);
         secondManagerSignature = new Signature(SignatureType.SECOND_MANAGER);
@@ -82,7 +83,7 @@ public class Review {
      * add the reviewers recommendation
      * @param recommendationIn
      */
-    public void addRecommendation(Recommendation recommendationIn){
+    public void addRecommendation(String recommendationIn){
         reviewerRecommendation = recommendationIn;
     }
 
@@ -127,6 +128,32 @@ public class Review {
     public String getJobTitle() {
         return jobTitle;
     }
+
+    public String getReviewerComments() {
+        return reviewerComments;
+    }
+
+    public String getReviewerRecommendation() {
+        return reviewerRecommendation;
+    }
+
+    public String getPerformanceSummary() {
+        return performanceSummary;
+    }
+
+    public int getReviewID() {
+        return reviewID;
+    }
+
+    public ArrayList<PastPerformance> getPerformanceArrayList()
+    {
+        return performanceArrayList;
+    }
+
+    public ArrayList<GoalList> getGoalArrayList()
+    {
+        return goalArrayList;
+    }
     //endregion
 
     //region data structures
@@ -141,6 +168,16 @@ public class Review {
             objectives = objIn;
             achievements = achieveIn;
         }
+
+        public String getObjectives()
+        {
+            return objectives;
+        }
+
+        public String getAchievements()
+        {
+            return achievements;
+        }
     }
 
     /**
@@ -152,6 +189,11 @@ public class Review {
         public GoalList(int noIn, String goalIn){
             no = noIn;
             goal = goalIn;
+        }
+
+        public String getGoal()
+        {
+            return goal;
         }
     }
 

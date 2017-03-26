@@ -66,6 +66,16 @@ public class User
         return surname + ", " + name;
     }
 
+    public String getFirstName()
+    {
+        return name;
+    }
+
+    public String getSurname()
+    {
+        return surname;
+    }
+
     public String getDepartment()
     {
         return dept;

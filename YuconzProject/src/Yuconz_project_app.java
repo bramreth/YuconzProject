@@ -239,14 +239,14 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     }
 
     /**
-     * setExistingDetails
-     * sets the text box text to the details found in the database
+     * clearExistingDetails
+     * sets text fields back to default values except those for details that come from other tables
      */
     private void clearExistingDetails(String username)
     {
-        Document existingUserData = database.fetchPersonalDetails(username);
-        staffNo.setText("" + existingUserData.getStaffNo());
-        name.setText(existingUserData.getName());
+        User existingUserData = database.getUser(username);
+        staffNo.setText("" + existingUserData.getUserID());
+        name.setText(existingUserData.getFirstName());
         surname.setText(existingUserData.getSurname());
         dob.setText("Date of birth (yyyy-mm-dd)");
         address.setText("Address");

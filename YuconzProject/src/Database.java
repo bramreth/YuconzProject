@@ -288,7 +288,7 @@ public class Database {
             String sql = "SELECT username,reviewID,manager,secondManager FROM Review_Details WHERE secondManager IS NOT NULL";
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
-                supervisors.add(rs.getInt("reviewID") + ", Name: " + rs.getString("username") + ", Supervisor: " + rs.getString("manager") + ", Second Supervisor" + rs.getString("secondManager"));
+                supervisors.add(rs.getInt("reviewID") + ", Name: " + rs.getString("username") + ", Supervisor: " + rs.getString("manager") + ", Second Supervisor: " + rs.getString("secondManager"));
             }
             return supervisors;
         } catch (SQLException err) {

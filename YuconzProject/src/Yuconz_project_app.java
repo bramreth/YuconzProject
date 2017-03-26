@@ -436,7 +436,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         JButton amendReview = new JButton("Amend a review");
         amendReview.setFont(normalFont);
         amendReview.addActionListener(this);
-        amendReview.setActionCommand("AMENDREVIEW");
+        amendReview.setActionCommand(AMENDREVIEW);
 
         reviewPanel.add(btnReview);
         reviewPanel.add(handleReview);

@@ -62,10 +62,10 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private JTextField reviewPerformanceNumber = new JTextField("performance number", 20);
     private JTextField reviewPerformanceObjective = new JTextField("performance objective", 20);
     private JTextField reviewPerformanceAchievement = new JTextField("performance achievement", 20);
-    private JTextField reviewPerformanceSummary = new JTextField("performance summary", 20);
+    private JTextArea reviewPerformanceSummary = new JTextArea(4, 20);
     private JTextField reviewGoalNumber = new JTextField("goal number", 20);
     private JTextField reviewGoal = new JTextField("goal description", 20);
-    private JTextField reviewComments = new JTextField("reviewer comments", 20);
+    private JTextArea reviewComments = new JTextArea(4, 20);
     String[] choices = {"Stay in post","Salary increase","Promotion", "Probation", "Termination"};
     private JComboBox<String> reviewRecommendation = new JComboBox<String>(choices);
     //endregion
@@ -359,7 +359,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //Create and set up the window.
         frame = new JFrame("Yuconz File App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(true);
+        frame.setResizable(false);
 
         //Create and set up the content pane.
         app.addComponentsToPane(frame.getContentPane());
@@ -463,7 +463,21 @@ public class Yuconz_project_app implements ActionListener,FocusListener
      * @return
     */
     private JPanel createAmendReviewCard() {
-        JPanel amendReviewPanel = new JPanel(new FlowLayout());
+        JPanel amendReviewPanel = new JPanel(new GridLayout(1,2));
+        JPanel left = new JPanel(new FlowLayout());
+        JPanel right = new JPanel(new GridLayout(2,1));
+        JPanel rightTop = new JPanel(new FlowLayout());
+        JPanel rightBottomTop = new JPanel(new FlowLayout());
+        JPanel rightBottomBottom = new JPanel(new FlowLayout());
+        JPanel rightBottom = new JPanel(new GridLayout(2,1));
+
+        amendReviewPanel.setBackground(OOCCOO);
+        left.setBackground(OOCCOO);
+        right.setBackground(OOCCOO);
+        rightTop.setBackground(OOCCOO);
+        rightBottomTop.setBackground(OOCCOO);
+        rightBottomBottom.setBackground(OOCCOO);
+        rightBottom.setBackground(OOCCOO);
 
         JButton backButton = new JButton("back");
         backButton.addActionListener(this);
@@ -500,28 +514,37 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         addGoal.addActionListener(this);
         addGoal.setActionCommand("addGoal");//implement!
         reviewComments.addFocusListener(this);
+        reviewComments.setText("reviewer comments");
         reviewPerformanceSummary.addFocusListener(this);
+        reviewPerformanceSummary.setText("performance summary");
 
-        amendReviewPanel.add(reviewName);
-        amendReviewPanel.add(reviewStaffNo);
-        amendReviewPanel.add(reviewManager);
-        amendReviewPanel.add(reviewSecondManager);
-        amendReviewPanel.add(reviewJobTitle);
-        amendReviewPanel.add(reviewSection);
-        amendReviewPanel.add(reviewPerformanceNumber);
-        amendReviewPanel.add(reviewPerformanceObjective);
-        amendReviewPanel.add(reviewPerformanceAchievement);
-        amendReviewPanel.add(addPerformance);
-        amendReviewPanel.add(reviewPerformanceSummary);
-        amendReviewPanel.add(reviewGoalNumber);
-        amendReviewPanel.add(reviewGoal);
-        amendReviewPanel.add(addGoal);
-        amendReviewPanel.add(reviewComments);
-        amendReviewPanel.add(reviewRecommendation);
+        left.add(reviewName);
+        left.add(reviewStaffNo);
+        left.add(reviewManager);
+        left.add(reviewSecondManager);
+        left.add(reviewJobTitle);
+        left.add(reviewSection);
+        rightTop.add(reviewPerformanceNumber);
+        rightTop.add(reviewPerformanceObjective);
+        rightTop.add(reviewPerformanceAchievement);
+        rightTop.add(addPerformance);
+        rightTop.add(reviewPerformanceSummary);
+        rightBottomTop.add(reviewGoalNumber);
+        rightBottomTop.add(reviewGoal);
+        rightBottomTop.add(addGoal);
+        rightBottomBottom.add(reviewComments);
+        rightBottomBottom.add(reviewRecommendation);
 
-        amendReviewPanel.add(confirmButton);
-        amendReviewPanel.add(backButton);
-        amendReviewPanel.setBackground(OOCCOO);
+        rightBottomBottom.add(confirmButton);
+        rightBottomBottom.add(backButton);
+
+
+        amendReviewPanel.add(left);
+        right.add(rightTop);
+        right.add(rightBottom);
+        rightBottom.add(rightBottomTop);
+        rightBottom.add(rightBottomBottom);
+        amendReviewPanel.add(right);
 
         return amendReviewPanel;
     }
@@ -700,7 +723,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
                     amendReview.setVisible(false);
                 }
                 cl.show(cards, MAINMENU);
-                frame.setSize(new Dimension(640, 360)); //shows main menu and resizes
+                frame.setSize(new Dimension(640, 500)); //shows main menu and resizes
                 centerFrame();
 
                 warningLabel.setText("");

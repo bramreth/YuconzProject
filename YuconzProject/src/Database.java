@@ -345,7 +345,7 @@ public class Database {
         ArrayList<String> supervisors = new ArrayList<>();
         try {
             Statement s = con.createStatement();
-            String sql = "SELECT username,reviewID,manager,secondManager FROM Review_Details WHERE secondManager IS NOT NULL AND revieweeSignature IS NULL AND managerSignature IS NULL AND secondManagerSignature IS NULL AND manager='" + username + "'";
+            String sql = "SELECT username,reviewID,manager,secondManager FROM Review_Details WHERE secondManager IS NOT NULL AND revieweeSignature IS NULL AND reviewerComments IS NULL AND managerSignature IS NULL AND secondManagerSignature IS NULL AND manager='" + username + "'";
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
                 supervisors.add(rs.getInt("reviewID") + ", Name: " + rs.getString("username") + ", Supervisor: " + rs.getString("manager") + ", Second Supervisor: " + rs.getString("secondManager"));
@@ -407,9 +407,8 @@ public class Database {
     {
         try {
             Statement s = con.createStatement();
-            String sql = "UPDATE Review_Details SET section = '" + review.getSection() + "', jobTitle = '" + review.getJobTitle() + "', performanceSummary = '" + review.getPerformanceSummary() + "', reviewerComments = '" + review.getReviewerComments() + "', reviewerReccomendation = '" + review.getReviewerRecommendation() + "' WHERE reviewID=" + review.getReviewID();
+            String sql = "UPDATE Review_Details SET section = '" + review.getSection() + "', jobTitle = '" + review.getJobTitle() + "', performanceSummary = '" + review.getPerformanceSummary() + "', reviewerComments = '" + review.getReviewerComments() + "', reviewerRecommendation = '" + review.getReviewerRecommendation() + "' WHERE reviewID=" + review.getReviewID();
             s.executeUpdate(sql);
-            con.commit();
 
             submitReviewPerformance(review);
         } catch (SQLException err) {
@@ -422,6 +421,7 @@ public class Database {
         try {
             Statement s = con.createStatement();
             ArrayList<Review.PastPerformance> pastPerformances = review.getPerformanceArrayList();
+            System.out.println(pastPerformances.size());
             int startingNum = countRows("Performance_Details") + 1;
 
             for(Review.PastPerformance performance : pastPerformances) {
@@ -430,7 +430,7 @@ public class Database {
                 startingNum++;
             }
 
-            con.commit();
+
 
             submitReviewGoal(review);
         } catch (SQLException err) {
@@ -443,6 +443,7 @@ public class Database {
         try {
             Statement s = con.createStatement();
             ArrayList<Review.GoalList> goals = review.getGoalArrayList();
+            System.out.println(goals.size());
             int startingNum = countRows("Goal_List") + 1;
 
             for(Review.GoalList goal : goals) {

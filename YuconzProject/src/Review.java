@@ -7,9 +7,9 @@ import java.util.Date;
 public class Review {
     private int staffNo, reviewID;
     private String name, manager, secondManager, section, jobTitle;
-    private ArrayList<PastPerformance> performanceArrayList;
+    private ArrayList<PastPerformance> performanceArrayList = new ArrayList<PastPerformance>();
     private String performanceSummary;
-    private ArrayList<GoalList> goalArrayList;
+    private ArrayList<GoalList> goalArrayList = new ArrayList<GoalList>();
     private String reviewerComments;
     private String reviewerRecommendation;
     private Signature revieweeSignature, managerSignature, secondManagerSignature;
@@ -164,7 +164,7 @@ public class Review {
     /**
      * data structure for list of past performances
      */
-    public class PastPerformance{
+    public static class PastPerformance{
         private int no;
         private String objectives, achievements;
         public PastPerformance(int noIn, String objIn, String achieveIn){
@@ -187,7 +187,7 @@ public class Review {
     /**
      * data structure for list of goals
      */
-    public class GoalList{
+    public static class GoalList{
         private int no;
         private String  goal;
         public GoalList(int noIn, String goalIn){

@@ -545,6 +545,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
 
         reviewPerformanceNumber.addFocusListener(this);
         reviewPerformanceNumber.setEditable(false);
+        reviewPerformanceNumber.setText("1");
         reviewPerformanceObjective.addFocusListener(this);
         reviewPerformanceObjective.setText("performance objective");
         reviewPerformanceAchievement.addFocusListener(this);
@@ -554,6 +555,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         addPerformance.setActionCommand("addPerformance");//implement!
 
         reviewGoalNumber.addFocusListener(this);
+        reviewGoalNumber.setText("1");
         reviewGoalNumber.setEditable(false);
         reviewGoal.addFocusListener(this);
         reviewGoal.setText("goal description");
@@ -926,11 +928,25 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //submitting a review
         } else if (e.getActionCommand().equals("submit review")) {
             database.submitReview(submitReviewDocument());
+            cl.show(cards, MAINMENU);
+
+        //adding a performance review
+        } else if (e.getActionCommand().equals("addPerformance")) {
+            currentReview.addPerformance(new Review.PastPerformance(currentReview.getPerformanceArrayList().size() + 1, reviewPerformanceObjective.getText(), reviewPerformanceAchievement.getText()));
+            reviewPerformanceNumber.setText("" + (currentReview.getPerformanceArrayList().size() + 1));
+            reviewPerformanceAchievement.setText("performance achievement");
+            reviewPerformanceObjective.setText("performance objective");
+
+        //adding a goal
+        } else if (e.getActionCommand().equals("addGoal")) {
+            currentReview.addGoal(new Review.GoalList(currentReview.getGoalArrayList().size()+1, reviewGoal.getText()));
+            reviewGoalNumber.setText("" + (currentReview.getGoalArrayList().size() + 1));
+            reviewGoal.setText("");
 
         //failsafe that catches any stray button clicks that takes the user to where the button action command would take it
         } else {
             cl.show(cards, (String)e.getActionCommand());
-            warningLabel.setText("");
+            warningLabel.setText("goal description");
         }
 
     }

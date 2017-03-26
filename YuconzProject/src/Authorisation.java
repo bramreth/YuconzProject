@@ -37,18 +37,53 @@ public class Authorisation {
                     return true;
                 }
                 break;
-            case "createReviewRecord":
-                if (currentUser.getPosition().getPositionName().equals("Manager") || currentUser.getPosition().getPositionName().equals("Director")) {
+            case "allocateReviewer":
+                if (currentUser.getDepartment().equals("Human Resources")) {
                     return true;
                 }
                 break;
-            case "readReviewRecord":
-                if (currentUser.getPosition().getPositionName().equals("") || currentUser.getPosition().getPositionName().equals("Director")) {
+            case "createReviewRecord":
+                if (currentUser.getPosition().getPositionName().equals("Manager")) {
+                    for(String temp: currentUser.getPosition().getSubordinates()){
+                        if(temp.equals(userIn)){
+                            return true;
+                        }
+                    }
+                }
+                if(currentUser.getPosition().getPositionName().equals("Director")) {
                     return true;
                 }
                 break;
         }
         return false;
+    }
+
+    /**
+     * checks whether the user has permission to read a given review
+     * @param userIn
+     * @param reviewIn
+     * @return
+     */
+    public boolean readReviewAthorisationCheck(String userIn, Review reviewIn){
+        if(reviewIn.getName().equals(userIn) || reviewIn.getManager().equals(userIn)||reviewIn.getSecondManager().equals(userIn)) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * checks whether the user has permission to sign a given review
+     * @param userIn
+     * @param reviewIn
+     * @return
+     */
+    public boolean signReviewAthorisationCheck(String userIn, Review reviewIn){
+        if(reviewIn.getName().equals(userIn) || reviewIn.getManager().equals(userIn)||reviewIn.getSecondManager().equals(userIn)) {
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }

@@ -54,6 +54,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private JButton btnConfirmPD;
     private JButton handleReview;
     private JButton amendReview;
+    private JButton signOffReview;
     private JTextField reviewStaffNo = new JTextField("staff number", 20);
     private JTextField reviewName = new JTextField("reviewee name", 20);
     private JTextField reviewManager = new JTextField("manager username", 20);
@@ -363,6 +364,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private final static String CREATEPD = "Create Personal Details";
     private final static String REVIEW = "Review";
     private final static String AMENDREVIEW = "Amend Review";
+    private final static String READREVIEW = "Read Review";
 
     /**
      * display login menu
@@ -373,7 +375,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //Create and set up the window.
         frame = new JFrame("Yuconz File App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        frame.setResizable(true);
 
         //Create and set up the content pane.
         app.addComponentsToPane(frame.getContentPane());
@@ -416,6 +418,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         JPanel card4 = createAmendCard();
         JPanel card5 = createReviewCard();
         JPanel card6 = createAmendReviewCard();
+        //JPanel card7 = createReadReviewCard();
 
         //Create the panel that contains the "cards".
         cards = new JPanel(new CardLayout());
@@ -425,6 +428,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         cards.add(card4, AMENDPD);
         cards.add(card5, REVIEW);
         cards.add(card6, AMENDREVIEW);
+        //cards.add(card7, READREVIEW);
 
         headerPn.setBackground(OOCCOO);
 
@@ -462,9 +466,15 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         amendReview.setActionCommand(AMENDREVIEW);
         amendReview.setVisible(false);
 
+        JButton readReview = new JButton("Read a review");
+        readReview.setFont(normalFont);
+        readReview.addActionListener(this);
+        readReview.setActionCommand(READREVIEW);
+
         reviewPanel.add(btnReview);
         reviewPanel.add(handleReview);
         reviewPanel.add(amendReview);
+        reviewPanel.add(readReview);
         reviewPanel.add(backButton);
         reviewPanel.setBackground(OOCCOO);
 
@@ -472,10 +482,27 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     }
 
     /**
-     * createAmendReviewCard
+     * createReadReviewCard
      * creates the JPanel of the amend review screen
      * @return
     */
+    private JPanel createReadReviewCard() {
+        JPanel readReviewPanel = new JPanel(new FlowLayout());
+
+        readReviewPanel.setBackground(OOCCOO);
+
+        JButton backButton = new JButton("back");
+        backButton.addActionListener(this);
+        backButton.setActionCommand(REVIEW);
+        readReviewPanel.add(backButton);
+        return readReviewPanel;
+    }
+
+    /**
+     * createAmendReviewCard
+     * creates the JPanel of the amend review screen
+     * @return
+     */
     private JPanel createAmendReviewCard() {
         JPanel amendReviewPanel = new JPanel(new GridLayout(1,2));
         JPanel left = new JPanel(new FlowLayout());
@@ -853,17 +880,36 @@ public class Yuconz_project_app implements ActionListener,FocusListener
                 setExistingReviewDetails(currentReview);
             }
 
+        //read a review record
+        } else if (e.getActionCommand().equals(READREVIEW)) {
+            ArrayList<String> reviewList = database.getReadableReviews(currentUser.getUsername());
+            if(reviewList != null){
+                JOptionPane.showMessageDialog(frame, "No reviews are available to view");
+            }else{
+                String selectedReview = selectReview(currentUser.getUsername());
+                if(selectedReview != null){
+                    int reviewID = Integer.parseInt(selectedReview.substring(0,selectedReview.indexOf(",")));
+                    cl.show(cards, READREVIEW);
+                    Review review = database.getReviewForAmending(reviewID);
+                    setExistingReviewDetails(review);
+                }
+            }
         //handle an existing review
         }else if(e.getActionCommand().equals("handle review")) {
             String unfinishedReviewString = selectUnfinishedReviews(e.getActionCommand());
 
-            if(!(unfinishedReviewString == null) && !(unfinishedReviewString.equals("None found"))) {
-                int reviewID = Integer.parseInt(unfinishedReviewString.substring(0,unfinishedReviewString.indexOf(",")));
-                String secondManagerString = secondManagerSelection(database.getReviewManager(reviewID).getPosition().getPositionName(), reviewID);
+            if(authorisation.authorisationCheck(currentUser,unfinishedReviewString,"allocateReviewer")) {
 
-                if(!(secondManagerString == null) && !(secondManagerString.equals("None found"))) {
-                    database.addSecondManager(reviewID, secondManagerString);
+                if (!(unfinishedReviewString == null) && !(unfinishedReviewString.equals("None found"))) {
+                    int reviewID = Integer.parseInt(unfinishedReviewString.substring(0, unfinishedReviewString.indexOf(",")));
+                    String secondManagerString = secondManagerSelection(database.getReviewManager(reviewID).getPosition().getPositionName(), reviewID);
+
+                    if (!(secondManagerString == null) && !(secondManagerString.equals("None found"))) {
+                        database.addSecondManager(reviewID, secondManagerString);
+                    }
                 }
+            }else{
+                System.out.println("invalid authorisation");
             }
 
         //create a new review
@@ -915,6 +961,28 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     }
 
     /**
+     * selectReviews
+     * shows the employee all reviews they were involved with
+     * @return selected review to view
+     */
+    private String selectReview(String userIn) {
+
+        ArrayList<String> reviews = database.getReadableReviews(userIn);
+        Object[] reviewArray = new Object[reviews.size()];
+        for(int i = 0; i < reviewArray.length; i++) {
+            reviewArray[i] = reviews.get(i);
+        }
+
+        String selectedReview = (String)JOptionPane.showInputDialog(frame, "Select a review", "Review selection", JOptionPane.PLAIN_MESSAGE, null, reviewArray, reviewArray[0]);
+
+        //If a string was returned, return it to above
+        if ((selectedReview != null) && (selectedReview.length() > 0)) {
+            return selectedReview;
+        }
+        return null;
+    }
+
+    /**
      * selectUser
      * shows the manager or director a list of their subordinates to choose from
      * @return selected user's username
@@ -943,7 +1011,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
      */
     private String selectUnfinishedReviews(String action) {
 
-        ArrayList<String> reviewsList = new ArrayList<String>();
+        ArrayList<String> reviewsList;
 
         if (action.equals("handle review")) {
             reviewsList = database.getReviewsMissingSecondManager();

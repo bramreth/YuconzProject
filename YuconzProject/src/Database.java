@@ -293,6 +293,53 @@ public class Database {
         return null;
     }
 
+    /**
+     * gets a review to be read by the user
+     * @param reviewID
+     * @return
+     */
+    public Review getReviewForReading(int reviewID)
+    {
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT * FROM Review_Details WHERE reviewID=" + reviewID;
+            ResultSet rs = s.executeQuery(sql);
+            Review review = null;
+            while(rs.next()){
+                User reviewUser = getUser(rs.getString("username"));
+                review = new Review(reviewID,rs.getInt("userID"), rs.getString("username"), rs.getString("manager"), rs.getString("secondManager"), reviewUser.getDepartment(), reviewUser.getPosition().getPositionName());
+                review.addPerformanceSummary(rs.getString("performanceSummary"));
+                review.addReviewerComment(rs.getString("reviewerCommets"));
+                //review.addRecommendation((Review.Recommendation)rs.getString("recommendation"));
+            }
+            return review;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * returns all the readable review to be displayed as a list
+     * @return
+     */
+    public ArrayList<String> getReadableReviews(String username)
+    {
+        ArrayList<String> listOfReviews = new ArrayList<>();
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT * FROM Review_Details WHERE username='" + username + "' OR manager='" + username + "' OR secondManager= '" + username+"'";
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                listOfReviews.add(rs.getInt("reviewID") + ", Name: " + rs.getString("username") + ", Supervisor: " + rs.getString("manager") + ", Second Supervisor: " + rs.getString("secondManager"));
+            }
+            return listOfReviews;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return null;
+    }
+
     public ArrayList<String> getReviewsWithSecondManager(String username)
     {
         ArrayList<String> supervisors = new ArrayList<>();

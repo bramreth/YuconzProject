@@ -280,19 +280,66 @@ public class Database {
         return review;
     }
 
-    public ArrayList<String> getReviewsWithSecondManager() {
-        ArrayList<String> reviews = new ArrayList<>();
+    public ArrayList<String> getReviewsWithSecondManager()
+    {
+        ArrayList<String> supervisors = new ArrayList<>();
         try {
             Statement s = con.createStatement();
             String sql = "SELECT username,reviewID,manager,secondManager FROM Review_Details WHERE secondManager IS NOT NULL";
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
-                reviews.add(rs.getInt("reviewID") + ", Name: " + rs.getString("username") + ", Supervisor: " + rs.getString("manager") + ", Second Supervisor" + rs.getString("secondManager"));
+                supervisors.add(rs.getInt("reviewID") + ", Name: " + rs.getString("username") + ", Supervisor: " + rs.getString("manager") + ", Second Supervisor" + rs.getString("secondManager"));
             }
-            return reviews;
+            return supervisors;
         } catch (SQLException err) {
             System.out.println(err.getMessage());
         }
         return null;
+    }
+
+    public User getReviewManager(int reviewID)
+    {
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT manager FROM Review_Details WHERE reviewID=" + reviewID;
+            ResultSet rs = s.executeQuery(sql);
+            User supervisor = null;
+            while (rs.next()) {
+                supervisor = getUser(rs.getString("manager"));
+            }
+            return supervisor;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return null;
+    }
+
+    public ArrayList<String> getEmployeesWithPosition(String position)
+    {
+        ArrayList<String> employees = new ArrayList<>();
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT username FROM Employee_Data WHERE position='" + position + "'";
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                employees.add(rs.getString("username"));
+            }
+            return employees;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return null;
+    }
+
+    public void addSecondManager(int reviewID, String username)
+    {
+        try {
+            Statement s = con.createStatement();
+            String sql = "UPDATE Review_Details SET secondManager = '" + username + "' WHERE reviewID=" + reviewID;
+            s.executeUpdate(sql);
+            con.commit();
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
     }
 }

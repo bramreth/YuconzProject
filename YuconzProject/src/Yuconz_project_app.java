@@ -731,8 +731,10 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         }else if(e.getActionCommand().equals("handle review")) {
             String unfinishedReviewString = selectUnfinishedReviews(e.getActionCommand());
 
-
-
+            if(!(unfinishedReviewString == null) && !(unfinishedReviewString.equals("None found"))) {
+                int reviewID = Integer.parseInt(unfinishedReviewString.substring(0,unfinishedReviewString.indexOf(",")));
+                database.addSecondManager(reviewID, secondManagerSelection(database.getReviewManager(reviewID).getPosition().getPositionName()));
+            }
 
         //create a new review
         } else if (e.getActionCommand().equals("createReview")) {
@@ -749,6 +751,33 @@ public class Yuconz_project_app implements ActionListener,FocusListener
             warningLabel.setText("");
         }
 
+    }
+
+    /**
+     *
+     */
+    private String secondManagerSelection(String position)
+    {
+        ArrayList<String> supervisorList = database.getEmployeesWithPosition(position);
+
+        Object[] supervisors = new Object[supervisorList.size()];
+
+        if(supervisorList.size() > 0) {
+            for(int i = 0; i < supervisors.length; i++) {
+                supervisors[i] = supervisorList.get(i);
+            }
+        } else {
+            supervisors = new Object[1];
+            supervisors[0] = "None found";
+        }
+
+        String supervisor = (String)JOptionPane.showInputDialog(frame, "Select an employee", "User Required", JOptionPane.PLAIN_MESSAGE, null, supervisors, supervisors[0]);
+
+        //If a string was returned, return it to above
+        if ((supervisor != null) && (supervisor.length() > 0)) {
+            return supervisor;
+        }
+        return null;
     }
 
     /**
@@ -781,10 +810,11 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private String selectUnfinishedReviews(String action) {
 
         ArrayList<String> reviewsList = new ArrayList<String>();
-        if (action.equals(AMENDREVIEW)) {
-            reviewsList = database.getReviewsWithSecondManager();
-        } else if (action.equals("handle review")) {
+
+        if (action.equals("handle review")) {
             reviewsList = database.getReviewsMissingSecondManager();
+        } else {
+            reviewsList = database.getReviewsWithSecondManager();
         }
 
         Object[] reviews = new Object[reviewsList.size()];
@@ -798,7 +828,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
             reviews[0] = "None found";
         }
 
-        String subordinate = (String)JOptionPane.showInputDialog(frame, "Select an employee", "User Required", JOptionPane.PLAIN_MESSAGE, null, reviews, reviews[0]);
+        String subordinate = (String)JOptionPane.showInputDialog(frame, "Select an review", "Review Required", JOptionPane.PLAIN_MESSAGE, null, reviews, reviews[0]);
 
         //If a string was returned, return it to above
         if ((subordinate != null) && (subordinate.length() > 0)) {

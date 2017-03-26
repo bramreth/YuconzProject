@@ -941,7 +941,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         } else if (e.getActionCommand().equals("addGoal")) {
             currentReview.addGoal(new Review.GoalList(currentReview.getGoalArrayList().size()+1, reviewGoal.getText()));
             reviewGoalNumber.setText("" + (currentReview.getGoalArrayList().size() + 1));
-            reviewGoal.setText("");
+            reviewGoal.setText("goal description");
 
         //failsafe that catches any stray button clicks that takes the user to where the button action command would take it
         } else {

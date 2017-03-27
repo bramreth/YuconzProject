@@ -886,13 +886,12 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //amend a review with all review required people present
         } else if (e.getActionCommand().equals(AMENDREVIEW)) {
             String unfinishedReviewString = selectUnfinishedReviews(e.getActionCommand());
-
-            if(!(unfinishedReviewString == null) && !(unfinishedReviewString.equals("None found"))) {
-                int reviewID = Integer.parseInt(unfinishedReviewString.substring(0,unfinishedReviewString.indexOf(",")));
-                cl.show(cards, AMENDREVIEW);
-                currentReview = database.getReviewForAmending(reviewID);
-                setExistingReviewDetails(currentReview);
-            }
+                if (!(unfinishedReviewString == null) && !(unfinishedReviewString.equals("None found"))) {
+                    int reviewID = Integer.parseInt(unfinishedReviewString.substring(0, unfinishedReviewString.indexOf(",")));
+                    cl.show(cards, AMENDREVIEW);
+                    currentReview = database.getReviewForAmending(reviewID);
+                    setExistingReviewDetails(currentReview);
+                }
 
         //read a review record
         } else if (e.getActionCommand().equals(READREVIEW)) {
@@ -1114,7 +1113,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
             reviews[0] = "None found";
         }
 
-        String subordinate = (String)JOptionPane.showInputDialog(frame, "Select an review", "Review Required", JOptionPane.PLAIN_MESSAGE, null, reviews, reviews[0]);
+        String subordinate = (String)JOptionPane.showInputDialog(frame, "Select a review", "Review Required", JOptionPane.PLAIN_MESSAGE, null, reviews, reviews[0]);
 
         //If a string was returned, return it to above
         if ((subordinate != null) && (subordinate.length() > 0)) {

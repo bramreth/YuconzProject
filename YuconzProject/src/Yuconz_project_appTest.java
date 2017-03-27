@@ -166,15 +166,20 @@ class Yuconz_project_appTest {
         assertTrue(app.getAuthorisation().readReviewAthorisationCheck("user2", app.getDatabase().getReviewForReading(1)));
     }
 
-/*
-ammend
     @org.junit.jupiter.api.Test
-    public void validAmmendReview(){
+    public void validAmendReview(){
         System.out.println("valid amend review");
         app.login("user2","pass2");//is not  a manager of user1
-        Review tempReview =
+        app.getAuthorisation().authorisationCheck(app.getCurrentUser(), "user7", "amendReviewRecord");
     }
-*/
+
+    @org.junit.jupiter.api.Test
+    public void invalidAmendReview(){
+        System.out.println("invalid amend review");
+        app.login("user2","pass2");//is not  a manager of user1
+        app.getAuthorisation().authorisationCheck(app.getCurrentUser(), "user5", "amendReviewRecord");
+    }
+
     //record allocated reviewer
     @org.junit.jupiter.api.Test
     public void validAllocateReviewer(){

@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by bramreth on 3/20/17.
@@ -39,6 +38,10 @@ public class Review {
         secondManagerSignature = new Signature("secondManager");
     }
 
+    /**
+     * returns a string with all the information in a review
+     * @return
+     */
     public String getFullReview(){
         String fReview = "";
         fReview += "reviewID: " +reviewID + "\nusername: " + name + " staffNo: " + staffNo + "\nmanager: " + manager;
@@ -107,6 +110,20 @@ public class Review {
      */
     public void addRecommendation(String recommendationIn){
         reviewerRecommendation = recommendationIn;
+    }
+
+    public void sign(String type, String dateIn){
+        switch (type){
+            case "reviewee":
+                revieweeSignature.sign(true,dateIn);
+                break;
+            case "manager":
+                managerSignature.sign(true,dateIn);
+                break;
+            case "secondManager":
+                secondManagerSignature.sign(true,dateIn);
+                break;
+        }
     }
 
     public void signOff(boolean signedOffIn){
@@ -215,13 +232,13 @@ public class Review {
     public class Signature{
         private boolean signed;
         private String  type;
-        private Date date;
+        private String date;
         public Signature(String typeIn){
             signed = false;
             date = null;
             type = typeIn;
         }
-        public void sign(boolean signedIn, Date dateIn){
+        public void sign(boolean signedIn, String dateIn){
             signed = signedIn;
             date = dateIn;
         }

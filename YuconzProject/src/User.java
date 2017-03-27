@@ -10,12 +10,13 @@ public class User
     //private Position pos;
     /**
      * Constructor
-     * Initializes the User object
-     * @param userID - ID of the currecnt user
-     * @param name
-     * @param surname
-     * @param pos - position
-     * @param dept - department
+     * @param username the username of the  user
+     * @param userID the userID of the user
+     * @param name the name of the user
+     * @param surname the surname of the user
+     * @param dept the department of the user
+     * @param pos the position of the user
+     * @param supervisor the supervisor of the user
      */
     public User(String username, String userID, String name, String surname, String dept, String pos, String supervisor)
     {
@@ -34,6 +35,10 @@ public class User
         }
     }
 
+    /**
+     * Returns the user info in a formatted string
+     * @return a formatted string
+     */
     public String getUserInfo()
     {
         return ("<HTML>User ID:      " + getUserID() + "<BR>" +
@@ -51,46 +56,84 @@ public class User
     /*
      * Accessors for the private variables
      */
+
+    /**
+     * Returns the username
+     * @return a string
+     */
     public String getUsername()
     {
         return username;
     }
 
+    /**
+     * Returns the userID
+     * @return a string
+     */
     public String getUserID()
     {
         return userID;
     }
 
+    /**
+     * Returns the full name formatted
+     * @return a formatted string
+     */
     public String getName()
     {
         return surname + ", " + name;
     }
 
+    /**
+     * Returns the first name
+     * @return a string
+     */
     public String getFirstName()
     {
         return name;
     }
 
+
+    /**
+     * Returns the surname
+     * @return a string
+     */
     public String getSurname()
     {
         return surname;
     }
 
+    /**
+     * Returns the department
+     * @return a string
+     */
     public String getDepartment()
     {
         return dept;
     }
 
+    /**
+     * Returns the position
+     * @return a position
+     */
     public Position getPosition()
     {
         return pos;
     }
 
+    /**
+     * Returns the supervisor username
+     * @return a string
+     */
     public String getSupervisorID()
     {
         return pos.getSupervisor();
     }
 
+    /**
+     * Formats and returns a list of the subordinates of the user (if there are any)
+     * @return a formatted string
+     */
     private String getSubordinatesString()
     {
         String subs = "";

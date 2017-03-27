@@ -5,11 +5,17 @@ import java.util.ArrayList;
  */
 public class Position
 {
+
     private String positionName;
     private String managerID = null;
     private String directorID = null;
     private ArrayList<String> subordinatesID = null;
 
+    /**
+     * Constructor
+     * @param positionName name of the position
+     * @param supervisor username of the supervisor
+     */
     public Position (String positionName, String supervisor)
     {
         this.positionName = positionName;
@@ -21,7 +27,6 @@ public class Position
     }
 
     /**
-     * getPositionName
      * Returns the position name
      * @return positionName
      */
@@ -31,7 +36,6 @@ public class Position
     }
 
     /**
-     * getManager
      * Returns the manager ID
      * @return managerID
      */
@@ -47,15 +51,14 @@ public class Position
     }
 
     /**
-     * setSubordinates
-     * Sets the arraylist of subordinates to the list retrieved from the db
-     * @param subordinatesID
+     * Sets the ArrayList of subordinates to the list retrieved from the db
+     * @param subordinatesID username of the subordinates
      */
     public void setSubordinates(ArrayList<String> subordinatesID){
         this.subordinatesID = subordinatesID;
     }
+
     /**
-     * getSubordinates
      * Returns the list of subordinates IDs
      * @return subordinatesID
      */

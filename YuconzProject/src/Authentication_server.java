@@ -19,8 +19,8 @@ public class Authentication_server {
     /**
      * verifyLogin
      * Checks if the username and password combination is correct
-     * @param username
-     * @param password
+     * @param username username
+     * @param password password
      * @return true if the username and password match database records, false otherwise
      */
     public boolean verifyLogin(String username,  String password) {

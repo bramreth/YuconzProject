@@ -352,6 +352,8 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         reviewSecondManager.setText(review.getSecondManager());
         reviewSection.setText(review.getSection());
         reviewJobTitle.setText(review.getJobTitle());
+        reviewPerformanceNumber.setText("1");
+        reviewGoalNumber.setText("1");
     }
     //endregion
 
@@ -941,7 +943,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //submitting a review
         } else if (e.getActionCommand().equals("submit review")) {
             database.submitReview(submitReviewDocument());
-            cl.show(cards, MAINMENU);
+            cl.show(cards, REVIEW);
 
         //signing off on a review
         } else if (e.getActionCommand().equals("signReview")) {
@@ -1114,7 +1116,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
             reviews[0] = "None found";
         }
 
-        String subordinate = (String)JOptionPane.showInputDialog(frame, "Select an review", "Review Required", JOptionPane.PLAIN_MESSAGE, null, reviews, reviews[0]);
+        String subordinate = (String)JOptionPane.showInputDialog(frame, "Select a review", "Review Required", JOptionPane.PLAIN_MESSAGE, null, reviews, reviews[0]);
 
         //If a string was returned, return it to above
         if ((subordinate != null) && (subordinate.length() > 0)) {

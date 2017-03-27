@@ -312,6 +312,20 @@ public class Database {
                 review.addReviewerComment(rs.getString("reviewerComments"));
                 //review.addRecommendation((Review.Recommendation)rs.getString("recommendation"));
             }
+            sql = "SELECT * FROM Performance_Details WHERE reviewID = " + reviewID;
+            rs = s.executeQuery(sql);
+            int i = 1;
+            while(rs.next()){
+                review.addPerformance(new Review.PastPerformance(i, rs.getString("objective"), rs.getString("achievement")));
+                i++;
+            }
+            sql = "SELECT * FROM Goal_List WHERE reviewID = " + reviewID;
+            rs = s.executeQuery(sql);
+            int j = 1;
+            while(rs.next()){
+                review.addGoal(new Review.GoalList(j, rs.getString("goal")));
+                j++;
+            }
             return review;
         } catch (SQLException err) {
             System.out.println(err.getMessage());

@@ -41,7 +41,23 @@ public class Review {
 
     public String getFullReview(){
         String fReview = "";
-        fReview += "reviewID: " +reviewID + "\nstaffNo: " + staffNo + "\nusername: " + name;
+        fReview += "reviewID: " +reviewID + "\nusername: " + name + " staffNo: " + staffNo + "\nmanager: " + manager;
+        if(secondManager==null){
+            fReview+= " second manager: none assigned\n";
+        }else{
+            fReview+= " second manager: " +secondManager + "\n";
+        }
+        fReview += "section: " +section + " job title: " + jobTitle + "\nperformances:\n";
+        for(PastPerformance temp: performanceArrayList){
+            fReview+="no: "+temp.getNo() + "\nobjective: " + temp.getObjectives() +"\nachievements: " +temp.getAchievements() +"\n";
+        }
+        fReview+="performance summary: "+performanceSummary + "\ngoal list:\n";
+        for(GoalList temp: goalArrayList){
+            fReview+="no: "+temp.getNo() + "\ngoal: " + temp.getGoal() + "\n";
+        }
+        fReview+="reviewer comments: " +reviewerComments +"\n + reviewer recommendation: " + reviewerRecommendation +
+                "\nreviewee signature: "+revieweeSignature.signed +"\nmanager signature: "+managerSignature.signed +
+                "\nsecond manager signature: "+secondManagerSignature.signed;
         return fReview;
     }
 
@@ -174,6 +190,10 @@ public class Review {
             objectives = objIn;
             achievements = achieveIn;
         }
+        public int getNo()
+        {
+            return no;
+        }
 
         public String getObjectives()
         {
@@ -196,7 +216,7 @@ public class Review {
             no = noIn;
             goal = goalIn;
         }
-
+        public int getNo(){return no;}
         public String getGoal()
         {
             return goal;

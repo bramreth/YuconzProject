@@ -376,7 +376,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //Create and set up the window.
         frame = new JFrame("Yuconz File App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        frame.setResizable(true);
 
         //Create and set up the content pane.
         app.addComponentsToPane(frame.getContentPane());
@@ -491,7 +491,10 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         JPanel readReviewPanel = new JPanel(new FlowLayout());
 
         readReviewPanel.setBackground(OOCCOO);
+
         readReviewTextArea.setEditable(false);
+        JScrollPane pane = new JScrollPane(readReviewTextArea,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        pane.setPreferredSize(new Dimension(600, 540));
         JButton backButton = new JButton("back");
         backButton.addActionListener(this);
         backButton.setActionCommand(REVIEW);

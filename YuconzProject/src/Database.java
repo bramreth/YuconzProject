@@ -309,7 +309,7 @@ public class Database {
                 User reviewUser = getUser(rs.getString("username"));
                 review = new Review(reviewID,rs.getInt("userID"), rs.getString("username"), rs.getString("manager"), rs.getString("secondManager"), reviewUser.getDepartment(), reviewUser.getPosition().getPositionName());
                 review.addPerformanceSummary(rs.getString("performanceSummary"));
-                review.addReviewerComment(rs.getString("reviewerCommets"));
+                review.addReviewerComment(rs.getString("reviewerComments"));
                 //review.addRecommendation((Review.Recommendation)rs.getString("recommendation"));
             }
             return review;

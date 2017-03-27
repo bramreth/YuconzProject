@@ -57,6 +57,14 @@ public class Authorisation {
                     }
                 }
                 break;
+            case "amendReviewRecord":
+                if (currentUser.getPosition().getPositionName().equals("Manager")) {
+                    for(String temp: currentUser.getPosition().getSubordinates()){
+                        if(temp.equals(userIn)){
+                            return true;
+                        }
+                    }
+                }
         }
         return false;
     }

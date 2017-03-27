@@ -888,13 +888,12 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //amend a review with all review required people present
         } else if (e.getActionCommand().equals(AMENDREVIEW)) {
             String unfinishedReviewString = selectUnfinishedReviews(e.getActionCommand());
-
-            if(!(unfinishedReviewString == null) && !(unfinishedReviewString.equals("None found"))) {
-                int reviewID = Integer.parseInt(unfinishedReviewString.substring(0,unfinishedReviewString.indexOf(",")));
-                cl.show(cards, AMENDREVIEW);
-                currentReview = database.getReviewForAmending(reviewID);
-                setExistingReviewDetails(currentReview);
-            }
+                if (!(unfinishedReviewString == null) && !(unfinishedReviewString.equals("None found"))) {
+                    int reviewID = Integer.parseInt(unfinishedReviewString.substring(0, unfinishedReviewString.indexOf(",")));
+                    cl.show(cards, AMENDREVIEW);
+                    currentReview = database.getReviewForAmending(reviewID);
+                    setExistingReviewDetails(currentReview);
+                }
 
         //read a review record
         } else if (e.getActionCommand().equals(READREVIEW)) {

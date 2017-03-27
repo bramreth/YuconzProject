@@ -346,7 +346,7 @@ public class Database {
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
                 String complete;
-                if(rs.getBoolean("revieweeSignature") && rs.getBoolean("managerSignature") && rs.getBoolean("secondManagerSignature")) {
+                if(rs.getString("revieweeSignature")!=null && rs.getString("managerSignature")!=null && rs.getString("secondManagerSignature")!=null) {
                     complete = "[Complete]";
                 }else{
                     complete = "[Incomplete]";

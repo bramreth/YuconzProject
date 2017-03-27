@@ -68,7 +68,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     private JTextField reviewGoalNumber = new JTextField("goal number", 20);
     private JTextArea reviewGoal = new JTextArea(4, 20);
     private JTextArea reviewComments = new JTextArea(4, 20);
-    String[] choices = {"Stay in post","Salary increase","Promotion", "Probation", "Termination"};
+    private String[] choices = {"Stay in post","Salary increase","Promotion", "Probation", "Termination"};
     private JComboBox<String> reviewRecommendation = new JComboBox<String>(choices);
     private JTextArea readReviewTextArea = new JTextArea(4, 20);
     //endregion

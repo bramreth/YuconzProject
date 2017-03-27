@@ -310,10 +310,16 @@ public class Database {
                 review = new Review(reviewID,rs.getInt("userID"), rs.getString("username"), rs.getString("manager"), rs.getString("secondManager"), reviewUser.getDepartment(), reviewUser.getPosition().getPositionName());
                 review.addPerformanceSummary(rs.getString("performanceSummary"));
                 review.addReviewerComment(rs.getString("reviewerComments"));
-                review.addRecommendation(rs.getString("recommendation"));
-                review.sign("reviewee", rs.getString("revieweeSignature"));
-                review.sign("manager", rs.getString("revieweeSignature"));
-                review.sign("secondManager", rs.getString("revieweeSignature"));
+                review.addRecommendation(rs.getString("reviewerRecommendation"));
+                if(rs.getString("revieweeSignature") != null){
+                    review.sign("reviewee", rs.getString("revieweeSignature"));
+                }
+                if(rs.getString("managerSignature") != null) {
+                    review.sign("manager", rs.getString("managerSignature"));
+                }
+                if(rs.getString("secondManagerSignature") != null) {
+                    review.sign("secondManager", rs.getString("secondManagerSignature"));
+                }
             }
             sql = "SELECT * FROM Performance_Details WHERE reviewID = " + reviewID;
             rs = s.executeQuery(sql);

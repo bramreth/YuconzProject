@@ -58,9 +58,22 @@ public class Review {
         for(GoalList temp: goalArrayList){
             fReview+="no: "+temp.getNo() + "\ngoal: " + temp.getGoal() + "\n";
         }
-        fReview+="reviewer comments: " +reviewerComments +"\nreviewer recommendation: " + reviewerRecommendation +
-                "\nreviewee signature: "+revieweeSignature.signed +"\nmanager signature: "+managerSignature.signed +
-                "\nsecond manager signature: "+secondManagerSignature.signed;
+        fReview+="reviewer comments: " +reviewerComments +"\nreviewer recommendation: " + reviewerRecommendation+"\n";
+        if(revieweeSignature.signed){
+            fReview+="reviewee signed on: "+revieweeSignature.date+"\n";
+        }else{
+            fReview+="reviewee has not signed\n";
+        }
+        if(managerSignature.signed){
+            fReview+="manager signed on: "+managerSignature.date+"\n";
+        }else{
+            fReview+="manager has not signed\n";
+        }
+        if(secondManagerSignature.signed){
+            fReview+="second manager signed on: "+secondManagerSignature.date+"\n";
+        }else{
+            fReview+="second manager has not signed\n";
+        }
         return fReview;
     }
 

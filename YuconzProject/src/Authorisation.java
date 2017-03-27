@@ -14,16 +14,15 @@ public class Authorisation {
     }
 
     /**
-     * authorisationCheck
      * Checks if a given user is authorised to take an action
-     * @param currentUser
-     * @param action
+     * @param currentUser user
+     * @param action action the wish to take
      * @return true if the user can take the action, otherwise false
      */
     public boolean authorisationCheck(User currentUser, String userIn, String action) {
         switch (action) {
             case "readPersonalDetails":
-                if (currentUser.getDepartment().equals("Human Resources") || currentUser.getDepartment().equals("Director") || currentUser.getUsername().equals(userIn)) {
+                if (currentUser.getDepartment().equals("Human Resources") || currentUser.getPosition().getPositionName().equals("Director") || currentUser.getUsername().equals(userIn)) {
                     return true;
                 }
                 break;
@@ -64,12 +63,12 @@ public class Authorisation {
 
     /**
      * checks whether the user has permission to read a given review
-     * @param userIn
-     * @param reviewIn
-     * @return
+     * @param userIn user
+     * @param reviewIn review
+     * @return true if allowed, false otherwise
      */
-    public boolean readReviewAthorisationCheck(String userIn, Review reviewIn){
-        if(reviewIn.getName().equals(userIn) || reviewIn.getManager().equals(userIn)||reviewIn.getSecondManager().equals(userIn)) {
+    public boolean readReviewAthorisationCheck(User userIn, Review reviewIn){
+        if(reviewIn.getName().equals(userIn.getUsername()) || reviewIn.getManager().equals(userIn.getUsername())||reviewIn.getSecondManager().equals(userIn.getUsername()) || userIn.getPosition().getPositionName().equals("Director")) {
             return true;
         }else{
             return false;
@@ -78,9 +77,9 @@ public class Authorisation {
 
     /**
      * checks whether the user has permission to sign a given review
-     * @param userIn
-     * @param reviewIn
-     * @return
+     * @param userIn username
+     * @param reviewIn review
+     * @return true if allowed, false otherwise
      */
     public boolean signReviewAthorisationCheck(String userIn, Review reviewIn){
         if(reviewIn.getName().equals(userIn) || reviewIn.getManager().equals(userIn)||reviewIn.getSecondManager().equals(userIn)) {

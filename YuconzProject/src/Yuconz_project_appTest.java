@@ -156,14 +156,14 @@ class Yuconz_project_appTest {
     public void validReadReview(){
         System.out.println("invalid read review");
         app.login("user2","pass2");//is involved in their own review
-        assertTrue(app.getAuthorisation().readReviewAthorisationCheck(app.getCurrentUser().getUsername(), app.getDatabase().getReviewForReading(1)));
+        assertTrue(app.getAuthorisation().readReviewAthorisationCheck(app.getCurrentUser(), app.getDatabase().getReviewForReading(1)));
     }
 
     @org.junit.jupiter.api.Test
     public void invalidReadReview(){
         System.out.println("invalid read review");
         app.login("user9","pass2");//is not involved in user 9's reviews
-        assertTrue(app.getAuthorisation().readReviewAthorisationCheck("user2", app.getDatabase().getReviewForReading(1)));
+        assertTrue(app.getAuthorisation().readReviewAthorisationCheck(app.getDatabase().getUser("user2"), app.getDatabase().getReviewForReading(1)));
     }
 
 /*

@@ -898,17 +898,15 @@ public class Yuconz_project_app implements ActionListener,FocusListener
 
         //read a review record
         } else if (e.getActionCommand().equals(READREVIEW)) {
-            ArrayList<String> reviewList = database.getReadableReviews(currentUser.getUsername());
-            if(reviewList == null){
-                JOptionPane.showMessageDialog(frame, "No reviews are available to view");
-            }else{
-                String selectedReview = selectReview(currentUser.getUsername());
-                if(selectedReview != null){
-                    int reviewID = Integer.parseInt(selectedReview.substring(0,selectedReview.indexOf(",")));
-                    cl.show(cards, READREVIEW);
-                    Review review = database.getReviewForReading(reviewID);
-                    readReviewTextArea.setText(review.getFullReview());
-                }
+            String selectedReview = selectReview(currentUser);
+
+            if(selectedReview != null && !(selectedReview.equals("None found"))){
+
+                int reviewID = Integer.parseInt(selectedReview.substring(0,selectedReview.indexOf(",")));
+                cl.show(cards, READREVIEW);
+                Review review = database.getReviewForReading(reviewID);
+                readReviewTextArea.setText(review.getFullReview());
+
             }
         //handle an existing review
         }else if(e.getActionCommand().equals("handle review")) {
@@ -1045,12 +1043,23 @@ public class Yuconz_project_app implements ActionListener,FocusListener
      * shows the employee all reviews they were involved with
      * @return selected review to view
      */
-    private String selectReview(String userIn) {
+    private String selectReview(User userIn) {
 
-        ArrayList<String> reviews = database.getReadableReviews(userIn);
-        Object[] reviewArray = new Object[reviews.size()];
+        ArrayList<String> reviewList;
+        if(userIn.getPosition().getPositionName().equals("Director")) {
+            reviewList = database.getReadableReviews(currentUser.getPosition().getPositionName());
+        } else {
+            reviewList = database.getReadableReviews(currentUser.getUsername());
+        }
+
+        Object[] reviewArray = new Object[reviewList.size()];
         for(int i = 0; i < reviewArray.length; i++) {
-            reviewArray[i] = reviews.get(i);
+            reviewArray[i] = reviewList.get(i);
+        }
+
+        if (reviewArray.length < 1) {
+            reviewArray = new Object[1];
+            reviewArray[0] = "None found";
         }
 
         String selectedReview = (String)JOptionPane.showInputDialog(frame, "Select a review", "Review selection", JOptionPane.PLAIN_MESSAGE, null, reviewArray, reviewArray[0]);

@@ -449,8 +449,15 @@ public class Database {
         ArrayList<String> listOfReviews = new ArrayList<>();
         try {
             Statement s = con.createStatement();
-            String sql = "SELECT * FROM Review_Details WHERE username='" + username + "' OR manager='" + username +
-                    "' OR secondManager= '" + username+"'";
+
+            String sql;
+            if(username.equals("Director")) { //Directors can read all reviews
+                sql = "SELECT * FROM Review_Details";
+            } else {
+                sql = "SELECT * FROM Review_Details WHERE username='" + username + "' OR manager='" + username +
+                        "' OR secondManager= '" + username+"'";
+            }
+
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
                 String complete;

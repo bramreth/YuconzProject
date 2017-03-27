@@ -88,12 +88,9 @@ public class Yuconz_project_app implements ActionListener,FocusListener
                 displayLoginMenu(app);
             }
         });
-        //if(app.database.isReady()){
-          //  app.displayLoginMenu();
-        //}
     }
 
-    /**v3
+    /**
      * Constructor
      * Initializes the App object and prompts the user for login
      */
@@ -153,8 +150,8 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     /**
      * login
      * Logs the user in
-     * @param username
-     * @param password
+     * @param username username
+     * @param password password
      * @return true if successful, otherwise false
      */
     public boolean login(String username, String password){
@@ -188,7 +185,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     /**
      * createPersonalDetailsDocument
      * Creates a personal details document for a user
-     * @param username
+     * @param username username
      * @return the document
      */
     private Document createPersonalDetailsDocument(String username)
@@ -207,7 +204,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     /**
      * setExistingDetails
      * sets the text fields' text to the details found in the database
-     * @param username
+     * @param username username
      */
     private void setExistingDetails(String username)
     {
@@ -251,7 +248,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     /**
      * readPersonalDetails
      * checks permissions of the user for reading personal details files
-     * @param userIn
+     * @param userIn username
      * @return true if allowed, otherwise false
      */
     public boolean readPersonalDetails(String userIn)
@@ -273,7 +270,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     /**
      * createPersonalDetails
      * checks permissions of the user for creating personal details files
-     * @param userIn
+     * @param userIn username
      * @return true if allowed, otherwise false
      */
     public boolean createPersonalDetails(String userIn)
@@ -293,7 +290,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     /**
      * amendPersonalDetails
      * checks permissions of the user for amending personal details files
-     * @param userIn
+     * @param userIn username
      * @return true if allowed, otherwise false
      */
     public  boolean amendPersonalDetails(String userIn)
@@ -342,7 +339,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     /**
      * setExistingReviewDetails
      * sets the text fields' text to the details found in the database
-     * @param review
+     * @param review existing review details
      */
     private void setExistingReviewDetails(Review review)
     {
@@ -444,7 +441,8 @@ public class Yuconz_project_app implements ActionListener,FocusListener
      * creates the JPanel of the review screen
      * @return
      */
-    private JPanel createReviewCard() {
+    private JPanel createReviewCard()
+    {
         JPanel reviewPanel = new JPanel(new FlowLayout());
 
         handleReview = new JButton("Handle existing review");
@@ -495,7 +493,8 @@ public class Yuconz_project_app implements ActionListener,FocusListener
      * creates the JPanel of the amend review screen
      * @return
     */
-    private JPanel createReadReviewCard() {
+    private JPanel createReadReviewCard()
+    {
         JPanel readReviewPanel = new JPanel(new FlowLayout());
 
         readReviewPanel.setBackground(OOCCOO);
@@ -503,7 +502,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         readReviewTextArea.setEditable(false);
         JScrollPane pane = new JScrollPane();
         pane.getViewport().add(readReviewTextArea);
-        pane.setPreferredSize(new Dimension(600, 540));
+        pane.setPreferredSize(new Dimension(600, 520));
         JButton backButton = new JButton("back");
         backButton.addActionListener(this);
         backButton.setActionCommand(REVIEW);
@@ -517,7 +516,8 @@ public class Yuconz_project_app implements ActionListener,FocusListener
      * creates the JPanel of the amend review screen
      * @return
      */
-    private JPanel createAmendReviewCard() {
+    private JPanel createAmendReviewCard()
+    {
         JPanel amendReviewPanel = new JPanel(new GridLayout(1,2));
         JPanel left = new JPanel(new FlowLayout());
         JPanel right = new JPanel(new GridLayout(2,1));
@@ -760,18 +760,26 @@ public class Yuconz_project_app implements ActionListener,FocusListener
     }
 
     /**
-     * ActionListener
-     * @param e
+     * ActionListener for handling all button presses
+     * @param e action event
      */
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println("ActionCommand: " + e.getActionCommand());
         CardLayout cl = (CardLayout) (cards.getLayout());
 
+        //loggin in
         if (e.getActionCommand().equalsIgnoreCase("authenticate")) { //loggin in from login screen
             if (login(tfUsername.getText(), tfPassword.getText())) { //checks login details
+
+                if (currentUser.getDepartment().equals("Human Resources")) {
+                    if (!logicWithPrivileges()) {
+                        currentUser.setDept("HR");
+                    }
+                }
+
                 /*
-                if the user is in hr, set the hr specific refiew button to be visible
+                if the user is in hr, set the hr specific review button to be visible
                  */
                 frame.getRootPane().setDefaultButton(null);
                 if(currentUser.getDepartment().equals("Human Resources")){
@@ -1167,6 +1175,20 @@ public class Yuconz_project_app implements ActionListener,FocusListener
             return subordinate;
         }
         return null;
+    }
+
+    private boolean logicWithPrivileges()
+    {
+        int n = JOptionPane.showConfirmDialog(
+                frame,
+                "Would you like to log in with HR privileges?",
+                "Privileges",
+                JOptionPane.YES_NO_OPTION);
+
+        if (n == 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override

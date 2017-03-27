@@ -154,4 +154,13 @@ public class User
             return subs;
         }
     }
+
+    /**
+     * Sets the department for privilege purposes
+     * @param dept department
+     */
+    public void setDept (String dept)
+    {
+        this.dept = dept;
+    }
 }

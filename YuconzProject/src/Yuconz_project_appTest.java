@@ -16,10 +16,12 @@ class Yuconz_project_appTest {
 
     @org.junit.jupiter.api.AfterEach
     void tearDown() {
-        Document temp = app.getDatabase().fetchPersonalDetails("hruser2");
-        temp.setName("John");
-        app.getDatabase().amendUserPersonalDetails(temp);
-        app = null;
+            try {
+                app.getDatabase().getConnection().close();
+                app = null;
+            } catch (Exception e) {
+
+            }
 
     }
 
@@ -113,7 +115,7 @@ class Yuconz_project_appTest {
     public void allowedAmendPersonalDetails(){
         System.out.println("valid ammend personal details");
         app.login("hruser2","password2");//is in hr
-        assertTrue(app.amendPersonalDetails("hruser2"));
+        assertTrue(app.amendPersonalDetails("user2"));
     }
     //invalid ammend details
     @org.junit.jupiter.api.Test
@@ -127,11 +129,11 @@ class Yuconz_project_appTest {
     public void validAmendPersonalDetails(){
         System.out.println("valid ammend personal details");
         app.login("hruser2","password2");//is in hr
-        Document temp1Doc = app.getDatabase().fetchPersonalDetails("hruser2");
-        Document temp2Doc = app.getDatabase().fetchPersonalDetails("hruser2");
+        Document temp1Doc = app.getDatabase().fetchPersonalDetails("user1");
+        Document temp2Doc = app.getDatabase().fetchPersonalDetails("user1");
         temp2Doc.setName("Enid");
         app.getDatabase().amendUserPersonalDetails(temp2Doc);
-        Document temp3Doc = app.getDatabase().fetchPersonalDetails("hruser2");
+        Document temp3Doc = app.getDatabase().fetchPersonalDetails("user1");
         assertNotEquals(temp1Doc.getName(),temp3Doc.getName());
     }
 
@@ -141,7 +143,7 @@ class Yuconz_project_appTest {
     @org.junit.jupiter.api.Test
     public void validRevieweeCreateReview(){
         System.out.println("valid create review for a reviewee");
-        app.login("hruser2","password2");//is a manager of user 1
+        app.login("user2","pass2");//is a manager of user 1
         assertTrue(app.createReview("user1"));
     }
 
@@ -169,15 +171,15 @@ class Yuconz_project_appTest {
     @org.junit.jupiter.api.Test
     public void validAmendReview(){
         System.out.println("valid amend review");
-        app.login("user2","pass2");//is not  a manager of user1
-        app.getAuthorisation().authorisationCheck(app.getCurrentUser(), "user7", "amendReviewRecord");
+        app.login("user2","pass2");//is  a manager of user1
+        assertTrue(app.getAuthorisation().authorisationCheck(app.getCurrentUser(), "user1", "amendReviewRecord"));
     }
 
     @org.junit.jupiter.api.Test
     public void invalidAmendReview(){
         System.out.println("invalid amend review");
-        app.login("user2","pass2");//is not  a manager of user1
-        app.getAuthorisation().authorisationCheck(app.getCurrentUser(), "user5", "amendReviewRecord");
+        app.login("user2","pass2");//is not  a manager of user5
+        assertFalse(app.getAuthorisation().authorisationCheck(app.getCurrentUser(), "user5", "amendReviewRecord"));
     }
 
     //record allocated reviewer

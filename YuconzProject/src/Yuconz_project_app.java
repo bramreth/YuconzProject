@@ -467,6 +467,11 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         amendReview.setActionCommand(AMENDREVIEW);
         amendReview.setVisible(false);
 
+        JButton btnSignOff = new JButton("Sign a review");
+        btnSignOff.setFont(normalFont);
+        btnSignOff.addActionListener(this);
+        btnSignOff.setActionCommand("signReview");
+
         JButton readReview = new JButton("Read a review");
         readReview.setFont(normalFont);
         readReview.addActionListener(this);
@@ -475,6 +480,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         reviewPanel.add(btnReview);
         reviewPanel.add(handleReview);
         reviewPanel.add(amendReview);
+        reviewPanel.add(btnSignOff);
         reviewPanel.add(readReview);
         reviewPanel.add(backButton);
         reviewPanel.setBackground(OOCCOO);
@@ -936,6 +942,23 @@ public class Yuconz_project_app implements ActionListener,FocusListener
             database.submitReview(submitReviewDocument());
             cl.show(cards, MAINMENU);
 
+        //signing off on a review
+        } else if (e.getActionCommand().equals("signReview")) {
+            String signReview = selectReviewToSign();
+
+            if (signReview != null && (signReview.equals("None found"))) {
+                int reviewID = Integer.parseInt(signReview.substring(0, signReview.indexOf(",")));
+                Review review = database.getReviewForReading(reviewID);
+
+                if(review.getManager().equals(currentUser.getUsername())) {
+                    database.signReview(reviewID, "managerSignature");
+                } else if (review.getName().equals(currentUser.getUsername())) {
+                    database.signReview(reviewID, "revieweeSignature");
+                } else if (review.getSecondManager().equals(currentUser.getUsername())) {
+                    database.signReview(reviewID, "secondManagerSignature");
+                }
+            }
+
         //adding a performance review
         } else if (e.getActionCommand().equals("addPerformance")) {
             currentReview.addPerformance(new Review.PastPerformance(currentReview.getPerformanceArrayList().size() + 1, reviewPerformanceObjective.getText(), reviewPerformanceAchievement.getText()));
@@ -957,8 +980,35 @@ public class Yuconz_project_app implements ActionListener,FocusListener
 
     }
 
+    private String selectReviewToSign()
+    {
+        ArrayList<String> reviewsList = database.getUnsignedReviews(currentUser.getUsername());
+
+        Object[] reviews = new Object[reviewsList.size()];
+
+        if(reviewsList.size() > 0) {
+            for(int i = 0; i < reviews.length; i++) {
+                reviews[i] = reviewsList.get(i);
+            }
+        } else {
+            reviews = new Object[1];
+            reviews[0] = "None found";
+        }
+
+        String supervisor = (String)JOptionPane.showInputDialog(frame, "Select an employee", "User Required", JOptionPane.PLAIN_MESSAGE, null, reviews, reviews[0]);
+
+        //If a string was returned, return it to above
+        if ((supervisor != null) && (supervisor.length() > 0)) {
+            return supervisor;
+        }
+        return null;
+    }
+
+
     /**
-     *
+     * secondManagerSelection
+     * shows the employee all managers valid for use as a second manager
+     * @return selected manager to
      */
     private String secondManagerSelection(String position, int reviewID)
     {

@@ -352,6 +352,8 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         reviewSecondManager.setText(review.getSecondManager());
         reviewSection.setText(review.getSection());
         reviewJobTitle.setText(review.getJobTitle());
+        reviewPerformanceNumber.setText("1");
+        reviewGoalNumber.setText("1");
     }
     //endregion
 
@@ -940,7 +942,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //submitting a review
         } else if (e.getActionCommand().equals("submit review")) {
             database.submitReview(submitReviewDocument());
-            cl.show(cards, MAINMENU);
+            cl.show(cards, REVIEW);
 
         //signing off on a review
         } else if (e.getActionCommand().equals("signReview")) {

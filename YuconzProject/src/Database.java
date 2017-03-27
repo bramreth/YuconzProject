@@ -444,15 +444,14 @@ public class Database {
         }
     }
 
-    public void submitReviewGoal(Review review)
-    {
+    public void submitReviewGoal(Review review) {
         try {
             Statement s = con.createStatement();
             ArrayList<Review.GoalList> goals = review.getGoalArrayList();
             System.out.println(goals.size());
             int startingNum = countRows("Goal_List") + 1;
 
-            for(Review.GoalList goal : goals) {
+            for (Review.GoalList goal : goals) {
                 String sql = "INSERT INTO Goal_List VALUES (" + startingNum + ", " + review.getReviewID() + ", '" + goal.getGoal() + "')";
                 s.executeUpdate(sql);
                 startingNum++;
@@ -465,4 +464,34 @@ public class Database {
         }
     }
 
+    public ArrayList<String> getUnsignedReviews(String username)
+    {
+        ArrayList<String> reviews = new ArrayList<>();
+        try {
+            Statement s = con.createStatement();
+            String sql = "SELECT reviewID,username,manager,secondmanager FROM Review_Details WHERE secondManager IS NOT NULL AND ((username='" + username + "' AND revieweeSignature IS NULL) OR (manager='" + username + "' AND managerSignature IS NULL) OR (secondManager='" + username + "' AND secondManagerSignature IS NULL))";
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                reviews.add(rs.getInt("reviewID") + ", Name: " + rs.getString("username") + ", Supervisor: " + rs.getString("manager") + ", Second Supervisor: " + rs.getString("secondManager"));
+            }
+            return reviews;
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return null;
+    }
+
+    public void signReview(int reviewID, String user)
+    {
+        try {
+            Statement s = con.createStatement();
+            String sql = "UPDATE Review_Details SET " + user + "='TRUE' WHERE reviewID = " + reviewID;
+            s.executeUpdate(sql);
+            con.commit();
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+    }
 }
+
+

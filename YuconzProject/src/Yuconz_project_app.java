@@ -376,7 +376,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //Create and set up the window.
         frame = new JFrame("Yuconz File App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(true);
+        frame.setResizable(false);
 
         //Create and set up the content pane.
         app.addComponentsToPane(frame.getContentPane());
@@ -773,7 +773,7 @@ public class Yuconz_project_app implements ActionListener,FocusListener
                     amendReview.setVisible(false);
                 }
                 cl.show(cards, MAINMENU);
-                frame.setSize(new Dimension(640, 500)); //shows main menu and resizes
+                frame.setSize(new Dimension(640, 640)); //shows main menu and resizes
                 centerFrame();
 
                 warningLabel.setText("");
@@ -919,10 +919,13 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         //create a new review
         } else if (e.getActionCommand().equals("createReview")) {
             String reviewee = selectReviewee();
-            if (createReview(reviewee)) {
-                database.createNewReview(currentUser.getUsername(), reviewee);
-            } else {
-                JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
+
+            if (reviewee != null && !(reviewee.equals("None found"))) {
+                if (createReview(reviewee)) {
+                    database.createNewReview(currentUser.getUsername(), reviewee);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);
+                }
             }
 
         //submitting a review
@@ -1012,6 +1015,12 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         for(int i = 0; i < employees.length; i++) {
             employees[i] = currentUser.getPosition().getSubordinates().get(i);
         }
+
+        if (employees.length < 1) {
+            employees = new Object[1];
+            employees[0] = "None found";
+        }
+
 
         String subordinate = (String)JOptionPane.showInputDialog(frame, "Select an employee", "User Required", JOptionPane.PLAIN_MESSAGE, null, employees, employees[0]);
 

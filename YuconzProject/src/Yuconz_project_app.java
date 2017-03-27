@@ -319,10 +319,10 @@ public class Yuconz_project_app implements ActionListener,FocusListener
      * checks permissions of the user for creating a review document
      * @return true if allowed, otherwise false
      */
-    public  boolean createReview()
+    public  boolean createReview(String user)
     {
         //run authorisation method with amendPersonalDetails as an action
-        if(authorisation.authorisationCheck(currentUser, "", "createReviewRecord")){
+        if(authorisation.authorisationCheck(currentUser, user, "createReviewRecord")){
             return true;
         } else {
             return false;
@@ -918,8 +918,8 @@ public class Yuconz_project_app implements ActionListener,FocusListener
 
         //create a new review
         } else if (e.getActionCommand().equals("createReview")) {
-            if (createReview()) {
-                String reviewee = selectReviewee();
+            String reviewee = selectReviewee();
+            if (createReview(reviewee)) {
                 database.createNewReview(currentUser.getUsername(), reviewee);
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid permissions for that action", "Invalid Permissions", JOptionPane.PLAIN_MESSAGE);

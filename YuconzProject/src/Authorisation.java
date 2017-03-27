@@ -51,7 +51,11 @@ public class Authorisation {
                     }
                 }
                 if(currentUser.getPosition().getPositionName().equals("Director")) {
-                    return true;
+                    for(String temp: currentUser.getPosition().getSubordinates()){
+                        if(temp.equals(userIn)){
+                            return true;
+                        }
+                    }
                 }
                 break;
         }

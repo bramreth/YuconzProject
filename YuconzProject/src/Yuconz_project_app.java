@@ -947,16 +947,19 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         } else if (e.getActionCommand().equals("signReview")) {
             String signReview = selectReviewToSign();
 
-            if (signReview != null && (signReview.equals("None found"))) {
+            if (signReview != null && !(signReview.equals("None found"))) {
                 int reviewID = Integer.parseInt(signReview.substring(0, signReview.indexOf(",")));
                 Review review = database.getReviewForReading(reviewID);
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = new Date();
+                String signDate = dateFormat.format(date);
 
                 if(review.getManager().equals(currentUser.getUsername())) {
-                    database.signReview(reviewID, "managerSignature");
+                    database.signReview(reviewID, "managerSignature", signDate);
                 } else if (review.getName().equals(currentUser.getUsername())) {
-                    database.signReview(reviewID, "revieweeSignature");
+                    database.signReview(reviewID, "revieweeSignature", signDate);
                 } else if (review.getSecondManager().equals(currentUser.getUsername())) {
-                    database.signReview(reviewID, "secondManagerSignature");
+                    database.signReview(reviewID, "secondManagerSignature", signDate);
                 }
             }
 

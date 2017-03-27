@@ -495,11 +495,11 @@ public class Database {
         return null;
     }
 
-    public void signReview(int reviewID, String user)
+    public void signReview(int reviewID, String user, String date)
     {
         try {
             Statement s = con.createStatement();
-            String sql = "UPDATE Review_Details SET " + user + "='TRUE' WHERE reviewID = " + reviewID;
+            String sql = "UPDATE Review_Details SET " + user + "='" + date + "' WHERE reviewID = " + reviewID;
             s.executeUpdate(sql);
             con.commit();
         } catch (SQLException err) {

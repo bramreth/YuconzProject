@@ -109,20 +109,6 @@ public class Review {
         reviewerRecommendation = recommendationIn;
     }
 
-    public void sign(String type, Date dateIn){
-        switch (type){
-            case "reviewee":
-                revieweeSignature.sign(true,dateIn);
-                break;
-            case "manager":
-                managerSignature.sign(true,dateIn);
-                break;
-            case "secondManager":
-                secondManagerSignature.sign(true,dateIn);
-                break;
-        }
-    }
-
     public void signOff(boolean signedOffIn){
         signedOff = signedOffIn;
     }

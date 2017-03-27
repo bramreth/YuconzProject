@@ -499,12 +499,13 @@ public class Yuconz_project_app implements ActionListener,FocusListener
         readReviewPanel.setBackground(OOCCOO);
 
         readReviewTextArea.setEditable(false);
-        JScrollPane pane = new JScrollPane(readReviewTextArea,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane pane = new JScrollPane();
+        pane.getViewport().add(readReviewTextArea);
         pane.setPreferredSize(new Dimension(600, 540));
         JButton backButton = new JButton("back");
         backButton.addActionListener(this);
         backButton.setActionCommand(REVIEW);
-        readReviewPanel.add(readReviewTextArea);
+        readReviewPanel.add(pane);
         readReviewPanel.add(backButton);
         return readReviewPanel;
     }

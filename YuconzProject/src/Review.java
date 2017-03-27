@@ -55,7 +55,7 @@ public class Review {
         for(GoalList temp: goalArrayList){
             fReview+="no: "+temp.getNo() + "\ngoal: " + temp.getGoal() + "\n";
         }
-        fReview+="reviewer comments: " +reviewerComments +"\n + reviewer recommendation: " + reviewerRecommendation +
+        fReview+="reviewer comments: " +reviewerComments +"\nreviewer recommendation: " + reviewerRecommendation +
                 "\nreviewee signature: "+revieweeSignature.signed +"\nmanager signature: "+managerSignature.signed +
                 "\nsecond manager signature: "+secondManagerSignature.signed;
         return fReview;

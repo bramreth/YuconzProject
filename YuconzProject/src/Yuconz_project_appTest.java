@@ -141,15 +141,15 @@ class Yuconz_project_appTest {
     @org.junit.jupiter.api.Test
     public void validRevieweeCreateReview(){
         System.out.println("valid create review for a reviewee");
-        app.login("hruser2","password2");//is a manager
-        assertTrue(app.createReview());
+        app.login("hruser2","password2");//is a manager of user 1
+        assertTrue(app.createReview("user1"));
     }
 
     @org.junit.jupiter.api.Test
     public void invalidReviewerCreateReview(){
         System.out.println("invalid read review");
-        app.login("user1","pass1");//is not  a manager of user1
-        assertFalse(app.createReview());
+        app.login("user1","pass1");//is not  a manager of user2
+        assertFalse(app.createReview("user2"));
     }
 
     @org.junit.jupiter.api.Test
